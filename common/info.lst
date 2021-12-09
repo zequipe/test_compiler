@@ -1,0 +1,184 @@
+
+ Lahey/Fujitsu Fortran 95 Compiler Release L8.10b  Thu Dec  9 16:14:24 2021
+ Copyright (C) 1994-2008 Lahey Computer Systems.  All rights reserved.
+ Copyright (C) 1998-2008 FUJITSU LIMITED. All rights reserved.
+
+ Compilation information
+   Current directory : /home/zaikunzhang/Bureau/test_compiler
+   Source file       : common/info.f90
+   Compiler options  : --ap --nblock -c --chk aefosux --chkglobal --nco 
+                     : --nconcc --dal --ndbl --f95 --nfast -g --in --info 
+                     : --ninline --li --lst --nlong --maxfatals 50 --nml 
+                     : --nmldefault --o0 --no --nocl --nopenmp --nparallel 
+                     : --nprefetch --npca --nprivate --nquad --quiet --sav 
+                     : --nshared --sse2 --nstaticlink --nswm --nthreadheap 
+                     : --nthreads --trace --ntrap --nunroll --nvarheap 
+                     : --nvarstack --nversion --warn --nwide --nwisk --wo --zfm 
+                     : --xref
+
+ Module "info_mod"
+  (line-no.)(nest)
+          1        ! INFO_MOD is a module defining exit flags.
+          2        !
+          3        ! Coded by Zaikun ZHANG (www.zhangzk.net).
+          4        !
+          5        ! Started: July 2020.
+          6        !
+          7        ! Last Modified: Sunday, September 26, 2021 AM08:29:06
+          8        
+          9        
+         10        module info_mod
+         11        
+         12        use, non_intrinsic :: consts_mod, only : IK
+         13        
+         14        implicit none
+         15        private
+         16        public :: INFO_DFT
+         17        public :: INVALID_INPUT
+         18        public :: SMALL_TR_RADIUS
+         19        public :: FTARGET_ACHIEVED
+         20        public :: TRSUBP_FAILED
+         21        public :: MAXFUN_REACHED
+         22        public :: MAXTR_REACHED
+         23        public :: NAN_INF_X
+         24        public :: NAN_INF_F
+         25        public :: NAN_MODEL
+         26        public :: DAMAGING_ROUNDING
+         27        
+         28        
+         29        integer(IK), parameter :: INFO_DFT = 0_IK
+         30        integer(IK), parameter :: INVALID_INPUT = -100_IK
+         31        integer(IK), parameter :: SMALL_TR_RADIUS = 0_IK
+         32        integer(IK), parameter :: FTARGET_ACHIEVED = 1_IK
+         33        integer(IK), parameter :: TRSUBP_FAILED = 2_IK
+         34        integer(IK), parameter :: MAXFUN_REACHED = 3_IK
+         35        integer(IK), parameter :: MAXTR_REACHED = 20_IK
+         36        integer(IK), parameter :: NAN_INF_X = -1_IK
+         37        integer(IK), parameter :: NAN_INF_F = -2_IK
+         38        integer(IK), parameter :: NAN_MODEL = -3_IK
+         39        integer(IK), parameter :: DAMAGING_ROUNDING = 7_IK
+         40        
+         41        
+         42        end module info_mod
+
+ Diagnostic messages: program name(info_mod)
+   1333-S: "common/info.f90", line 12, column 4: Name expected.
+   2018-S: "common/info.f90", line 16: When IMPLICIT NONE is specified, 'INFO_DFT' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 17: When IMPLICIT NONE is specified, 'INVALID_INPUT' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 18: When IMPLICIT NONE is specified, 'SMALL_TR_RADIUS' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 19: When IMPLICIT NONE is specified, 'FTARGET_ACHIEVED' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 20: When IMPLICIT NONE is specified, 'TRSUBP_FAILED' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 21: When IMPLICIT NONE is specified, 'MAXFUN_REACHED' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 22: When IMPLICIT NONE is specified, 'MAXTR_REACHED' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 23: When IMPLICIT NONE is specified, 'NAN_INF_X' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 24: When IMPLICIT NONE is specified, 'NAN_INF_F' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 25: When IMPLICIT NONE is specified, 'NAN_MODEL' must be declared in a type declaration statement.
+   2018-S: "common/info.f90", line 26: When IMPLICIT NONE is specified, 'DAMAGING_ROUNDING' must be declared in a type declaration statement.
+   1185-S: "common/info.f90", line 29: In an initialization or specification expression, 'IK' must be a named constant.
+   2018-S: "common/info.f90", line 29: When IMPLICIT NONE is specified, 'IK' must be declared in a type declaration statement.
+   1326-S: "common/info.f90", line 29, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 30: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 30, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 31: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 31, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 32: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 32, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 33: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 33, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 34: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 34, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 35: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 35, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 36: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 36, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 37: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 37, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 38: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 38, column 9: Type specification or length specification invalid.
+   1185-S: "common/info.f90", line 39: In an initialization or specification expression, 'IK' must be a named constant.
+   1326-S: "common/info.f90", line 39, column 9: Type specification or length specification invalid.
+
+ Procedure information
+   Lines      : 42
+   Statements : 27
+
+ Scoping unit of module : info_mod
+   Attribute and Cross reference of name
+     DAMAGING_ROUNDING
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 26
+      |(Definition)     : 
+      |(Reference)      : 
+     FTARGET_ACHIEVED
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 19
+      |(Definition)     : 
+      |(Reference)      : 
+     INFO_DFT
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 16
+      |(Definition)     : 
+      |(Reference)      : 
+     INVALID_INPUT
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 17
+      |(Definition)     : 
+      |(Reference)      : 
+     info_mod
+      |(Class and Type) : module name
+      |(Attributes)     : PRIVATE
+      |(Declaration)    : 10
+      |(Definition)     : 
+      |(Reference)      : 42
+     MAXFUN_REACHED
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 21
+      |(Definition)     : 
+      |(Reference)      : 
+     MAXTR_REACHED
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 22
+      |(Definition)     : 
+      |(Reference)      : 
+     NAN_INF_F
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 24
+      |(Definition)     : 
+      |(Reference)      : 
+     NAN_INF_X
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 23
+      |(Definition)     : 
+      |(Reference)      : 
+     NAN_MODEL
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 25
+      |(Definition)     : 
+      |(Reference)      : 
+     SMALL_TR_RADIUS
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 18
+      |(Definition)     : 
+      |(Reference)      : 
+     TRSUBP_FAILED
+      |(Class and Type) : variable name, none
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 20
+      |(Definition)     : 
+      |(Reference)      : 
+
+ Total information
+   Procedures       : 1
+   Total lines      : 42
+   Total statements : 27
+
