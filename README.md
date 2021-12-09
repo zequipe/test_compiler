@@ -51,5 +51,5 @@ You may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compil
 
 ## Contact
 
-Feel free to contact me if you would like to suggest a compiler or have questions about the tests.
+Feel free to contact me if you would like to suggest a compiler or have questions about the test.
 See my [homepage](https://www.zhangzk.net) for contact information.
