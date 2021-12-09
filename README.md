@@ -46,10 +46,10 @@ make 9test  # Test g95
 make ltest  # Test lf95
 ```
 
-You may need to edit the `Makefile` to fit your platform.
+You may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) to fit your platform.
 
 
 ## Contact
 
-Feel free to contact me if you would like to suggest a compiler or have questions about the results.
+Feel free to contact me if you would like to suggest a compiler or have questions about the tests.
 See my [homepage](https://www.zhangzk.net) for contact information.
