@@ -25,6 +25,7 @@ that develops optimization solvers.
 As of December 9, 2021, the first eight compilers pass the test.
 
 ## Compilers to be tested
+* [LFortran](https://lfortran.org)
 * [Cray Fortran compiler](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=OpenMP_Overview.html)
 * [IBM Fortran compiler](https://www.ibm.com/products/fortran-compiler-family)
 * [NEC Fortran compiler](https://www.nec.com/en/global/solutions/hpc/sx/tools.html)
