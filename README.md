@@ -32,6 +32,9 @@ As of December 9, 2021, the first eight compilers pass the test.
 
 ## Usage
 
+The compilers can be tested using the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) by the commands below. Of course, you need to have the tested compiler installed on your computer, and you may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) to fit your platform.
+
+
 ```bash
 make dtest  # Test AOCC flang
 make ftest  # Test classical flang
@@ -45,8 +48,6 @@ make atest  # Test af95
 make 9test  # Test g95
 make ltest  # Test lf95
 ```
-
-You may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) to fit your platform.
 
 
 ## Contact
