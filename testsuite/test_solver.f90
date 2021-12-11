@@ -20,6 +20,7 @@ use, non_intrinsic :: solver_unc_mod, only : solver_unc
 implicit none
 
 character(len=PNLEN) :: probname
+integer(IK) :: ir
 integer(IK) :: n
 procedure(FUN), pointer :: calfun
 real(RP) :: Delta0
@@ -30,36 +31,39 @@ type(problem_t) :: prob
 
 ! Construct the testing problem.
 probname = 'chebyqad'
-n = 10_IK
-call construct(prob, probname, n)
 
-! Read X0.
-call safealloc(x, prob % n) ! Not all compilers support automatic allocation yet, e.g., Absoft.
-x = noisy(prob % x0)
+do ir = 1, 3
+    n = (ir - 1_IK) * 10_IK + 1_IK
+    call construct(prob, probname, n)
 
-! Read objective/constraints.
-orig_calfun => prob % calfun
-calfun => noisy_calfun  ! Impose noise to the test problem
+    ! Read X0.
+    call safealloc(x, prob % n) ! Not all compilers support automatic allocation yet, e.g., Absoft.
+    x = noisy(prob % x0)
 
-! Read other data.
-Delta0 = prob % Delta0
+    ! Read objective/constraints.
+    orig_calfun => prob % calfun
+    calfun => noisy_calfun  ! Impose noise to the test problem
 
-! Call the solver.
-!call solver_unc(calfun, x, f, Delta0)  ! sunf95 cannot handle this
-call solver_unc(noisy_calfun, x, f, Delta0)
+    ! Read other data.
+    Delta0 = prob % Delta0
 
-! Try modifying PROB.
-prob % x0 = x
+    ! Call the solver.
+    !call solver_unc(calfun, x, f, Delta0)  ! sunf95 cannot handle this
+    call solver_unc(noisy_calfun, x, f, Delta0)
 
-print *, 'Unconstrained problem solved with X = ', prob % x0
-print *, ''
+    ! Try modifying PROB.
+    prob % x0 = x
 
-! Clean up.
-! Destruct the testing problem.
-call destruct(prob)
-deallocate (x)
-nullify (calfun)
-nullify (orig_calfun)
+    print *, 'Unconstrained problem solved with X = ', prob % x0
+    print *, ''
+
+    ! Clean up.
+    ! Destruct the testing problem.
+    call destruct(prob)
+    deallocate (x)
+    nullify (calfun)
+    nullify (orig_calfun)
+end do
 
 end subroutine test_solver_unc
 
@@ -76,6 +80,7 @@ use, non_intrinsic :: solver_con_mod, only : solver_con
 implicit none
 
 character(len=PNLEN) :: probname
+integer(IK) :: ir
 integer(IK) :: m
 procedure(FUNCON), pointer :: calcfc
 real(RP) :: Delta0
@@ -89,43 +94,45 @@ type(problem_t) :: prob
 
 probname = 'hexagon'
 
-! Construct the testing problem.
-call construct(prob, probname)
+do ir = 1, 3
+    ! Construct the testing problem.
+    call construct(prob, probname)
 
-! Read X0.
-m = prob % m
-call safealloc(x, prob % n) ! Not all compilers support automatic allocation yet, e.g., Absoft.
-x = noisy(prob % x0)
-call safealloc(Aineq, int(size(prob % Aineq, 1), IK), int(size(prob % Aineq, 2), IK))
-Aineq = prob % Aineq
-call safealloc(bineq, int(size(prob % bineq), IK))
-bineq = prob % bineq
+    ! Read X0.
+    m = prob % m
+    call safealloc(x, prob % n) ! Not all compilers support automatic allocation yet, e.g., Absoft.
+    x = noisy(prob % x0)
 
-! Read objective/constraints.
-orig_calcfc => prob % calcfc
-calcfc => noisy_calcfc  ! Impose noise to the test problem
+    ! Read objective/constraints.
+    orig_calcfc => prob % calcfc
+    calcfc => noisy_calcfc  ! Impose noise to the test problem
 
-! Read other data.
-Delta0 = prob % Delta0
+    ! Read other data.
+    call safealloc(Aineq, int(size(prob % Aineq, 1), IK), int(size(prob % Aineq, 2), IK))
+    Aineq = prob % Aineq
+    call safealloc(bineq, int(size(prob % bineq), IK))
+    bineq = prob % bineq
+    Delta0 = prob % Delta0
 
-! Call the solver.
-!call solver_con(calcfc, x, f, constr, m, Aineq, bineq, Delta0)  ! sunf95 cannot handle this
-call solver_con(noisy_calcfc, x, f, constr, m, Aineq, bineq, Delta0)
+    ! Call the solver.
+    !call solver_con(calcfc, x, f, constr, m, Aineq, bineq, Delta0)  ! sunf95 cannot handle this
+    call solver_con(noisy_calcfc, x, f, constr, m, Aineq, bineq, Delta0)
 
-! Try modifying PROB.
-prob % x0 = x
+    ! Try modifying PROB.
+    prob % x0 = x
 
-print *, 'Constrained problem solved with X = ', prob % x0
-print *, ''
+    print *, 'Constrained problem solved with X = ', prob % x0
+    print *, ''
 
-! Clean up.
-! Destruct the testing problem.
-call destruct(prob)
-deallocate (x)
-deallocate (Aineq)
-deallocate (bineq)
-nullify (calcfc)
-nullify (orig_calcfc)
+    ! Clean up.
+    ! Destruct the testing problem.
+    call destruct(prob)
+    deallocate (x)
+    deallocate (Aineq)
+    deallocate (bineq)
+    nullify (calcfc)
+    nullify (orig_calcfc)
+end do
 
 end subroutine test_solver_con
 

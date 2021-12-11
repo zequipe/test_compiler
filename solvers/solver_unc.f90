@@ -9,6 +9,7 @@ contains
 
 subroutine solver_unc(calfun, x, f, Delta0)
 use, non_intrinsic :: consts_mod, only : RP, IK
+use, non_intrinsic :: evaluate_mod, only : evalf
 use, non_intrinsic :: rand_mod, only : randn
 use, non_intrinsic :: pintrf_mod, only : FUN
 
@@ -32,13 +33,13 @@ real(RP) :: xopt(size(x))
 
 n = int(size(x), kind(n))
 
-call calfun(x, f)
+call evalf(calfun, x, f)
 xopt = x
 fopt = f
 
 do k = 1, 10
     x = x + randn(n) * Delta0 / real(k, RP)
-    call calfun(x, f)
+    call evalf(calfun, x, f)
     print *, 'Function evaluation No.', k
     print *, 'Function value', f
     if (f < fopt) then
