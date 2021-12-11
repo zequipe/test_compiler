@@ -37,9 +37,9 @@ test:
 	make stest
 	make vtest
 	make xtest
-	make 9test  # Fail
 	make atest  # Fail
 	make ltest  # Fail
+	make 9test  # Fail
 
 ####################################################################################################
 # Here are the compilers to test. We impose all the options that are actually used in the project.
