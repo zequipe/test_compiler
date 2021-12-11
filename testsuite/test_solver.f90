@@ -54,6 +54,7 @@ do ir = 1, 3
     ! Try modifying PROB.
     prob % x0 = x
 
+    ! Try outputting PROB.
     print *, 'Unconstrained problem solved with X = ', prob % x0
     print *, ''
 
@@ -121,6 +122,7 @@ do ir = 1, 3
     ! Try modifying PROB.
     prob % x0 = x
 
+    ! Try outputting PROB.
     print *, 'Constrained problem solved with X = ', prob % x0
     print *, ''
 
