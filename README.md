@@ -7,7 +7,7 @@ that develops optimization solvers.
 ## Platform tested
 
 * System: Ubuntu 20.04 (Linux 5.11.15-051115-generic)
-* CPU: Intel(R) Core(TM) i7-10610U
+* CPUs: Intel(R) Core(TM) i7-10610U, Intel(R) Core(TM) i7-4790 CPU
 
 
 ## Compilers tested
@@ -34,9 +34,9 @@ that develops optimization solvers.
 
 ## Usage
 
-The compilers can be tested using the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) 
-by the commands below. Of course, you need to have the tested compiler installed on your computer, 
-and you may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) 
+The compilers can be tested using the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile)
+by the commands below. Of course, you need to have the tested compiler installed on your computer,
+and you may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile)
 to fit your platform.
 
 ```bash
