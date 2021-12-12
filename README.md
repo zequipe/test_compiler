@@ -12,7 +12,7 @@ that develops optimization solvers.
 
 ## Compilers tested
 
-* :ballot_box_with_check: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 12.0.0
+* :ballot_box_with_check: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 13.0.0
 * :ballot_box_with_check: [Classical `flang`](https://github.com/flang-compiler/flang) 7.1.0
 * :ballot_box_with_check: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 9.3.0
 * :ballot_box_with_check: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.5.0
