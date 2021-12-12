@@ -3,10 +3,12 @@
 This is a set of tools for testing the applicability of Fortran compilers in my project
 that develops optimization solvers.
 
+
 ## Platform tested
 
 * System: Ubuntu 20.04 (Linux 5.11.15-051115-generic)
 * CPU: Intel(R) Core(TM) i7-10610U
+
 
 ## Compilers tested
 
@@ -22,18 +24,20 @@ that develops optimization solvers.
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b
 
-As of December 9, 2021, the first eight compilers pass the test.
-
 ## Compilers to be tested
+
 * [LFortran](https://lfortran.org)
 * [Cray Fortran compiler](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=OpenMP_Overview.html)
 * [IBM Fortran compiler](https://www.ibm.com/products/fortran-compiler-family)
 * [NEC Fortran compiler](https://www.nec.com/en/global/solutions/hpc/sx/tools.html)
 
+
 ## Usage
 
-The compilers can be tested using the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) by the commands below. Of course, you need to have the tested compiler installed on your computer, and you may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) to fit your platform.
-
+The compilers can be tested using the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) 
+by the commands below. Of course, you need to have the tested compiler installed on your computer, 
+and you may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_compiler/blob/master/Makefile) 
+to fit your platform.
 
 ```bash
 make dtest  # Test AOCC flang
