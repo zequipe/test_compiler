@@ -6,7 +6,7 @@ module noise_mod
 !
 ! Started: September 2021
 !
-! Last Modified: Thursday, December 09, 2021 PM03:37:05
+! Last Modified: Saturday, December 11, 2021 PM09:04:00
 !--------------------------------------------------------------------------------------------------!
 
 use, non_intrinsic :: pintrf_mod, only : FUN, FUNCON
@@ -46,9 +46,9 @@ implicit none
 
 ! Inputs
 real(RP), intent(in) :: x
-real(RP), optional, intent(in) :: noise_level
-character(len=*), optional, intent(in) :: noise_type
-integer, optional, intent(in) :: seed
+real(RP), intent(in), optional :: noise_level
+character(len=*), intent(in), optional :: noise_type
+integer, intent(in), optional :: seed
 
 ! Outputs
 real(RP) :: noisy_x
@@ -115,9 +115,9 @@ implicit none
 
 ! Inputs
 real(RP), intent(in) :: x(:)
-real(RP), optional, intent(in) :: noise_level
-character(len=*), optional, intent(in) :: noise_type
-integer, optional, intent(in) :: seed
+real(RP), intent(in), optional :: noise_level
+character(len=*), intent(in), optional :: noise_type
+integer, intent(in), optional :: seed
 
 ! Outputs
 real(RP) :: noisy_x(size(x))
@@ -184,8 +184,8 @@ implicit none
 ! Inputs
 real(RP), intent(in) :: x(:)
 real(RP), intent(in) :: f
-real(RP), optional, intent(in) :: noise_level
-character(len=*), optional, intent(in) :: noise_type
+real(RP), intent(in), optional :: noise_level
+character(len=*), intent(in), optional :: noise_type
 
 ! Outputs
 real(RP) :: noisy_f
@@ -260,8 +260,8 @@ implicit none
 ! Inputs
 real(RP), intent(in) :: x(:)
 real(RP), intent(in) :: f(:)
-real(RP), optional, intent(in) :: noise_level
-character(len=*), optional, intent(in) :: noise_type
+real(RP), intent(in), optional :: noise_level
+character(len=*), intent(in), optional :: noise_type
 
 ! Outputs
 real(RP) :: noisy_f(size(f))

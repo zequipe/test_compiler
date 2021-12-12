@@ -40,6 +40,7 @@ nr = 3_IK
 do iprob = 1, nprobs
     probname = probs(iprob)
     do ir = 1, nr
+        print *, 'Unconstrained problem No.', iprob, '        Random run No.', ir
         n = (ir - 1_IK) * 10_IK + 1_IK
         ! Construct the testing problem.
         call construct(prob, probname, n)
@@ -113,6 +114,7 @@ nr = 3_IK
 do iprob = 1, nprobs
     probname = probs(iprob)
     do ir = 1, nr
+        print *, 'Constrained problem No.', iprob, '        Random run No.', ir
         ! Construct the testing problem.
         call construct(prob, probname)
 
