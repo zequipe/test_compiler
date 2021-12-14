@@ -32,8 +32,10 @@ real(RP), allocatable, intent(out) :: constr(:)
 real(RP), intent(inout) :: x(:)
 
 ! Local variables
-integer(IK) :: k
+integer(IK) :: iin
+integer(IK) :: iout
 integer(IK) :: n
+integer(IK) :: nf
 real(RP) :: copt
 real(RP) :: cstrv
 real(RP) :: fopt
@@ -48,19 +50,23 @@ cstrv = maxval([cstrv, bineq - matprod(Aineq, x)])
 xopt = x
 fopt = f
 copt = cstrv
+nf = 1_IK
 
-do k = 1, 10
-    x = x + randn(n) * Delta0 / real(k, RP)
-    call evalfc(calcfc, x, f, constr, cstrv)
-    cstrv = maxval([0.0_RP, -constr, bineq - matprod(Aineq, x)])
-    print *, 'Function evaluation No.', k
-    print *, 'Function value', f
-    print *, 'constraint violation', cstrv
-    if (f < fopt .and. cstrv <= copt) then
-        xopt = x
-        fopt = f
-        copt = cstrv
-    end if
+do iout = 1, 5
+    do iin = 1, 5
+        nf = nf + 1_IK
+        x = x + randn(n) * Delta0 / real(nf, RP)
+        call evalfc(calcfc, x, f, constr, cstrv)
+        cstrv = maxval([0.0_RP, -constr, bineq - matprod(Aineq, x)])
+        print *, 'Function evaluation No.', nf
+        print *, 'Function value', f
+        print *, 'constraint violation', cstrv
+        if (f < fopt .and. cstrv <= copt) then
+            xopt = x
+            fopt = f
+            copt = cstrv
+        end if
+    end do
 end do
 
 x = xopt

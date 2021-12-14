@@ -26,8 +26,10 @@ real(RP), intent(out) :: f
 real(RP), intent(inout) :: x(:)
 
 ! Local variables
-integer(IK) :: k
+integer(IK) :: iin
+integer(IK) :: iout
 integer(IK) :: n
+integer(IK) :: nf
 real(RP) :: fopt
 real(RP) :: xopt(size(x))
 
@@ -36,16 +38,20 @@ n = int(size(x), kind(n))
 call evalf(calfun, x, f)
 xopt = x
 fopt = f
+nf = 1_IK
 
-do k = 1, 10
-    x = x + randn(n) * Delta0 / real(k, RP)
-    call evalf(calfun, x, f)
-    print *, 'Function evaluation No.', k
-    print *, 'Function value', f
-    if (f < fopt) then
-        xopt = x
-        fopt = f
-    end if
+do iout = 1, 5
+    do iin = 1, 5
+        nf = nf + 1_IK
+        x = x + randn(n) * Delta0 / real(nf, RP)
+        call evalf(calfun, x, f)
+        print *, 'Function evaluation No.', nf
+        print *, 'Function value', f
+        if (f < fopt) then
+            xopt = x
+            fopt = f
+        end if
+    end do
 end do
 
 x = xopt
