@@ -6,7 +6,7 @@ that develops optimization solvers.
 
 ## Platform tested
 
-* System: Ubuntu 20.04 (Linux 5.11.15-051115-generic)
+* System: Ubuntu 20.04
 * CPUs: Intel(R) Core(TM) i7-10610U, Intel(R) Core(TM) i7-4790 CPU
 
 
