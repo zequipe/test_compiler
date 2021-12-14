@@ -52,8 +52,8 @@ fopt = f
 copt = cstrv
 nf = 1_IK
 
-do iout = 1, 5
-    do iin = 1, 5
+do iout = 1, 3
+    do iin = 1, 3
         nf = nf + 1_IK
         x = x + randn(n) * Delta0 / real(nf, RP)
         call evalfc(calcfc, x, f, constr, cstrv)

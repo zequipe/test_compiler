@@ -67,9 +67,10 @@ ftest: FC = flang -std=f$(FSTD) -Mstandard -Wall -Wextra
 # GNU gfortran
 gtest: FC = gfortran -Wall -Wextra -pedantic -Wampersand -Wconversion  -Wuninitialized \
 	-Wmaybe-uninitialized -Wsurprising -Waliasing  -Wimplicit-interface -Wimplicit-procedure \
-	-Wintrinsics-std -Wunderflow -Wuse-without-only -Wrealloc-lhs -Wrealloc-lhs-all -Wdo-subscript \
+	-Wintrinsics-std -Wunderflow -Wuse-without-only -Wdo-subscript \
 	-Wunused-parameter -fPIC -fimplicit-none -fbacktrace -fcheck=all \
 	-finit-real=nan -finit-integer=-9999999
+	#-Wrealloc-lhs -Wrealloc-lhs-all
 
 # Intel ifort
 itest: FC = ifort -stand f$(FS) -warn all -check all -debug extended -fimplicit-none \
@@ -84,7 +85,7 @@ ltest: FC = lf95 --f95 -v95s -v95o -AU --ap --chkglobal --lst --sav --xref --in 
 ntest: FC = nagfor -colour=error:red,warn:magenta,info:cyan \
 	-I $(TESTSUITE) \
 	-f$(FSTD) -info -gline -u -C -C=alias -C=dangling -C=intovf -C=undefined -kind=unique \
-	-Warn=allocation -Warn=constant_coindexing -Warn=subnormal
+	-Warn=constant_coindexing -Warn=subnormal #-Warn=allocation
 
 # NVIDIA nvfortran (aka, pgfortran)
 vtest: FC = nvfortran -C -Mstandard -Minform=warn -Mbounds -Mchkstk -Mchkptr -Kieee -Ktrap=divz,ovf,inv

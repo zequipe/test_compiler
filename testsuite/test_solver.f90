@@ -13,7 +13,7 @@ subroutine test_solver_unc()
 use, non_intrinsic :: consts_mod, only : RP, IK
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calfun, orig_calfun
-use, non_intrinsic :: pintrf_mod, only : FUN
+!use, non_intrinsic :: pintrf_mod, only : FUN
 use, non_intrinsic :: prob_mod, only : PNLEN, problem_t, construct, destruct
 use, non_intrinsic :: solver_unc_mod, only : solver_unc
 
@@ -28,7 +28,7 @@ integer(IK) :: n
 integer(IK) :: nprobs
 integer(IK) :: nsols
 integer(IK) :: nr
-procedure(FUN), pointer :: calfun
+!procedure(FUN), pointer :: calfun
 real(RP) :: Delta0
 real(RP) :: f
 real(RP), allocatable :: x(:)
@@ -55,7 +55,7 @@ do isol = 1, nsols
 
             ! Read objective/constraints.
             orig_calfun => prob % calfun
-            calfun => noisy_calfun  ! Impose noise to the test problem
+            !calfun => noisy_calfun  ! Impose noise to the test problem
 
             ! Read other data.
             Delta0 = prob % Delta0
@@ -75,7 +75,7 @@ do isol = 1, nsols
             ! Destruct the testing problem.
             call destruct(prob)
             deallocate (x)
-            nullify (calfun)
+            !nullify (calfun)
             nullify (orig_calfun)
         end do
     end do
@@ -89,7 +89,7 @@ subroutine test_solver_con()
 use, non_intrinsic :: consts_mod, only : RP, IK
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calcfc, orig_calcfc
-use, non_intrinsic :: pintrf_mod, only : FUNCON
+!use, non_intrinsic :: pintrf_mod, only : FUNCON
 use, non_intrinsic :: prob_mod, only : PNLEN, problem_t, construct, destruct
 use, non_intrinsic :: solver_con_mod, only : solver_con
 
@@ -104,7 +104,7 @@ integer(IK) :: m
 integer(IK) :: nprobs
 integer(IK) :: nsols
 integer(IK) :: nr
-procedure(FUNCON), pointer :: calcfc
+!procedure(FUNCON), pointer :: calcfc
 real(RP) :: Delta0
 real(RP) :: f
 real(RP), allocatable :: Aineq(:, :)
@@ -134,7 +134,7 @@ do isol = 1, nsols
 
             ! Read objective/constraints.
             orig_calcfc => prob % calcfc
-            calcfc => noisy_calcfc  ! Impose noise to the test problem
+            !calcfc => noisy_calcfc  ! Impose noise to the test problem
 
             ! Read other data.
             call safealloc(Aineq, int(size(prob % Aineq, 1), IK), int(size(prob % Aineq, 2), IK))
@@ -160,7 +160,7 @@ do isol = 1, nsols
             deallocate (x)
             deallocate (Aineq)
             deallocate (bineq)
-            nullify (calcfc)
+            !nullify (calcfc)
             nullify (orig_calcfc)
         end do
     end do
