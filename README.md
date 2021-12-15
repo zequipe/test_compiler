@@ -20,7 +20,7 @@ that develops optimization solvers.
 * :ballot_box_with_check: [NAG `nagfor`](https://www.nag.com/content/nag-fortran-compiler) 7.0
 * :ballot_box_with_check: [NVIDIA `nvfortran`](https://docs.nvidia.com/hpc-sdk/index.html) 21.11
 * :ballot_box_with_check: [Oracle `sunf95`](https://www.oracle.com/tools/developerstudio/downloads/developer-studio-jsp.html) 12.6
-* :negative_squared_cross_mark: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022
+* :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (with patch 4)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b
 
