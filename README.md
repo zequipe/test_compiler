@@ -12,6 +12,7 @@ that develops optimization solvers.
 
 ## Compilers tested
 
+* :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (with patch 4)
 * :ballot_box_with_check: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 13.0.0
 * :ballot_box_with_check: [Classical `flang`](https://github.com/flang-compiler/flang) 7.1.0
 * :ballot_box_with_check: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 9.3.0
@@ -20,7 +21,6 @@ that develops optimization solvers.
 * :ballot_box_with_check: [NAG `nagfor`](https://www.nag.com/content/nag-fortran-compiler) 7.0
 * :ballot_box_with_check: [NVIDIA `nvfortran`](https://docs.nvidia.com/hpc-sdk/index.html) 21.11
 * :ballot_box_with_check: [Oracle `sunf95`](https://www.oracle.com/tools/developerstudio/downloads/developer-studio-jsp.html) 12.6
-* :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (with patch 4)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b
 
