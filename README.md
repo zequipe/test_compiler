@@ -12,7 +12,7 @@ See [Fortran Discourse](https://fortran-lang.discourse.group/t/availability-and-
 
 ## Compilers tested
 
-* :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (with patch 4)
+* :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (**patch 4**)
 * :ballot_box_with_check: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 13.0.0
 * :ballot_box_with_check: [Classical `flang`](https://github.com/flang-compiler/flang) 7.1.0
 * :ballot_box_with_check: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 9.3.0
