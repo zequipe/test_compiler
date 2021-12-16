@@ -108,7 +108,7 @@ xtest: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 	solver_unc.o solver_con.o \
 	param.o noise.o prob.o test_solver.o
 	@printf '\n$@ starts!\n\n'
-	$(FC) $(FFLAGS) -o $@ test.f90 *.o
+	$(FC) $(FFLAGS) -o $@ test.f90 *.o 2>&1
 	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
 	./$@
 	make clean
