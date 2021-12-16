@@ -2,13 +2,13 @@
 
 This is a set of tools for testing the applicability of Fortran compilers in my project
 that develops optimization solvers.
+See [Fortran Discourse](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project) for discussions.
 
 
 ## Platform tested
 
-* System: Ubuntu 20.04
-* CPUs: Intel(R) Core(TM) i7-10610U, Intel(R) Core(TM) i7-4790 CPU
-
+* Ubuntu 20.04, Intel(R) Core(TM) i7-10610U
+* Ubuntu 20.04, Intel(R) Core(TM) i7-4790 CPU
 
 ## Compilers tested
 

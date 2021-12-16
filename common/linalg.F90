@@ -21,7 +21,7 @@ module linalg_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Saturday, December 11, 2021 PM09:00:46
+! Last Modified: Thursday, December 16, 2021 PM04:24:38
 !--------------------------------------------------------------------------------------------------
 
 implicit none
@@ -2090,7 +2090,7 @@ end if
 if (size(x) == 0) then
     y = ZERO
 else if (p_loc <= 0) then
-    y = count(abs(x) > 0)
+    y = real(count(abs(x) > 0), kind(y))
 elseif (.not. all(is_finite(x))) then
     ! If X contains NaN, then Y is NaN. Otherwise, Y is Inf when X contains +/-Inf.
     y = sum(abs(x))
