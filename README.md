@@ -40,6 +40,7 @@ and you may need to edit the [`Makefile`](https://github.com/zaikunzhang/test_co
 to fit your platform.
 
 ```bash
+make atest  # Test af95
 make dtest  # Test AOCC flang
 make ftest  # Test classical flang
 make gtest  # Test gfortran
@@ -48,7 +49,6 @@ make xtest  # Test ifx
 make ntest  # Test nagfor
 make vtest  # Test nvfortran
 make stest  # Test sunf95
-make atest  # Test af95
 make 9test  # Test g95
 make ltest  # Test lf95
 ```

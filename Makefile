@@ -4,7 +4,7 @@
 #
 # Started: Dec 2021
 #
-# Last Modified: Dec 9, 2021
+# Last Modified: Dec 16, 2021
 
 .SILENT:
 
@@ -29,6 +29,7 @@ TESTSUITE = ./testsuite
 ####################################################################################################
 # All the tests
 test:
+	make atest
 	make dtest
 	make ftest
 	make gtest
@@ -37,7 +38,6 @@ test:
 	make stest
 	make vtest
 	make xtest
-	make atest  # Fail
 	make ltest  # Fail
 	make 9test  # Fail
 
