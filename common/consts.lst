@@ -1,5 +1,5 @@
 
- Lahey/Fujitsu Fortran 95 Compiler Release L8.10b  Thu Dec 16 16:43:11 2021
+ Lahey/Fujitsu Fortran 95 Compiler Release L8.10b  Sun Dec 19 14:45:42 2021
  Copyright (C) 1994-2008 Lahey Computer Systems.  All rights reserved.
  Copyright (C) 1998-2008 FUJITSU LIMITED. All rights reserved.
 
@@ -29,7 +29,7 @@
           8        !
           9        ! Started: July 2020
          10        !
-         11        ! Last Modified: Friday, December 03, 2021 AM09:45:32
+         11        ! Last Modified: Sunday, December 19, 2021 AM11:30:27
          12        !--------------------------------------------------------------------------------------------------!
          13        
          14        !--------------------------------------------------------------------------------------------------!
@@ -97,121 +97,141 @@
          76        public :: IK, IK_DFT
          77        public :: RP, DP, SP, QP, RP_DFT
          78        public :: ZERO, ONE, TWO, HALF, QUART, TEN, TENTH, PI
-         79        public :: EPS, HUGENUM, ALMOST_INFINITY, HUGEFUN, HUGECON
+         79        public :: REALMIN, EPS, HUGENUM, ALMOST_INFINITY, HUGEFUN, HUGECON
          80        public :: MSSGLEN, FNAMELEN
          81        public :: OUTUNIT
-         82        public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, IPRINT_DFT
-         83        public :: MAXFUN_DIM_DFT, MAXMEMORY
-         84        
+         82        public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, CTOL_DFT, IPRINT_DFT
+         83        public :: ETA1_DFT, ETA2_DFT, GAMMA1_DFT, GAMMA2_DFT
+         84        public :: MAXFUN_DIM_DFT, MAXMEMORY, MAXFILT_DFT
          85        
-         86        #if __DEBUGGING__ == 1
-         87        logical, parameter :: DEBUGGING = .true.
-         88        #else
-         89        logical, parameter :: DEBUGGING = .false.
-         90        #endif
-         91        
-         92        #if __USE_ISO_FORTRAN_ENV_INTREAL__ != 1
-         93        ! For gfortran, SELECTED_REAL_KIND(K) returns INT16 with K = 3--4, INT32 with k = 5--9, and INT64
-         94        ! with K = 10--18. SELECTED_REAL_KIND returns a negative value for an unsupported kind.
-         95        #if __INTEGER_KIND__ == 16
-         96        integer, parameter :: INT16 = selected_int_kind(4)
-         97        #elif __INTEGER_KIND__ == 32
-         98        integer, parameter :: INT32 = selected_int_kind(7)
-         99        #elif __INTEGER_KIND__ == 64
-        100        integer, parameter :: INT64 = selected_int_kind(14)
-        101        #endif
-        102        
-        103        integer, parameter :: REAL32 = kind(0.0)
-        104        integer, parameter :: REAL64 = kind(0.0D0)
-        105        integer, parameter :: REAL128 = selected_real_kind(p=30)
-        106        
-        107        #endif
-        108        integer, parameter :: IK_DFT = kind(0)  ! Default integer kind
-        109        integer, parameter :: RP_DFT = kind(0.0)  ! Default real kind
-        110        integer, parameter :: SP = REAL32  ! Kind for single precision
-        111        integer, parameter :: DP = REAL64  ! Kind for double precision
-        112        integer, parameter :: QP = REAL128  ! Kind for quadruple precision
-        113        
-        114        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        115        ! Define the integer kind to be used in the Fortran code.
-        116        #if __INTEGER_KIND__  == 0
-        117        integer, parameter :: IK = IK_DFT
-        118        #elif __INTEGER_KIND__ == 16
-        119        integer, parameter :: IK = INT16
-        120        #elif __INTEGER_KIND__ == 32
-        121        integer, parameter :: IK = INT32
-        122        #elif __INTEGER_KIND__ == 64
-        123        integer, parameter :: IK = INT64
-        124        #else
-        125        integer, parameter :: IK = IK_DFT
-        126        #endif
-        127        ! Define the real kind to be used in the Fortran code.
-        128        #if __REAL_PRECISION__ == 0
-        129        integer, parameter :: RP = RP_DFT
-        130        #elif __REAL_PRECISION__ == 32
-        131        integer, parameter :: RP = REAL32
-        132        #elif __REAL_PRECISION__ == 64
-        133        integer, parameter :: RP = REAL64
-        134        #elif __REAL_PRECISION__ == 128
-        135        integer, parameter :: RP = REAL128
-        136        #else
-        137        integer, parameter :: RP = REAL64  ! double precision
-        138        #endif
-        139        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        140        
-        141        real(RP), parameter :: ZERO = 0.0_RP
-        142        real(RP), parameter :: ONE = 1.0_RP
-        143        real(RP), parameter :: TWO = 2.0_RP
-        144        real(RP), parameter :: HALF = 0.5_RP
-        145        real(RP), parameter :: QUART = 0.25_RP
-        146        real(RP), parameter :: TEN = 10.0_RP
-        147        real(RP), parameter :: TENTH = 0.1_RP
-        148        real(RP), parameter :: PI = 3.141592653589793238462643383279502884_RP
-        149        ! We may set PI to acos(-1.0_RP), but some compilers may complain about `Elemental function as
-        150        ! initialization expression with non-integer or non-character arguments`.
-        151        
-        152        real(RP), parameter :: EPS = epsilon(ZERO)
-        153        real(RP), parameter :: HUGENUM = huge(ZERO)
-        154        real(RP), parameter :: ALMOST_INFINITY = HALF * HUGENUM
-        155        
-        156        integer, parameter :: MAXE = maxexponent(ZERO)
-        157        real(RP), parameter :: HUGEFUN = TWO**min(100, MAXE / 2)
-        158        real(RP), parameter :: HUGECON = HUGEFUN
-        159        
-        160        ! The maximal length of messages; used in output.f90 and fmexapi.F90
-        161        integer, parameter :: MSSGLEN = 1000
+         86        
+         87        #if __DEBUGGING__ == 1
+         88        logical, parameter :: DEBUGGING = .true.
+         89        #else
+         90        logical, parameter :: DEBUGGING = .false.
+         91        #endif
+         92        
+         93        #if __USE_ISO_FORTRAN_ENV_INTREAL__ != 1
+         94        ! For gfortran, SELECTED_REAL_KIND(K) returns INT16 with K = 3--4, INT32 with k = 5--9, and INT64
+         95        ! with K = 10--18. SELECTED_REAL_KIND returns a negative value for an unsupported kind.
+         96        #if __INTEGER_KIND__ == 16
+         97        integer, parameter :: INT16 = selected_int_kind(4)
+         98        #elif __INTEGER_KIND__ == 32
+         99        integer, parameter :: INT32 = selected_int_kind(7)
+        100        #elif __INTEGER_KIND__ == 64
+        101        integer, parameter :: INT64 = selected_int_kind(14)
+        102        #endif
+        103        
+        104        integer, parameter :: REAL32 = kind(0.0)
+        105        integer, parameter :: REAL64 = kind(0.0D0)
+        106        integer, parameter :: REAL128 = selected_real_kind(p=30)
+        107        
+        108        #endif
+        109        integer, parameter :: IK_DFT = kind(0)  ! Default integer kind
+        110        integer, parameter :: RP_DFT = kind(0.0)  ! Default real kind
+        111        integer, parameter :: SP = REAL32  ! Kind for single precision
+        112        integer, parameter :: DP = REAL64  ! Kind for double precision
+        113        integer, parameter :: QP = REAL128  ! Kind for quadruple precision
+        114        
+        115        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        116        ! Define the integer kind to be used in the Fortran code.
+        117        #if __INTEGER_KIND__  == 0
+        118        integer, parameter :: IK = IK_DFT
+        119        #elif __INTEGER_KIND__ == 16
+        120        integer, parameter :: IK = INT16
+        121        #elif __INTEGER_KIND__ == 32
+        122        integer, parameter :: IK = INT32
+        123        #elif __INTEGER_KIND__ == 64
+        124        integer, parameter :: IK = INT64
+        125        #else
+        126        integer, parameter :: IK = IK_DFT
+        127        #endif
+        128        ! Define the real kind to be used in the Fortran code.
+        129        #if __REAL_PRECISION__ == 0
+        130        integer, parameter :: RP = RP_DFT
+        131        #elif __REAL_PRECISION__ == 32
+        132        integer, parameter :: RP = REAL32
+        133        #elif __REAL_PRECISION__ == 64
+        134        integer, parameter :: RP = REAL64
+        135        #elif __REAL_PRECISION__ == 128
+        136        integer, parameter :: RP = REAL128
+        137        #else
+        138        integer, parameter :: RP = REAL64  ! double precision
+        139        #endif
+        140        !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        141        
+        142        real(RP), parameter :: ZERO = 0.0_RP
+        143        real(RP), parameter :: ONE = 1.0_RP
+        144        real(RP), parameter :: TWO = 2.0_RP
+        145        real(RP), parameter :: HALF = 0.5_RP
+        146        real(RP), parameter :: QUART = 0.25_RP
+        147        real(RP), parameter :: TEN = 10.0_RP
+        148        real(RP), parameter :: TENTH = 0.1_RP
+        149        real(RP), parameter :: PI = 3.141592653589793238462643383279502884_RP
+        150        ! We may set PI to acos(-1.0_RP), but some compilers may complain about `Elemental function as
+        151        ! initialization expression with non-integer or non-character arguments`.
+        152        
+        153        ! REALMIN is the smallest positive normalized floating-point number, which is 2^(-1022), ~2.225E-308
+        154        ! for IEEE double precision. Taking double precision as an example, REALMIN in other languages:
+        155        ! MATLAB: realmin or realmin('double')
+        156        ! Python: numpy.finfo(numpy.float64).tiny
+        157        ! Julia: realmin(Float64)
+        158        real(RP), parameter :: REALMIN = tiny(ZERO)
+        159        real(RP), parameter :: EPS = epsilon(ZERO)  ! Machine epsilon
+        160        real(RP), parameter :: HUGENUM = huge(ZERO)
+        161        real(RP), parameter :: ALMOST_INFINITY = HALF * HUGENUM
         162        
-        163        ! The maximal length of output file names; used in output.f90
-        164        integer, parameter :: FNAMELEN = 1000
-        165        
-        166        ! Output unit, can be any integer between 9 and 99; used in output.f90
-        167        integer, parameter :: OUTUNIT = 9
-        168        
-        169        ! Some default values
-        170        real(RP), parameter :: RHOBEG_DFT = ONE
-        171        real(RP), parameter :: RHOEND_DFT = 1.0E-6_RP
-        172        real(RP), parameter :: FTARGET_DFT = -HUGENUM
-        173        integer(IK), parameter :: IPRINT_DFT = 0_IK
-        174        integer(IK), parameter :: MAXFUN_DIM_DFT = 500_IK
+        163        integer, parameter :: MAXE = maxexponent(ZERO)
+        164        real(RP), parameter :: HUGEFUN = TWO**min(100, MAXE / 2)
+        165        real(RP), parameter :: HUGECON = HUGEFUN
+        166        
+        167        ! The maximal length of messages; used in output.f90 and fmexapi.F90
+        168        integer, parameter :: MSSGLEN = 1000
+        169        
+        170        ! The maximal length of output file names; used in output.f90
+        171        integer, parameter :: FNAMELEN = 1000
+        172        
+        173        ! Output unit, can be any integer between 9 and 99; used in output.f90
+        174        integer, parameter :: OUTUNIT = 9
         175        
-        176        ! Maximal amount of memory (Byte) allowed for XHIST, FHIST, CONHIST, CHIST
-        177        integer, parameter :: MXMMY = 21 * (10**8)   ! 21*10**8 = 2G.
-        178        ! Make sure that MAXMEMORY does not exceed HUGE(0) to avoid overflow and memory errors.
-        179        integer, parameter :: MAXMEMORY = min(MXMMY, huge(0))
-        180        
-        181        
-        182        end module consts_mod
+        176        ! Some default values
+        177        real(RP), parameter :: RHOBEG_DFT = ONE
+        178        real(RP), parameter :: RHOEND_DFT = 1.0E-6_RP
+        179        real(RP), parameter :: FTARGET_DFT = -HUGENUM
+        180        real(RP), parameter :: CTOL_DFT = EPS
+        181        real(RP), parameter :: ETA1_DFT = TENTH
+        182        real(RP), parameter :: ETA2_DFT = 0.7_RP
+        183        real(RP), parameter :: GAMMA1_DFT = HALF
+        184        real(RP), parameter :: GAMMA2_DFT = TWO
+        185        integer(IK), parameter :: IPRINT_DFT = 0_IK
+        186        integer(IK), parameter :: MAXFUN_DIM_DFT = 500_IK
+        187        
+        188        ! Maximal amount of memory (Byte) allowed for XHIST, FHIST, CONHIST, CHIST, and the filters.
+        189        integer, parameter :: MXMMY = 21 * (10**8)   ! 21*10**8 = 2G.
+        190        ! Make sure that MAXMEMORY does not exceed HUGE(0) to avoid overflow and memory errors.
+        191        integer, parameter :: MAXMEMORY = min(MXMMY, huge(0))
+        192        
+        193        ! Maximal length of the filter used in constrained solvers.
+        194        integer, parameter :: MAXFILT_DFT = 2000_IK
+        195        
+        196        end module consts_mod
 
  Procedure information
-   Lines      : 448
-   Statements : 49
+   Lines      : 462
+   Statements : 56
 
  Scoping unit of module : consts_mod
    Attribute and Cross reference of name
      ALMOST_INFINITY
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 79  154
+      |(Declaration)    : 79  161
+      |(Definition)     : 
+      |(Reference)      : 
+     CTOL_DFT
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 82  180
       |(Definition)     : 
       |(Reference)      : 
      consts_mod
@@ -219,23 +239,35 @@
       |(Attributes)     : PRIVATE
       |(Declaration)    : 3
       |(Definition)     : 
-      |(Reference)      : 182
+      |(Reference)      : 196
      DEBUGGING
       |(Class and Type) : named constant, LOGICAL(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 75  87
+      |(Declaration)    : 75  88
       |(Definition)     : 
       |(Reference)      : 
      DP
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 77  111
+      |(Declaration)    : 77  112
       |(Definition)     : 
       |(Reference)      : 
      EPS
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 79  152
+      |(Declaration)    : 79  159
+      |(Definition)     : 
+      |(Reference)      : 180
+     ETA1_DFT
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 83  181
+      |(Definition)     : 
+      |(Reference)      : 
+     ETA2_DFT
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 83  182
       |(Definition)     : 
       |(Reference)      : 
      epsilon
@@ -243,71 +275,77 @@
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 152
+      |(Reference)      : 159
      FNAMELEN
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 80  164
+      |(Declaration)    : 80  171
       |(Definition)     : 
       |(Reference)      : 
      FTARGET_DFT
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 82  172
+      |(Declaration)    : 82  179
+      |(Definition)     : 
+      |(Reference)      : 
+     GAMMA1_DFT
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 83  183
+      |(Definition)     : 
+      |(Reference)      : 
+     GAMMA2_DFT
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 83  184
       |(Definition)     : 
       |(Reference)      : 
      HALF
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  144
+      |(Declaration)    : 78  145
       |(Definition)     : 
-      |(Reference)      : 154
+      |(Reference)      : 161  183
      HUGECON
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 79  158
+      |(Declaration)    : 79  165
       |(Definition)     : 
       |(Reference)      : 
      HUGEFUN
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 79  157
+      |(Declaration)    : 79  164
       |(Definition)     : 
-      |(Reference)      : 158
+      |(Reference)      : 165
      HUGENUM
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 79  153
+      |(Declaration)    : 79  160
       |(Definition)     : 
-      |(Reference)      : 154  172
+      |(Reference)      : 161  179
      huge
       |(Class and Type) : intrinsic function name, none
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 153  179
+      |(Reference)      : 160  191
      IK
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 76  119
+      |(Declaration)    : 76  118
       |(Definition)     : 
-      |(Reference)      : 173  173  174  174
+      |(Reference)      : 185  185  186  186  194
      IK_DFT
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 76  108
+      |(Declaration)    : 76  109
       |(Definition)     : 
-      |(Reference)      : 
-     INT16
-      |(Class and Type) : named constant, INTEGER(4)
-      |(Attributes)     : PRIVATE
-      |(Declaration)    : 96
-      |(Definition)     : 
-      |(Reference)      : 119
+      |(Reference)      : 118
      IPRINT_DFT
-      |(Class and Type) : named constant, INTEGER(2)
+      |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 82  173
+      |(Declaration)    : 82  185
       |(Definition)     : 
       |(Reference)      : 
      kind
@@ -315,65 +353,71 @@
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 103  104  108  109
+      |(Reference)      : 104  105  109  110
      MAXE
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PRIVATE
-      |(Declaration)    : 156
+      |(Declaration)    : 163
       |(Definition)     : 
-      |(Reference)      : 157
-     MAXFUN_DIM_DFT
-      |(Class and Type) : named constant, INTEGER(2)
+      |(Reference)      : 164
+     MAXFILT_DFT
+      |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 83  174
+      |(Declaration)    : 84  194
+      |(Definition)     : 
+      |(Reference)      : 
+     MAXFUN_DIM_DFT
+      |(Class and Type) : named constant, INTEGER(4)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 84  186
       |(Definition)     : 
       |(Reference)      : 
      MAXMEMORY
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 83  179
+      |(Declaration)    : 84  191
       |(Definition)     : 
       |(Reference)      : 
      MSSGLEN
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 80  161
+      |(Declaration)    : 80  168
       |(Definition)     : 
       |(Reference)      : 
      MXMMY
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PRIVATE
-      |(Declaration)    : 177
+      |(Declaration)    : 189
       |(Definition)     : 
-      |(Reference)      : 179
+      |(Reference)      : 191
      maxexponent
       |(Class and Type) : intrinsic function name, none
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 156
+      |(Reference)      : 163
      min
       |(Class and Type) : intrinsic function name, none
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 157  179
+      |(Reference)      : 164  191
      ONE
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  142
+      |(Declaration)    : 78  143
       |(Definition)     : 
-      |(Reference)      : 170
+      |(Reference)      : 177
      OUTUNIT
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 81  167
+      |(Declaration)    : 81  174
       |(Definition)     : 
       |(Reference)      : 
      PI
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  148
+      |(Declaration)    : 78  149
       |(Definition)     : 
       |(Reference)      : 
      p
@@ -381,106 +425,112 @@
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 105
+      |(Reference)      : 106
      QP
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 77  112
+      |(Declaration)    : 77  113
       |(Definition)     : 
       |(Reference)      : 
      QUART
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  145
+      |(Declaration)    : 78  146
       |(Definition)     : 
       |(Reference)      : 
      REAL128
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PRIVATE
-      |(Declaration)    : 105
+      |(Declaration)    : 106
       |(Definition)     : 
-      |(Reference)      : 112
+      |(Reference)      : 113
      REAL32
-      |(Class and Type) : named constant, INTEGER(4)
-      |(Attributes)     : PRIVATE
-      |(Declaration)    : 103
-      |(Definition)     : 
-      |(Reference)      : 110  131
-     REAL64
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PRIVATE
       |(Declaration)    : 104
       |(Definition)     : 
       |(Reference)      : 111
-     RHOBEG_DFT
-      |(Class and Type) : named constant, REAL(4)
+     REAL64
+      |(Class and Type) : named constant, INTEGER(4)
+      |(Attributes)     : PRIVATE
+      |(Declaration)    : 105
+      |(Definition)     : 
+      |(Reference)      : 112  134
+     REALMIN
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 82  170
+      |(Declaration)    : 79  158
+      |(Definition)     : 
+      |(Reference)      : 
+     RHOBEG_DFT
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 82  177
       |(Definition)     : 
       |(Reference)      : 
      RHOEND_DFT
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 82  171
+      |(Declaration)    : 82  178
       |(Definition)     : 
       |(Reference)      : 
      RP
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 77  131
+      |(Declaration)    : 77  134
       |(Definition)     : 
-      |(Reference)      : 141  141  142  142  143  143  144  144  145  145  146  146  147  147  148  148  152  153  154  157  158  170  171  171  172
+      |(Reference)      : 142  142  143  143  144  144  145  145  146  146  147  147  148  148  149  149  158  159  160  161  164  165  177  178  178  179  180  181  182  182  183  184
      RP_DFT
-      |(Class and Type) : named constant, INTEGER(4)
-      |(Attributes)     : PUBLIC
-      |(Declaration)    : 77  109
-      |(Definition)     : 
-      |(Reference)      : 
-     SP
       |(Class and Type) : named constant, INTEGER(4)
       |(Attributes)     : PUBLIC
       |(Declaration)    : 77  110
       |(Definition)     : 
       |(Reference)      : 
-     selected_int_kind
-      |(Class and Type) : intrinsic function name, none
-      |(Attributes)     : 
-      |(Declaration)    : 
+     SP
+      |(Class and Type) : named constant, INTEGER(4)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 77  111
       |(Definition)     : 
-      |(Reference)      : 96
+      |(Reference)      : 
      selected_real_kind
       |(Class and Type) : intrinsic function name, none
       |(Attributes)     : 
       |(Declaration)    : 
       |(Definition)     : 
-      |(Reference)      : 105
+      |(Reference)      : 106
      TEN
-      |(Class and Type) : named constant, REAL(4)
-      |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  146
-      |(Definition)     : 
-      |(Reference)      : 
-     TENTH
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
       |(Declaration)    : 78  147
       |(Definition)     : 
       |(Reference)      : 
+     TENTH
+      |(Class and Type) : named constant, REAL(8)
+      |(Attributes)     : PUBLIC
+      |(Declaration)    : 78  148
+      |(Definition)     : 
+      |(Reference)      : 181
      TWO
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  143
+      |(Declaration)    : 78  144
       |(Definition)     : 
-      |(Reference)      : 157
+      |(Reference)      : 164  184
+     tiny
+      |(Class and Type) : intrinsic function name, none
+      |(Attributes)     : 
+      |(Declaration)    : 
+      |(Definition)     : 
+      |(Reference)      : 158
      ZERO
-      |(Class and Type) : named constant, REAL(4)
+      |(Class and Type) : named constant, REAL(8)
       |(Attributes)     : PUBLIC
-      |(Declaration)    : 78  141
+      |(Declaration)    : 78  142
       |(Definition)     : 
-      |(Reference)      : 152  153  156
+      |(Reference)      : 158  159  160  163
 
  Total information
    Procedures       : 1
-   Total lines      : 448
-   Total statements : 49
+   Total lines      : 462
+   Total statements : 56
 
