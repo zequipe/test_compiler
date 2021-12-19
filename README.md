@@ -2,8 +2,6 @@
 
 This is a set of tools for testing the applicability of Fortran compilers in my project
 that develops optimization solvers.
-See [Fortran Discourse](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project) for discussions.
-
 
 ## Platform tested
 
@@ -52,6 +50,11 @@ make ntest  # Test nagfor
 make vtest  # Test nvfortran
 make stest  # Test sunf95
 ```
+
+## Discussions on [Fortran Discourse](https://fortran-lang.discourse.group)
+
+* [Availability and applicability of Fortran compilers for a project](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project)
+* [`Implied do` and array constructor: Strange behavior of `flang` and related compilers](https://fortran-lang.discourse.group/t/implied-do-and-array-constructor-strange-behavior-of-flang-and-related-compilers)
 
 
 ## Contact

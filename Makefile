@@ -59,10 +59,10 @@ atest: FC = $(AFORT) -m1 -en -et -Rb -Rc -Rs -Rp
 
 # AMD AOCC Flang
 AFLANG := $(shell find /opt/AMD \( -type l -o -type f \) -executable -name flang -print -quit 2> /dev/null || echo AFLANG_NOT_FOUND)
-dtest: FC = $(AFLANG) -std=f$(FSTD) -Mstandard -Wall -Wextra -ffp-exception-behavior=strict
+dtest: FC = $(AFLANG) -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -ffp-exception-behavior=strict -Kieee
 
 # LLVM Flang
-ftest: FC = flang -std=f$(FSTD) -Mstandard -Wall -Wextra
+ftest: FC = flang -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee
 
 # GNU gfortran
 gtest: FC = gfortran -Wall -Wextra -pedantic -Wampersand -Wconversion  -Wuninitialized \
@@ -88,7 +88,7 @@ ntest: FC = nagfor -colour=error:red,warn:magenta,info:cyan \
 	-Warn=constant_coindexing -Warn=subnormal #-Warn=allocation
 
 # NVIDIA nvfortran (aka, pgfortran)
-vtest: FC = nvfortran -C -Mstandard -Minform=warn -Mbounds -Mchkstk -Mchkptr -Kieee -Ktrap=divz,ovf,inv
+vtest: FC = nvfortran -C -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkstk -Mchkptr -Kieee -Ktrap=divz,ovf,inv
 
 # Oracle sunf95
 stest: FC = sunf95 -w3 -u -U -ansi -xcheck=%all -C -fnonstd -ftrap=overflow,division,invalid
