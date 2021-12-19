@@ -21,7 +21,7 @@ module linalg_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Thursday, December 16, 2021 PM04:24:38
+! Last Modified: Saturday, December 18, 2021 PM10:42:08
 !--------------------------------------------------------------------------------------------------
 
 implicit none
@@ -568,7 +568,7 @@ if (DEBUGGING) then
     call assert(size(B, 1) == n .and. size(B, 2) == n, 'SIZE(B) == [N, N]', srname)
     call assert(istril(B) .or. .not. istril(A), 'If A is lower triangular, then so is B', srname)
     call assert(istriu(B) .or. .not. istriu(A), 'If A is upper triangular, then so is B', srname)
-    tol = max(1.0E-10_RP, min(1.0E-3_RP, 1.0E2_RP * EPS * real(n, RP)))
+    tol = max(1.0E-10_RP, min(1.0E-3_RP, 1.0E2_RP * EPS * real(n + 1_IK, RP)))
     call assert(isinv(A, B, tol), 'B = A^{-1}', srname)
 end if
 
@@ -709,7 +709,7 @@ end if
 
 ! Postconditions
 if (DEBUGGING) then
-    tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E4_RP * EPS * real(max(m, n), RP)))
+    tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E4_RP * EPS * real(max(m, n) + 1_IK, RP)))
     call assert(isorth(Q_loc, tol), 'The columns of Q are orthonormal', srname)
     call assert(istril(T, tol), 'R is upper triangular', srname)
     if (pivote) then
@@ -778,7 +778,7 @@ if (DEBUGGING) then
     if (present(Q)) then
         call assert(size(Q, 1) == m .and. (size(Q, 2) == m .or. size(Q, 2) == min(m, n)), &
             & 'SIZE(Q) == [M, N] .or. SIZE(Q) == [M, MIN(M, N)]', srname)
-        tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E6_RP * EPS * real(n, RP)))
+        tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E6_RP * EPS * real(max(m, n) + 1_IK, RP)))
         call assert(isorth(Q, tol), 'The columns of Q are orthogonal', srname)
     end if
     if (present(Rdiag)) then
@@ -1130,7 +1130,7 @@ else if (.not. is_finite(x2)) then
 else
     x = abs([x1, x2])
     x = [minval(x), maxval(x)]
-    !if (x(1) > sqrt(tiny(0.0_RP)) .and. x(2) < sqrt(HUGENUM / 2.1_RP)) then
+    !if (x(1) > sqrt(REALMIN) .and. x(2) < sqrt(HUGENUM / 2.1_RP)) then
     !    r = sqrt(sum(x**2))
     !else
     !    r = x(2) * sqrt((x(1) / x(2))**2 + ONE)
@@ -1158,7 +1158,7 @@ end function hypotenuse
 
 function planerot(x) result(G)
 ! As in MATLAB, PLANEROT(X) returns a 2x2 Givens matrix G for X in R^2 so that Y = G*X has Y(2) = 0.
-use, non_intrinsic :: consts_mod, only : RP, ZERO, ONE, EPS, HUGENUM, DEBUGGING
+use, non_intrinsic :: consts_mod, only : RP, ZERO, ONE, REALMIN, EPS, HUGENUM, DEBUGGING
 use, non_intrinsic :: debug_mod, only : assert
 use, non_intrinsic :: infnan_mod, only : is_finite, is_nan, is_inf
 implicit none
@@ -1217,9 +1217,9 @@ else
     ! The following is a stable and continuous implementation of the Givens rotation. It follows
     ! Bindel, D., Demmel, J., Kahan, W., & Marques, O. (2002). On computing Givens rotations reliably
     ! and efficiently. ACM Transactions on Mathematical Software (TOMS), 28(2), 206-238.
-    ! 1. Modern compilers compute SQRT(TINY(0.0_RP)) and SQRT(HUGENUM/2.1) at compilation time.
+    ! 1. Modern compilers compute SQRT(REALMIN) and SQRT(HUGENUM/2.1) at compilation time.
     ! 2. The direct calculation without involving T and U seems to work better; use it if possible.
-    if (minval(abs(x)) > sqrt(tiny(0.0_RP)) .and. maxval(abs(x)) < sqrt(HUGENUM / 2.1_RP)) then
+    if (minval(abs(x)) > sqrt(REALMIN) .and. maxval(abs(x)) < sqrt(HUGENUM / 2.1_RP)) then
         ! Do NOT use HYPOTENUSE here; the best implementation for one may not be the best for the other
         r = sqrt(sum(x**2))
         c = x(1) / r
@@ -1251,8 +1251,8 @@ if (DEBUGGING) then
         & 'G(1,1) == G(2,2), G(1,2) = -G(2,1)', srname)
     tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E6_RP * EPS))
     call assert(isorth(G, tol), 'G is orthonormal', srname)
-    r = sqrt(sum(x**2))
-    if (is_finite(r)) then
+    if (maxval(abs(x)) < sqrt(HUGENUM / 2.1_RP)) then
+        r = sqrt(sum(x**2))
         call assert(norm(matprod(G, x) - [r, ZERO]) <= max(tol, tol * r), 'G*x = [|x|, 0]', srname)
     end if
 end if
@@ -1306,7 +1306,7 @@ m = int(size(Q, 2), kind(m))
 if (DEBUGGING) then
     call assert(n >= 0 .and. n <= m, '0 <= N <= M', srname)
     call assert(size(Q, 1) == m .and. size(Q, 2) == m, 'SIZE(Q) == [m, m]', srname)
-    tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E6_RP * EPS * real(n, RP)))
+    tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E6_RP * EPS * real(m + 1_IK, RP)))
     call assert(isorth(Q, tol), 'The columns of Q are orthonormal', srname)  !! Costly!
 end if
 
@@ -1358,7 +1358,9 @@ if (DEBUGGING) then
     call assert(n >= nsav .and. n <= min(nsav + 1_IK, m), 'NSAV <= N <= min(NSAV + 1, M)', srname)
     call assert(size(Q, 1) == m .and. size(Q, 2) == m, 'SIZE(Q) == [m, m]', srname)
     call assert(isorth(Q, tol), 'The columns of Q are orthonormal', srname)  !! Costly!
-    call assert(norm(matprod(c, Q(:, n + 1:m))) <= max(tol, tol * norm(c)), 'C^T*Q(:, N+1:M)=0', srname)
+    if (n < m) then
+        call assert(norm(matprod(c, Q(:, n + 1:m))) <= max(tol, tol * norm(c)), 'C^T*Q(:, N+1:M)=0', srname)
+    end if
     ! The following test may fail.
     if (n >= 1) then
         call assert(abs(inprod(c, Q(:, n)) - Rdiag(n)) <= max(tol, tol * inprod(abs(c), abs(Q(:, n)))), &
@@ -1403,9 +1405,10 @@ n = int(size(A, 2), kind(n))
 
 ! Postconditions
 if (DEBUGGING) then
+    call assert(n >= 0 .and. n <= m, '0 <= N <= M', srname)
     call assert(i >= 1 .and. i <= n, '1 <= i <= N', srname)
     call assert(size(Q, 1) == m .and. size(Q, 2) == m, 'SIZE(Q) == [m, m]', srname)
-    tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E8_RP * EPS * real(n, RP)))
+    tol = max(1.0E-10_RP, min(1.0E-1_RP, 1.0E8_RP * EPS * real(m + 1_IK, RP)))
     call assert(isorth(Q, tol), 'The columns of Q are orthonormal', srname)  !! Costly!
 end if
 
@@ -2105,7 +2108,7 @@ else
         scaling = maxval(abs(x))  ! The scaling seems to reduce the rounding error.
         y = scaling * sqrt(sum((x / scaling)**2))
     else
-        !scaling = max(tiny(1.0_RP), sqrt(maxval(abs(x)) * minval(abs(x), mask=(abs(x) > ZERO))))
+        !scaling = max(REALMIN, sqrt(maxval(abs(x)) * minval(abs(x), mask=(abs(x) > ZERO))))
         scaling = maxval(abs(x))  ! The scaling seems to reduce the rounding error.
         y = scaling * sum(abs(x / scaling)**p_loc)**(ONE / p_loc)
     end if

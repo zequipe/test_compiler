@@ -13,7 +13,6 @@ subroutine test_solver_unc()
 use, non_intrinsic :: consts_mod, only : RP, IK
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calfun, orig_calfun
-!use, non_intrinsic :: pintrf_mod, only : FUN
 use, non_intrinsic :: prob_mod, only : PNLEN, problem_t, construct, destruct
 use, non_intrinsic :: solver_unc_mod, only : solver_unc
 
@@ -28,7 +27,6 @@ integer(IK) :: n
 integer(IK) :: nprobs
 integer(IK) :: nsols
 integer(IK) :: nr
-!procedure(FUN), pointer :: calfun
 real(RP) :: Delta0
 real(RP) :: f
 real(RP), allocatable :: x(:)
@@ -89,7 +87,6 @@ subroutine test_solver_con()
 use, non_intrinsic :: consts_mod, only : RP, IK
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calcfc, orig_calcfc
-!use, non_intrinsic :: pintrf_mod, only : FUNCON
 use, non_intrinsic :: prob_mod, only : PNLEN, problem_t, construct, destruct
 use, non_intrinsic :: solver_con_mod, only : solver_con
 
@@ -104,7 +101,6 @@ integer(IK) :: m
 integer(IK) :: nprobs
 integer(IK) :: nsols
 integer(IK) :: nr
-!procedure(FUNCON), pointer :: calcfc
 real(RP) :: Delta0
 real(RP) :: f
 real(RP), allocatable :: Aineq(:, :)

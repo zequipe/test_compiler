@@ -8,7 +8,7 @@ module consts_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Friday, December 03, 2021 AM09:45:32
+! Last Modified: Sunday, December 19, 2021 AM11:30:27
 !--------------------------------------------------------------------------------------------------!
 
 !--------------------------------------------------------------------------------------------------!
@@ -76,11 +76,12 @@ public :: DEBUGGING
 public :: IK, IK_DFT
 public :: RP, DP, SP, QP, RP_DFT
 public :: ZERO, ONE, TWO, HALF, QUART, TEN, TENTH, PI
-public :: EPS, HUGENUM, ALMOST_INFINITY, HUGEFUN, HUGECON
+public :: REALMIN, EPS, HUGENUM, ALMOST_INFINITY, HUGEFUN, HUGECON
 public :: MSSGLEN, FNAMELEN
 public :: OUTUNIT
-public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, IPRINT_DFT
-public :: MAXFUN_DIM_DFT, MAXMEMORY
+public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, CTOL_DFT, IPRINT_DFT
+public :: ETA1_DFT, ETA2_DFT, GAMMA1_DFT, GAMMA2_DFT
+public :: MAXFUN_DIM_DFT, MAXMEMORY, MAXFILT_DFT
 
 
 #if __DEBUGGING__ == 1
@@ -149,7 +150,13 @@ real(RP), parameter :: PI = 3.141592653589793238462643383279502884_RP
 ! We may set PI to acos(-1.0_RP), but some compilers may complain about `Elemental function as
 ! initialization expression with non-integer or non-character arguments`.
 
-real(RP), parameter :: EPS = epsilon(ZERO)
+! REALMIN is the smallest positive normalized floating-point number, which is 2^(-1022), ~2.225E-308
+! for IEEE double precision. Taking double precision as an example, REALMIN in other languages:
+! MATLAB: realmin or realmin('double')
+! Python: numpy.finfo(numpy.float64).tiny
+! Julia: realmin(Float64)
+real(RP), parameter :: REALMIN = tiny(ZERO)
+real(RP), parameter :: EPS = epsilon(ZERO)  ! Machine epsilon
 real(RP), parameter :: HUGENUM = huge(ZERO)
 real(RP), parameter :: ALMOST_INFINITY = HALF * HUGENUM
 
@@ -170,13 +177,20 @@ integer, parameter :: OUTUNIT = 9
 real(RP), parameter :: RHOBEG_DFT = ONE
 real(RP), parameter :: RHOEND_DFT = 1.0E-6_RP
 real(RP), parameter :: FTARGET_DFT = -HUGENUM
+real(RP), parameter :: CTOL_DFT = EPS
+real(RP), parameter :: ETA1_DFT = TENTH
+real(RP), parameter :: ETA2_DFT = 0.7_RP
+real(RP), parameter :: GAMMA1_DFT = HALF
+real(RP), parameter :: GAMMA2_DFT = TWO
 integer(IK), parameter :: IPRINT_DFT = 0_IK
 integer(IK), parameter :: MAXFUN_DIM_DFT = 500_IK
 
-! Maximal amount of memory (Byte) allowed for XHIST, FHIST, CONHIST, CHIST
+! Maximal amount of memory (Byte) allowed for XHIST, FHIST, CONHIST, CHIST, and the filters.
 integer, parameter :: MXMMY = 21 * (10**8)   ! 21*10**8 = 2G.
 ! Make sure that MAXMEMORY does not exceed HUGE(0) to avoid overflow and memory errors.
 integer, parameter :: MAXMEMORY = min(MXMMY, huge(0))
 
+! Maximal length of the filter used in constrained solvers.
+integer, parameter :: MAXFILT_DFT = 2000_IK
 
 end module consts_mod

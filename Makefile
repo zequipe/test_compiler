@@ -30,14 +30,14 @@ TESTSUITE = ./testsuite
 # All the tests
 test:
 	make atest
-	make dtest
-	make ftest
 	make gtest
 	make itest
 	make ntest
 	make stest
-	make vtest
 	make xtest
+	make dtest  # Fail, wrong behavior concerning common/selectx.f90/savehist
+	make ftest  # Fail, wrong behavior concerning common/selectx.f90/savehist
+	make vtest  # Fail, wrong behavior concerning implied do loop with zero iteration
 	make ltest  # Fail
 	make 9test  # Fail
 
