@@ -59,7 +59,7 @@ atest: FC = $(AFORT) -m1 -en -et -Rb -Rc -Rs -Rp
 
 # AMD AOCC Flang
 AFLANG := $(shell find /opt/AMD \( -type l -o -type f \) -executable -name flang -print -quit 2> /dev/null || echo AFLANG_NOT_FOUND)
-dtest: FC = $(AFLANG) -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -ffp-exception-behavior=strict -Kieee
+dtest: FC = $(AFLANG) -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee -ffp-exception-behavior=strict 
 
 # LLVM Flang
 ftest: FC = flang -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee
