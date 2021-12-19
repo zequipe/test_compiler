@@ -55,6 +55,8 @@ make stest  # Test sunf95
 
 * [Availability and applicability of Fortran compilers for a project](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project)
 * [`Implied do` and array constructor: Strange behavior of `flang` and related compilers](https://fortran-lang.discourse.group/t/implied-do-and-array-constructor-strange-behavior-of-flang-and-related-compilers)
+(see also [Flang issue #1200](https://github.com/flang-compiler/flang/issues/1200) and [NVIDIA
+Developer Forums](https://forums.developer.nvidia.com/t/a-bug-of-nvfortran-21-11))
 
 
 ## Contact
