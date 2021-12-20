@@ -12,7 +12,7 @@ that develops optimization solvers.
 
 * :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (**patch 4**)
 * :negative_squared_cross_mark: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 13.0.0
-* :negative_squared_cross_mark: [Classical `flang`](https://github.com/flang-compiler/flang) 7.1.0
+* :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 7.1.0
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94
 * :ballot_box_with_check: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 9.3.0
 * :ballot_box_with_check: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.5.0
@@ -40,7 +40,7 @@ to fit your platform.
 ```bash
 make atest  # Test af95
 make dtest  # Test AOCC flang
-make ftest  # Test classical flang
+make ftest  # Test classic flang
 make 9test  # Test g95
 make gtest  # Test gfortran
 make itest  # Test ifort
