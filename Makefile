@@ -29,15 +29,15 @@ TESTSUITE = ./testsuite
 ####################################################################################################
 # All the tests
 test:
-	make atest
+	make atest  # Fail: Count
 	make gtest
 	make itest
-	make ntest
+	make ntest  # Fail: Alloc
 	make stest
 	make xtest
-	make dtest  # Fail: Implied do
-	make ftest  # Fail: Implied do
-	make vtest  # Fail: Implied do
+	make dtest  # Fail: Implied do, Alloc
+	make ftest  # Fail: Implied do, Alloc
+	make vtest  # Fail: Implied do, Alloc
 	make ltest  # Fail
 	make 9test  # Fail
 
