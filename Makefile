@@ -59,7 +59,7 @@ atest: FC = $(AFORT) -m1 -en -et -Rb -Rc -Rs -Rp
 
 # AMD AOCC Flang
 AFLANG := $(shell find /opt/AMD \( -type l -o -type f \) -executable -name flang -print -quit 2> /dev/null || echo AFLANG_NOT_FOUND)
-dtest: FC = $(AFLANG) -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee -ffp-exception-behavior=strict 
+dtest: FC = $(AFLANG) -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee -ffp-exception-behavior=strict
 
 # LLVM Flang
 ftest: FC = flang -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee
@@ -106,7 +106,7 @@ xtest: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
 	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
 	solver_unc.o solver_con.o \
-	param.o noise.o prob.o test_solver.o test_implied_do.o
+	param.o noise.o prob.o test_solver.o test_implied_do.o test_count.o test_alloc.o
 	@printf '\n$@ starts!\n\n'
 	$(FC) $(FFLAGS) -o $@ test.f90 *.o 2>&1
 	@printf '\n===> $@: Compilation completes successfully! <===\n\n'

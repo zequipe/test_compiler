@@ -10,7 +10,7 @@ that develops optimization solvers.
 
 ## Compilers tested
 
-* :ballot_box_with_check: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (**patch 4**)
+* :negative_squared_cross_mark: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 (**patch 4**)
 * :negative_squared_cross_mark: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 13.0.0
 * :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 7.1.0
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94
