@@ -9,10 +9,9 @@ subroutine test_count()
 implicit none
 
 logical :: x(0)
-integer :: y(size(x))
 
 !x = .false.
-y(1:count(x)) = 1
+print *, count(x)
 
 end subroutine test_count
 
