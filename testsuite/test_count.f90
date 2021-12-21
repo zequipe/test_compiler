@@ -15,7 +15,7 @@ logical :: w(1, 1)
 logical :: u(1)
 integer :: i(100)
 
-!!x = .false.
+!x = .false.
 print *, count(x)
 i(1:count(x)) = 1
 !y = .false.
