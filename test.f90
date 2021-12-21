@@ -5,6 +5,16 @@ use, non_intrinsic :: test_count_mod, only : test_count
 use, non_intrinsic :: test_alloc_mod, only : test_alloc1, test_alloc2, func1
 implicit none
 
+!--------------------------------------------------------------------------------------------------!
+!--------------------------------------------------------------------------------!
+! Sometimes, but not always, Alloc1/2/3 lead to the following error:
+!!Runtime Error: *** Arithmetic exception: Integer divide by zero - aborting
+!!common/memory.F90, line 101: Error occurred in MEMORY_MOD:ALLOC_IVECTOR
+!!common/linalg.F90, line 2285: Called by LINALG_MOD:TRUELOC
+!!testsuite/test_alloc.f90, line 35: Called by TEST_ALLOC_MOD:FUNC1
+!!testsuite/test_alloc.f90, line 12: Called by TEST_ALLOC_MOD:TEST_ALLOC1
+!!test.f90, line 9: Called by TEST
+!--------------------------------------------------------------------------------!
 print *, 'Test: Alloc1.'
 call test_alloc1()  ! SEGFAULT
 print *, 'Succeed: Alloc1.'
@@ -17,6 +27,7 @@ print *, 'Test: Alloc3.'
 call func1()
 call test_alloc2()  ! Fatal error: glibc detected an invalid stdio handle
 print *, 'Succeed: Alloc3.'
+!--------------------------------------------------------------------------------------------------!
 
 print *, 'Test: Count.'
 call test_count()
