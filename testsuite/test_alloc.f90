@@ -9,7 +9,7 @@ subroutine test_alloc()
 use, non_intrinsic :: linalg_mod, only : trueloc
 implicit none
 
-logical :: x(0)
+logical :: x(1)
 integer :: y(size(x))
 
 x = .false.
