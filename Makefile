@@ -106,7 +106,7 @@ xtest: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
 	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
 	solver_unc.o solver_con.o \
-	param.o noise.o prob.o test_solver.o test_implied_do.o test_count.o test_alloc.o
+	param.o noise.o prob.o test_solver.o test_implied_do.o test_count.o test_alloc.o test_filt.o
 	@printf '\n$@ starts!\n\n'
 	$(FC) $(FFLAGS) -o $@ test.f90 *.o 2>&1
 	@printf '\n===> $@: Compilation completes successfully! <===\n\n'

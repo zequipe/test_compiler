@@ -21,7 +21,7 @@ module linalg_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Tuesday, December 21, 2021 PM03:03:10
+! Last Modified: Wednesday, December 22, 2021 AM12:46:50
 !--------------------------------------------------------------------------------------------------
 
 implicit none
@@ -2282,7 +2282,6 @@ logical, intent(in) :: x(:)
 integer(IK), allocatable :: loc(:)  ! INTEGER(IK) :: LOC(COUNT(X)) does not work with Absoft 22.0
 integer(IK) :: i
 print *, 'x', x, count(x), int(count(x), IK)
-!allocate (loc(count(x)))
 call safealloc(loc, int(count(x), IK))  ! Removable in F03.
 print *, size(loc)
 loc = pack([(i, i=1_IK, int(size(x), IK))], mask=x)
