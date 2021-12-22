@@ -28,16 +28,16 @@ implicit none
 !!test.f90, line 9: Called by TEST
 !==========================================================================================!
 print *, 'Test: Alloc1.'
-call test_alloc1()  ! SEGFAULT
+call test_alloc1()  ! NAG nagor: `SEGFAULT`
 print *, 'Succeed: Alloc1.'
 
-print *, 'Test: Alloc2.'  ! Some times it leads to the following Runtime Error, but not always.
-call test_alloc2()  ! Runtime Error: common/linalg.F90, line 2286: Unit 6 is not connected
+print *, 'Test: Alloc2.'  ! Some times nagfor raises the following Runtime Error, but not always.
+call test_alloc2()  ! NAG nagfor: `Runtime Error: common/linalg.F90, line 2286: Unit 6 is not connected`
 print *, 'Succeed: Alloc2.'
 
 print *, 'Test: Alloc3.'
 call func1()
-call test_alloc2()  ! Fatal error: glibc detected an invalid stdio handle
+call test_alloc2()  ! NAG nagfor: `Fatal error: glibc detected an invalid stdio handle`
 print *, 'Succeed: Alloc3.'
 !--------------------------------------------------------------------------------------------------!
 
