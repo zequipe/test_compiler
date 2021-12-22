@@ -6,7 +6,7 @@ program test
 ! On 20211222:
 ! NAG nagfor cannot pass test_alloc1/2/3;
 ! classic flang, AOCC flang, NVIDIA nvfortran cannot pass test_alloc1/2/3 and test_implied_do;
-! Absoft af95 cannot pass test_count;
+! Absoft af95 cannot compile test_alloc1/2/3 and test_count;
 ! G95 and Lahey lf95 is incapable of compiling the code due to unsupported F03 constructs;
 ! gfortran, ifort, ifx, and sunf95 passes all tests.
 !--------------------------------------------------------------------------------------------------!
