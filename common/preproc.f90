@@ -6,7 +6,7 @@ module preproc_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Saturday, December 18, 2021 AM12:00:20
+! Last Modified: Thursday, December 23, 2021 PM05:12:15
 !--------------------------------------------------------------------------------------------------!
 
 ! N.B.: If all the inputs are valid, then PREPROC should do nothing.
@@ -19,20 +19,26 @@ public :: preproc
 contains
 
 
-subroutine preproc(solver, n, iprint, maxfun, maxhist, ftarget, rhobeg, rhoend, npt, ctol, eta1, eta2, gamma1, gamma2)
-
-use, non_intrinsic :: consts_mod, only : RP, IK, ONE, TWO, TEN, TENTH, EPS, DEBUGGING
+subroutine preproc(solver, n, iprint, maxfun, maxhist, ftarget, rhobeg, rhoend, m, npt, maxfilt, &
+        & ctol, eta1, eta2, gamma1, gamma2)
+!--------------------------------------------------------------------------------------------------!
+! This subroutine preprocesses the inputs. It does nothing to the inputs that are valid.
+!--------------------------------------------------------------------------------------------------!
+use, non_intrinsic :: consts_mod, only : RP, IK, ONE, TWO, TEN, TENTH, EPS, MAXMEMORY, DEBUGGING
 use, non_intrinsic :: consts_mod, only : RHOBEG_DFT, RHOEND_DFT, ETA1_DFT, ETA2_DFT, GAMMA1_DFT, GAMMA2_DFT
-use, non_intrinsic :: consts_mod, only : CTOL_DFT, FTARGET_DFT, IPRINT_DFT
+use, non_intrinsic :: consts_mod, only : CTOL_DFT, FTARGET_DFT, IPRINT_DFT, MAXFILT_DFT
 use, non_intrinsic :: debug_mod, only : assert
 use, non_intrinsic :: infnan_mod, only : is_nan, is_inf, is_finite
+use, non_intrinsic :: memory_mod, only : cstyle_sizeof
 use, non_intrinsic :: string_mod, only : lower
-
 implicit none
 
-! Inputs
+! Compulsory inputs
 character(len=*), intent(in) :: solver
 integer(IK), intent(in) :: n
+
+! Optional inputs
+integer(IK), intent(in), optional :: m
 
 ! Compulsory in-outputs
 integer(IK), intent(inout) :: iprint
@@ -44,6 +50,7 @@ real(RP), intent(inout) :: rhoend
 
 ! Optional in-outputs
 integer(IK), intent(inout), optional :: npt
+integer(IK), intent(inout), optional :: maxfilt
 real(RP), intent(inout), optional :: ctol
 real(RP), intent(inout), optional :: eta1
 real(RP), intent(inout), optional :: eta2
@@ -51,48 +58,107 @@ real(RP), intent(inout), optional :: gamma1
 real(RP), intent(inout), optional :: gamma2
 
 ! Local variables
+character(len=*), parameter :: srname = 'PREPROC'
+character(len=100) :: min_maxfun_str
+integer(IK) :: m_loc
+integer(IK) :: maxfilt_in
 integer(IK) :: min_maxfun
+integer(IK) :: unit_memo
 real(RP) :: eta1_loc
 real(RP) :: eta2_loc
 
+! Preconditions
+if (DEBUGGING) then
+    call assert(n >= 1, 'N >= 1', srname)
+    if (lower(solver) == 'cobyla' .and. present(m)) then
+        call assert(m >= 0, 'M >= 0', srname)
+    end if
+end if
 
-if (iprint /= 0 .and. abs(iprint) /= 1 .and. abs(iprint) /= 2 .and. abs(iprint) /= 3) then
+!====================!
+! Calculation starts !
+!====================!
+
+! Read M, if necessary
+if (lower(solver) == 'cobyla' .and. present(m)) then
+    m_loc = m
+else
+    m_loc = 0_IK
+end if
+
+! Validate IPRINT
+if (abs(iprint) > 3) then
     iprint = IPRINT_DFT
     print '(/1A, I2, 1A)', solver//': invalid IPRINT; it should be 0, 1, -1, 2, -2, 3, or -3; it is set to ', iprint, '.'
 end if
 
-if (lower(solver) == 'newuoa' .or. lower(solver) == 'bobyqa' .or. lower(solver) == 'lincoa') then
+! Validate MAXFUN
+select case (lower(solver))
+case ('newuoa', 'bobyqa', 'lincoa')
     min_maxfun = n + 3_IK
-else if (lower(solver) == 'uobyqa') then
+    min_maxfun_str = 'N + 3'
+case ('uobyqa')
     min_maxfun = (n + 1_IK) * (n + 2_IK) / 2_IK + 1_IK
-else
+    min_maxfun_str = '(N+1)(N+2)/2 + 1'
+case ('cobyla')
     min_maxfun = n + 2_IK
-end if
+    min_maxfun_str = 'N + 2'
+end select
 if (maxfun < min_maxfun) then
     maxfun = min_maxfun
-    print '(/1A, I8, 1A)', solver//': invalid MAXFUN; it should an integer at least N + 3 ; it is set to ', maxfun, '.'
+    print '(/1A, I8, 1A)', solver//': invalid MAXFUN; it should be at least '//trim(min_maxfun_str)//'; it is set to ', maxfun, '.'
 end if
 
+! Validate MAXHIST
 if (maxhist < 0) then
     maxhist = maxfun
     print '(/1A, I8, 1A)', solver//': invalid MAXHIST; it should be a nonnegative integer; it is set to ', maxhist, '.'
 end if
 maxhist = min(maxhist, maxfun)  ! MAXHIST > MAXFUN is never needed.
 
+! Validate FTARGET
 if (is_nan(ftarget)) then
     ftarget = FTARGET_DFT
-    print '(/1A, 1PD15.6, 1A)', solver//': invalid FTARGET; it should a real number; it is set to ', ftarget, '.'
+    print '(/1A, 1PD15.6, 1A)', solver//': invalid FTARGET; it should be a real number; it is set to ', ftarget, '.'
 end if
 
+! Validate NPT
 if ((lower(solver) == 'newuoa' .or. lower(solver) == 'bobyqa' .or. lower(solver) == 'lincoa') &
     & .and. present(npt)) then
     if (npt < n + 2 .or. npt > min(maxfun - 1, ((n + 2) * (n + 1)) / 2)) then
         npt = int(min(maxfun - 1, 2 * n + 1), kind(npt))
-        print '(/1A, I6, 1A)', solver//': invalid NPT; it should an integer in the interval [N+2, (N+1)(N+2)/2], '// &
+        print '(/1A, I6, 1A)', solver//': invalid NPT; it should be an integer in the interval [N+2, (N+1)(N+2)/2], '// &
             & 'and it should be less than MAXFUN; it is set to ', npt, '.'
     end if
 end if
 
+! Validate MAXFILT
+if (present(maxfilt) .and. (lower(solver) == 'lincoa' .or. lower(solver) == 'cobyla')) then
+    maxfilt_in = maxfilt
+    if (maxfilt < 1) then
+        maxfilt = MAXFILT_DFT
+    end if
+    ! Further revise MAXFILT according to MAXMEMORY.
+    select case (lower(solver))
+    case ('lincoa')
+        unit_memo = (n + 2_IK) * cstyle_sizeof(0.0_RP)
+    case ('cobyla')
+        unit_memo = (m_loc + n + 2_IK) * cstyle_sizeof(0.0_RP)
+    end select
+    ! We cannot simply set MAXFILT = MIN(MAXFILT, MAXMEMORY/...), as they may not have
+    ! the same kind, and compilers may complain. We may convert them, but overflow may occur.
+    if (maxfilt > MAXMEMORY / unit_memo) then
+        maxfilt = int(MAXMEMORY / unit_memo, kind(maxfilt))
+    end if
+    maxfilt = min(maxfun, max(1_IK, maxfilt))
+    if (maxfilt_in < 1) then
+        print '(/1A, I8, 1A)', solver//': invalid MAXFILT; it should be a positive integer; it is set to ', maxfilt, '.'
+    elseif (maxfilt < min(maxfilt_in, maxfun)) then
+        print '(/1A, I8, 1A)', solver//': WARNING: MAXFILT is reset to ', maxfilt, '.'
+    end if
+end if
+
+! Validate ETA1 and ETA2
 if (present(eta1)) then
     eta1_loc = eta1
 else
@@ -117,7 +183,7 @@ if (present(eta1)) then
         ! In this case, we take the value hard coded in Powell's orginal code
         ! without any warning. It is useful when interfacing with MATLAB/Python.
         eta1 = ETA1_DFT
-    else if (eta1 < 0 .or. eta1 >= 1) then
+    elseif (eta1 < 0 .or. eta1 >= 1) then
         ! Take ETA2 into account if it has a valid value.
         if (present(eta2) .and. eta2_loc > 0 .and. eta2_loc <= 1) then
             eta1 = max(EPS, eta2 / 7.0_RP)
@@ -134,19 +200,20 @@ if (present(eta2)) then
         ! In this case, we take the value hard coded in Powell's orginal code
         ! without any warning. It is useful when interfacing with MATLAB/Python.
         eta2 = ETA2_DFT
-    else if (present(eta1) .and. (eta2 < eta1_loc .or. eta2 > 1)) then
+    elseif (present(eta1) .and. (eta2 < eta1_loc .or. eta2 > 1)) then
         eta2 = (eta1 + TWO) / 3.0_RP
-        print '(/1A, 1PD15.6, 1A)', solver//': invalid ETA2; it should be in the interval [0, 1] and not less than ETA1;'// &
-            & ' it is set to ', eta2, '.'
+        print '(/1A, 1PD15.6, 1A)', solver// &
+            & ': invalid ETA2; it should be in [0, 1] and not less than ETA1;'//' it is set to ', eta2, '.'
     end if
 end if
 
+! Validate GAMMA1 and GAMMA2
 if (present(gamma1)) then
     if (is_nan(gamma1)) then
         ! In this case, we take the value hard coded in Powell's orginal code
         ! without any warning. It is useful when interfacing with MATLAB/Python.
         gamma1 = GAMMA1_DFT
-    else if (gamma1 <= 0 .or. gamma1 >= 1) then
+    elseif (gamma1 <= 0 .or. gamma1 >= 1) then
         gamma1 = GAMMA1_DFT
         print '(/1A, 1PD15.6, 1A)', solver//': invalid GAMMA1; it should in the interval (0, 1); it is set to ', gamma1, '.'
     end if
@@ -157,20 +224,20 @@ if (present(gamma2)) then
         ! In this case, we take the value hard coded in Powell's orginal code
         ! without any warning. It is useful when interfacing with MATLAB/Python.
         gamma2 = GAMMA2_DFT
-    else if (gamma2 < 1 .or. is_inf(gamma2)) then
+    elseif (gamma2 < 1 .or. is_inf(gamma2)) then
         gamma2 = GAMMA2_DFT
-        print '(/1A, 1PD15.6, 1A)', solver//': invalid GAMMA2; it should a real number not less than 1; it is set to ', &
-            & gamma2, '.'
+        print '(/1A, 1PD15.6, 1A)', solver// &
+            & ': invalid GAMMA2; it should be a real number not less than 1; it is set to ', gamma2, '.'
     end if
 end if
 
+! Validate RHOBEG and RHOEND
 if (abs(rhobeg - rhoend) < 1.0E2_RP * EPS * max(abs(rhobeg), ONE)) then
-! When the data is passed from the interfaces (e.g., MEX) to the Fortran
-! code, RHOBEG, and RHOEND may change a bit. It was observed in a MATLAB
-! test that MEX passed 1 to Fortran as 0.99999999999999978. Therefore,
-! if we set RHOEND = RHOBEG in the interfaces, then it may happen that
-! RHOEND > RHOBEG, which is considered as an invalid input. To avoid this
-! situation, we force RHOBEG and RHOEND to equal when the difference is tiny.
+    ! When the data is passed from the interfaces (e.g., MEX) to the Fortran code, RHOBEG, and RHOEND
+    ! may change a bit. It was observed in a MATLAB test that MEX passed 1 to Fortran as
+    ! 0.99999999999999978. Therefore, if we set RHOEND = RHOBEG in the interfaces, then it may happen
+    ! that RHOEND > RHOBEG, which is considered as an invalid input. To avoid this situation, we
+    ! force RHOBEG and RHOEND to equal when the difference is tiny.
     rhoend = rhobeg
 end if
 
@@ -190,6 +257,7 @@ if (rhoend <= 0 .or. rhobeg < rhoend .or. is_nan(rhoend) .or. is_inf(rhoend)) th
         & 'it is set to ', rhoend, '.'
 end if
 
+! Validate CTOL
 if (present(ctol)) then
     if (is_nan(ctol) .or. ctol < 0) then
         ctol = CTOL_DFT
@@ -198,6 +266,10 @@ if (present(ctol)) then
     end if
 end if
 
+!====================!
+!  Calculation ends  !
+!====================!
+
 ! Postconditions
 if (DEBUGGING) then
     call assert(abs(iprint) <= 3, 'IPRINT is 0, 1, -1, 2, -2, 3, or -3', solver)
@@ -205,6 +277,9 @@ if (DEBUGGING) then
     if (present(npt)) then
         call assert(maxfun >= npt + 1, 'MAXFUN >= NPT + 1', solver)
         call assert(npt >= 3, 'NPT >= 3', solver)
+    end if
+    if (present(maxfilt)) then
+        call assert(maxfilt >= 1 .and. maxfilt <= maxfun, '1 <= MAXFILT <= MAXFUN', solver)
     end if
     if (present(eta1) .and. present(eta2)) then
         call assert(eta1 >= 0 .and. eta1 <= eta2 .and. eta2 < 1, '0 <= ETA1 <= ETA2 < 1', solver)

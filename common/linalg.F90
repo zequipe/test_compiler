@@ -21,7 +21,7 @@ module linalg_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Wednesday, December 22, 2021 AM12:46:50
+! Last Modified: Wednesday, December 22, 2021 PM09:50:58
 !--------------------------------------------------------------------------------------------------
 
 implicit none
@@ -548,7 +548,7 @@ if (istril(A)) then
         B(1:i - 1, i) = -matprod(B(1:i - 1, 1:i - 1), R(1:i - 1, i) / R(i, i))
     end do
     B = transpose(B)
-else if (istriu(A)) then
+elseif (istriu(A)) then
     B = ZERO
     do i = 1, n
         B(i, i) = ONE / A(i, i)
@@ -1002,9 +1002,9 @@ end if
 
 if (all(abs(x) <= ZERO) .or. all(abs(v) <= ZERO)) then
     y = ZERO
-else if (any(is_nan(x)) .or. any(is_nan(v))) then
+elseif (any(is_nan(x)) .or. any(is_nan(v))) then
     y = sum(x) + sum(v)  ! Set Y to NaN
-else if (any(is_inf(v))) then
+elseif (any(is_inf(v))) then
     where (is_inf(v))
         u = sign(ONE, v)
     elsewhere
@@ -1074,9 +1074,9 @@ if (size(V, 2) == 1) then
     y = project1(x, V(:, 1))
 elseif (all(abs(x) <= ZERO) .or. all(abs(V) <= ZERO)) then
     y = ZERO
-else if (any(is_nan(x)) .or. any(is_nan(V))) then
+elseif (any(is_nan(x)) .or. any(is_nan(V))) then
     y = sum(x) + sum(V)  ! Set Y to NaN
-else if (any(is_inf(V))) then
+elseif (any(is_inf(V))) then
     where (.not. is_inf(V))
         V_loc = ZERO
     elsewhere
@@ -1131,7 +1131,7 @@ real(RP) :: x(2)
 
 if (.not. is_finite(x1)) then
     r = abs(x1)
-else if (.not. is_finite(x2)) then
+elseif (.not. is_finite(x2)) then
     r = abs(x2)
 else
     x = abs([x1, x2])
@@ -1198,7 +1198,7 @@ if (any(is_nan(x))) then
     ! In this case, MATLAB sets G to NaN(2, 2). We refrain from doing this to keep G orthogonal.
     c = ONE
     s = ZERO
-else if (all(is_inf(x))) then
+elseif (all(is_inf(x))) then
     ! In this case, MATLAB sets G to NaN(2, 2). We refrain from doing this to keep G orthogonal.
     c = sign(1 / sqrt(2.0_RP), x(1))
     s = sign(1 / sqrt(2.0_RP), x(2))
@@ -2098,7 +2098,7 @@ end if
 
 if (size(x) == 0) then
     y = ZERO
-else if (p_loc <= 0) then
+elseif (p_loc <= 0) then
     y = real(count(abs(x) > 0), kind(y))
 elseif (.not. all(is_finite(x))) then
     ! If X contains NaN, then Y is NaN. Otherwise, Y is Inf when X contains +/-Inf.
@@ -2281,9 +2281,7 @@ implicit none
 logical, intent(in) :: x(:)
 integer(IK), allocatable :: loc(:)  ! INTEGER(IK) :: LOC(COUNT(X)) does not work with Absoft 22.0
 integer(IK) :: i
-print *, 'x', x, count(x), int(count(x), IK)
 call safealloc(loc, int(count(x), IK))  ! Removable in F03.
-print *, size(loc)
 loc = pack([(i, i=1_IK, int(size(x), IK))], mask=x)
 end function trueloc
 
