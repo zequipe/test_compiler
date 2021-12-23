@@ -34,6 +34,7 @@ real(RP), intent(inout) :: x(:)
 
 ! Local variables
 integer(IK) :: iin
+integer(IK) :: imat
 integer(IK) :: iout
 integer(IK) :: n
 integer(IK) :: nf
@@ -41,6 +42,7 @@ integer(IK) :: nfilt
 integer(IK), parameter :: maxfilt = MAXFILT_DFT
 real(RP) :: cfilt(max(maxfilt, 1_IK))
 real(RP) :: confilt(m, size(cfilt))
+real(RP) :: conmat(m, size(x) + 1)
 real(RP) :: copt
 real(RP) :: cstrv
 real(RP) :: ffilt(size(cfilt))
@@ -75,7 +77,12 @@ do iout = 1, 3
             fopt = f
             copt = cstrv
         end if
+
         call savefilt(constr, cstrv, ctol, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
+
+        imat = mod(nf, n + 1_IK) + 1_IK
+        conmat(:, imat) = constr
+        call savefilt(conmat(:, imat), cstrv, ctol, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
     end do
 end do
 

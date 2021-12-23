@@ -112,7 +112,7 @@ type(problem_t) :: prob
 
 nsols = 3_IK
 nprobs = 3_IK
-probs(1:nprobs) = ['hexagon', 'hexagon', 'hexagon']
+probs(1:nprobs) = ['hexagon', 'chrosen', 'hexagon']
 nr = 3_IK
 
 do isol = 1, nsols
@@ -123,8 +123,10 @@ do isol = 1, nsols
             ! Construct the testing problem.
             call construct(prob, probname)
 
-            ! Read X0.
+            ! Read M.
             m = prob % m
+
+            ! Read X0.
             call safealloc(x, prob % n) ! Not all compilers support automatic allocation yet, e.g., Absoft.
             x = noisy(prob % x0)
 

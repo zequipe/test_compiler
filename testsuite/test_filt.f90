@@ -12,7 +12,7 @@ use, non_intrinsic :: consts_mod, only : RP, IK
 implicit none
 
 integer(IK), parameter :: n = 9
-integer(IK), parameter :: m = 14
+integer(IK), parameter :: m = 0
 
 ! Local variables
 integer(IK) :: nfilt
