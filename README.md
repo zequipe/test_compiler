@@ -3,7 +3,7 @@
 This is a set of tools for testing the applicability of Fortran compilers in my project
 that develops optimization solvers.
 
-## Platform tested
+## Platforms tested
 
 * Ubuntu 20.04, Intel(R) Core(TM) i7-10610U
 * Ubuntu 20.04, Intel(R) Core(TM) i7-4790 CPU
