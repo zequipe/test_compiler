@@ -29,7 +29,8 @@ TESTSUITE = ./testsuite
 ####################################################################################################
 # All the tests
 test:
-	make atest  # Fail: Count
+	make atest_bound # Fail
+	make atest  # Fail: Alloc, Count
 	make gtest
 	make itest
 	make ntest  # Fail: Alloc
