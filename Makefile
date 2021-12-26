@@ -29,6 +29,9 @@ TESTSUITE = ./testsuite
 ####################################################################################################
 # All the tests
 test:
+	make atest_array12 # Fail
+	make atest_array30 # Fail
+	make atest_array31 # Succeed, but strange
 	make atest_bound # Fail
 	make atest  # Fail: Alloc, Count
 	make gtest
@@ -103,6 +106,27 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a compiler-specific test
 
 # Compile the binary needed for a compiler-specific test
+atest_array12: ./testsuite/test_array12.f90
+	@printf '\n$@ starts!\n\n'
+	af95 -no-pie -o $@ ./testsuite/test_array12.f90  2>&1
+	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
+	./$@
+	@printf '\n===> $@: Test completes successfully! <===\n\n'
+
+atest_array30: ./testsuite/test_array3.f90
+	@printf '\n$@ starts!\n\n'
+	af95 -no-pie -o $@ ./testsuite/test_array3.f90  2>&1
+	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
+	./$@
+	@printf '\n===> $@: Test completes successfully! <===\n\n'
+
+atest_array31: ./testsuite/test_array3.f90
+	@printf '\n$@ starts!\n\n'
+	af95 -no-pie -et -o $@ ./testsuite/test_array3.f90  2>&1
+	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
+	./$@
+	@printf '\n===> $@: Test completes successfully! <===\n\n'
+
 %test_bound: test_bound.f90 \
 	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
 	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
