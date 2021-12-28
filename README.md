@@ -24,6 +24,7 @@ that develops optimization solvers.
 
 ## Compilers to be tested
 
+* [毕昇编译器](https://support.huaweicloud.com/ug-bisheng-kunpengdevps/kunpengbisheng_06_0006.html) ([Bisheng Compiler](https://support.huaweicloud.com/intl/en-us/ug-bisheng-kunpengdevps/kunpengbisheng_06_0001.html)) 
 * [Cray Fortran compiler](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=OpenMP_Overview.html)
 * [IBM Fortran compiler](https://www.ibm.com/products/fortran-compiler-family)
 * [LFortran](https://lfortran.org)
