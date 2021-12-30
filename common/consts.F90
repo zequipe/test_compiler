@@ -8,7 +8,7 @@ module consts_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Tuesday, December 21, 2021 AM12:40:33
+! Last Modified: Saturday, December 25, 2021 PM04:48:04
 !--------------------------------------------------------------------------------------------------!
 
 !--------------------------------------------------------------------------------------------------!
@@ -65,9 +65,13 @@ use, intrinsic :: iso_fortran_env, only : INT32
 use, intrinsic :: iso_fortran_env, only : INT64
 #endif
 
-
 use, intrinsic :: iso_fortran_env, only : REAL32, REAL64, REAL128
-! The unsupported kind parameter will be negative.
+! Unsupported kinds will be negative.
+
+! Standard IO units
+use, intrinsic :: iso_fortran_env, only : STDIN => INPUT_UNIT, &
+                                        & STDOUT => OUTPUT_UNIT, &
+                                        & STDERR => ERROR_UNIT
 #endif
 
 implicit none
@@ -77,11 +81,11 @@ public :: IK, IK_DFT
 public :: RP, DP, SP, QP, RP_DFT
 public :: ZERO, ONE, TWO, HALF, QUART, TEN, TENTH, PI
 public :: REALMIN, EPS, HUGENUM, ALMOST_INFINITY, HUGEFUN, HUGECON
-public :: MSSGLEN, FNAMELEN
-public :: OUTUNIT
+public :: MSGLEN, FNAMELEN
+public :: OUTUNIT, STDIN, STDOUT, STDERR
 public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, CTOL_DFT, IPRINT_DFT
 public :: ETA1_DFT, ETA2_DFT, GAMMA1_DFT, GAMMA2_DFT
-public :: MAXFUN_DIM_DFT, MAXMEMORY, MAXFILT_DFT
+public :: MAXFUN_DIM_DFT, MAXMEMORY, MIN_MAXFILT, MAXFILT_DFT
 
 
 #if __DEBUGGING__ == 1
@@ -165,13 +169,18 @@ real(RP), parameter :: HUGEFUN = TWO**min(100, MAXE / 2)
 real(RP), parameter :: HUGECON = HUGEFUN
 
 ! The maximal length of messages; used in output.f90 and fmexapi.F90
-integer, parameter :: MSSGLEN = 1000
+integer, parameter :: MSGLEN = 1000
 
 ! The maximal length of output file names; used in output.f90
 integer, parameter :: FNAMELEN = 1000
-
 ! Output unit, can be any integer between 9 and 99; used in output.f90
-integer, parameter :: OUTUNIT = 9
+integer, parameter :: OUTUNIT = 42
+! Standard IO units
+#if __USE_ISO_FORTRAN_ENV_INTREAL__ != 1
+integer, parameter :: STDIN = 5
+integer, parameter :: STDOUT = 6
+integer, parameter :: STDERR = 0
+#endif
 
 ! Some default values
 real(RP), parameter :: RHOBEG_DFT = ONE
@@ -191,6 +200,7 @@ integer, parameter :: MXMMY = 21 * (10**8)   ! 21*10**8 = 2G.
 integer, parameter :: MAXMEMORY = min(MXMMY, huge(0))
 
 ! Maximal length of the filter used in constrained solvers.
-integer(IK), parameter :: MAXFILT_DFT = 2000_IK  ! Should be positive; < 100 is not recommended.
+integer(IK), parameter :: MIN_MAXFILT = 200_IK  ! Should be positive; < 100 is not recommended.
+integer(IK), parameter :: MAXFILT_DFT = 10_IK * MIN_MAXFILT
 
 end module consts_mod

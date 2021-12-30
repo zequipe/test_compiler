@@ -21,7 +21,7 @@ module linalg_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Wednesday, December 22, 2021 PM09:50:58
+! Last Modified: Sunday, December 26, 2021 PM09:57:17
 !--------------------------------------------------------------------------------------------------
 
 implicit none
@@ -720,7 +720,7 @@ if (DEBUGGING) then
     call assert(istril(T, tol), 'R is upper triangular', srname)
     if (pivote) then
         call assert(all(abs(matprod(Q_loc, transpose(T)) - A(:, P)) <= &
-                        max(tol, tol * maxval(abs(A)))), 'A(:, P) = Q*R', srname)
+                        max(tol, tol * maxval(abs(A)))), 'A(:, P) == Q*R', srname)
         do j = 1, min(m, n) - 1_IK
             call assert(abs(T(j, j)) + max(tol, tol * abs(T(j, j))) >= &
                 & abs(T(j + 1, j + 1)), '|R(J, J)| >= |R(J + 1, J + 1)|', srname)
@@ -730,7 +730,7 @@ if (DEBUGGING) then
         end do
     else
         call assert(all(abs(matprod(Q_loc, transpose(T)) - A) <= max(tol, tol * maxval(abs(A)))), &
-            & 'A = Q*R', srname)
+            & 'A == Q*R', srname)
     end if
 end if
 end subroutine qr
@@ -1109,7 +1109,7 @@ end function project2
 
 function hypotenuse(x1, x2) result(r)
 ! HYPOTENUSE(X1, X2) returns SQRT(X1^2 + X2^2), handling over/underflow.
-use, non_intrinsic :: consts_mod, only : RP, ONE, DEBUGGING
+use, non_intrinsic :: consts_mod, only : RP, ONE, ZERO, DEBUGGING
 use, non_intrinsic :: debug_mod, only : assert
 use, non_intrinsic :: infnan_mod, only : is_finite, is_nan
 implicit none
@@ -1123,7 +1123,7 @@ real(RP) :: r
 
 ! Local variables
 character(len=*), parameter :: srname = 'HYPOTENUSE'
-real(RP) :: x(2)
+real(RP) :: y(2)
 
 !====================!
 ! Calculation starts !
@@ -1134,15 +1134,21 @@ if (.not. is_finite(x1)) then
 elseif (.not. is_finite(x2)) then
     r = abs(x2)
 else
-    x = abs([x1, x2])
-    x = [minval(x), maxval(x)]
-    !if (x(1) > sqrt(REALMIN) .and. x(2) < sqrt(HUGENUM / 2.1_RP)) then
-    !    r = sqrt(sum(x**2))
+    y = abs([x1, x2])
+    y = [minval(y), maxval(y)]
+    !if (y(1) > sqrt(REALMIN) .and. y(2) < sqrt(HUGENUM / 2.1_RP)) then
+    !    r = sqrt(sum(y**2))
+    !elseif (y(2) > 0) then
+    !    r = y(2) * sqrt((y(1) / y(2))**2 + ONE)
     !else
-    !    r = x(2) * sqrt((x(1) / x(2))**2 + ONE)
+    !    r = ZERO
     !end if
-    ! It seems better in general to scale X before taking the hypotenuse.
-    r = x(2) * sqrt((x(1) / x(2))**2 + ONE)
+    ! Scaling seems to improve the precision in general.
+    if (y(2) > 0) then
+        r = y(2) * sqrt((y(1) / y(2))**2 + ONE)
+    else
+        r = ZERO
+    end if
 end if
 
 !====================!
@@ -1285,6 +1291,7 @@ subroutine qradd(c, Q, Rdiag, n)
 
 use, non_intrinsic :: consts_mod, only : RP, IK, ZERO, EPS, DEBUGGING
 use, non_intrinsic :: debug_mod, only : assert
+use, non_intrinsic :: infnan_mod, only : is_finite
 implicit none
 
 ! Inputs
@@ -1364,13 +1371,12 @@ if (DEBUGGING) then
     call assert(n >= nsav .and. n <= min(nsav + 1_IK, m), 'NSAV <= N <= min(NSAV + 1, M)', srname)
     call assert(size(Q, 1) == m .and. size(Q, 2) == m, 'SIZE(Q) == [m, m]', srname)
     call assert(isorth(Q, tol), 'The columns of Q are orthonormal', srname)  !! Costly!
-    if (n < m) then
-        call assert(norm(matprod(c, Q(:, n + 1:m))) <= max(tol, tol * norm(c)), 'C^T*Q(:, N+1:M)=0', srname)
+    if (n < m .and. is_finite(norm(c))) then
+        call assert(norm(matprod(c, Q(:, n + 1:m))) <= max(tol, tol * norm(c)), 'C^T*Q(:, N+1:M) == 0', srname)
     end if
-    ! The following test may fail.
     if (n >= 1) then
-        call assert(abs(inprod(c, Q(:, n)) - Rdiag(n)) <= max(tol, tol * inprod(abs(c), abs(Q(:, n)))), &
-            & 'C^T*Q(:, N) = Rdiag(N)', srname)
+        call assert(abs(inprod(c, Q(:, n)) - Rdiag(n)) <= max(tol, tol * inprod(abs(c), abs(Q(:, n)))) &
+            & .or. .not. is_finite(Rdiag(n)), 'C^T*Q(:, N) == Rdiag(N)', srname)
     end if
 end if
 end subroutine qradd
@@ -1401,7 +1407,7 @@ integer(IK) :: m
 integer(IK) :: n
 real(RP) :: A_test(size(A, 1), size(A, 2))
 real(RP) :: G(2, 2)
-real(RP) :: hypt
+!real(RP) :: hypt
 real(RP) :: QA_test(size(A, 1), size(A, 2))
 real(RP) :: tol
 
@@ -1433,15 +1439,22 @@ end if
 ! are exhanged. After this is done for each K = 1, ..., N-1, we obtain the QR factorization of
 ! A when its [I, I+1, ..., N] columns are reordered as [I+1, ..., N, I].
 do k = i, n - 1_IK
-    hypt = hypotenuse(Rdiag(k + 1), inprod(Q(:, k), A(:, k + 1)))
+    !hypt = hypotenuse(Rdiag(k + 1), inprod(Q(:, k), A(:, k + 1)))
     !hypt = sqrt(Rdiag(k + 1)**2 + inprod(Q(:, k), A(:, k + 1))**2)
     G = planerot([Rdiag(k + 1), inprod(Q(:, k), A(:, k + 1))])
     Q(:, [k, k + 1_IK]) = matprod(Q(:, [k + 1_IK, k]), transpose(G))
-    ! Powell's code updates RDIAG in the following way. Note that RDIAG(N) inherits all rounding in
-    ! RDIAG(I:N-1) and Q(:, I:N-1) and hence contain significant errors. Thus we modify the code,
-    ! only calculate RDIAG(K) here, and then calculate RDIAG(N) by an inner product after the loop.
-    !Rdiag([k, k + 1_IK]) = [hypt, (Rdiag(k + 1) / hypt) * Rdiag(k)]
-    Rdiag(k) = hypt
+    ! Powell's code updates RDIAG in the following way.
+    !----------------------------------------------------------------!
+    !!Rdiag([k, k + 1_IK]) = [hypt, (Rdiag(k + 1) / hypt) * Rdiag(k)]!
+    !----------------------------------------------------------------!
+    ! Note that RDIAG(N) inherits all rounding in RDIAG(I:N-1) and Q(:, I:N-1) and hence contain
+    ! significant errors. Thus we may modify the code as follows, only calculating RDIAG(K) here and
+    ! calculating RDIAG(N) by an inner product after the loop.
+    !----------------!
+    !!Rdiag(k) = hypt!
+    !----------------!
+    ! Or we simply calculate RDIAG from scratch as follows.
+    Rdiag(k) = inprod(Q(:, k), A(:, k + 1))
 end do
 
 Rdiag(n) = inprod(Q(:, n), A(:, i))  ! Calculate RDIAG(N) from scratch. See the comments above.
@@ -1457,9 +1470,9 @@ if (DEBUGGING) then
     A_test = reshape([A(:, 1:i - 1), A(:, i + 1:n), A(:, i)], shape(A))
     QA_test = matprod(transpose(Q), A_test)
     call assert(istriu(QA_test, tol), 'QA_test is upper triangular', srname)
-    ! The following test may fail.
+    ! The following test may fail if RDIAG is not calculated from scratch.
     call assert(norm(diag(QA_test) - Rdiag) <= max(tol, tol * norm([(inprod(abs(Q(:, k)), &
-        & abs(A_test(:, k))), k=1, n)])), 'Rdiag = diag(QA_test)', srname)
+        & abs(A_test(:, k))), k=1, n)])), 'Rdiag == diag(QA_test)', srname)
 end if
 end subroutine qrexc
 
@@ -1531,7 +1544,7 @@ integer(IK) :: j
 
 ! Preconditions
 if (DEBUGGING) then
-    call assert(size(x) == size(A, 2) .and. size(y) == size(A, 1), 'SIZE(A) = [SIZE(Y), SIZE(X)]', &
+    call assert(size(x) == size(A, 2) .and. size(y) == size(A, 1), 'SIZE(A) == [SIZE(Y), SIZE(X)]', &
         & srname)
 end if
 
@@ -1693,11 +1706,11 @@ npt = int(size(xpt, 2), kind(npt))
 if (DEBUGGING) then
     call assert(n >= 1, 'N >= 1', srname)
     call assert(npt >= n + 2, 'NPT >= N + 2', srname)
-    call assert(size(gq) == n, 'SIZE(GQ) = N', srname)
+    call assert(size(gq) == n, 'SIZE(GQ) == N', srname)
     call assert(size(hq, 1) == n .and. issymmetric(hq), 'HQ is an NxN symmetric matrix', srname)
-    call assert(size(pq) == npt, 'SIZE(PQ) = NPT', srname)
+    call assert(size(pq) == npt, 'SIZE(PQ) == NPT', srname)
     call assert(all(is_finite(xpt)), 'XPT is finite', srname)
-    call assert(size(fval) == npt, 'SIZE(FVAL) = NPT', srname)
+    call assert(size(fval) == npt, 'SIZE(FVAL) == NPT', srname)
     call assert(.not. any(is_nan(fval) .or. is_posinf(fval)), 'FVAL is not NaN/+Inf', srname)
 end if
 
@@ -1755,9 +1768,9 @@ if (DEBUGGING) then
     call assert(n >= 1, 'N >= 1', srname)
     call assert(npt >= n + 2, 'NPT >= N + 2', srname)
     call assert(size(hq, 1) == n .and. issymmetric(hq), 'HQ is an NxN symmetric matrix', srname)
-    call assert(size(pq) == npt, 'SIZE(PQ) = NPT', srname)
+    call assert(size(pq) == npt, 'SIZE(PQ) == NPT', srname)
     call assert(all(is_finite(xpt)), 'XPT is finite', srname)
-    call assert(size(x) == n, 'SIZE(Y) = N', srname)
+    call assert(size(x) == n, 'SIZE(Y) == N', srname)
 end if
 
 !====================!

@@ -12,7 +12,7 @@
 
 ####################################################################################################
 # Variables
-# Fortran standard to follow. We aim to make the code compatible with F2003, F2008, and F2018.
+# Fortran standard to follow. We aim to $(MAKE) the code compatible with F2003, F2008, and F2018.
 FS = 03
 FSTD = 20$(FS)
 # Default options for all the compilers.
@@ -29,21 +29,21 @@ TESTSUITE = ./testsuite
 ####################################################################################################
 # All the tests
 test:
-	make atest_array12 # Fail
-	make atest_array30 # Fail
-	make atest_array31 # Succeed, but strange
-	make atest_bound # Fail
-	make atest  # Fail: Alloc, Count
-	make gtest
-	make itest
-	make ntest  # Fail: Alloc
-	make stest
-	make xtest
-	make dtest  # Fail: Implied do, Alloc
-	make ftest  # Fail: Implied do, Alloc
-	make vtest  # Fail: Implied do, Alloc
-	make ltest  # Fail
-	make 9test  # Fail
+	$(MAKE) atest_array12 # Fail
+	$(MAKE) atest_array30 # Fail
+	$(MAKE) atest_array31 # Succeed, but strange
+	$(MAKE) atest_bound # Fail
+	$(MAKE) atest  # Fail: Alloc, Count
+	$(MAKE) gtest
+	$(MAKE) itest
+	$(MAKE) ntest  # Fail: Alloc
+	$(MAKE) stest
+	$(MAKE) xtest
+	$(MAKE) dtest  # Fail: Implied do, Alloc
+	$(MAKE) ftest  # Fail: Implied do, Alloc
+	$(MAKE) vtest  # Fail: Implied do, Alloc
+	$(MAKE) ltest  # Fail
+	$(MAKE) 9test  # Fail
 
 ####################################################################################################
 # Here are the compilers to test. We impose all the options that are actually used in the project.
@@ -136,7 +136,29 @@ atest_array31: ./testsuite/test_array3.f90
 	$(FC) $(FFLAGS) -o $@ test_bound.f90 *.o 2>&1
 	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
 	./$@
-	make clean
+	$(MAKE) clean
+	@printf '\n===> $@: Test completes successfully! <===\n\n'
+
+%test_coa: test_coa.f90 \
+	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
+	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
+	coa.o
+	@printf '\n$@ starts!\n\n'
+	$(FC) $(FFLAGS) -o $@ test_coa.f90 *.o 2>&1
+	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
+	./$@
+	$(MAKE) clean
+	@printf '\n===> $@: Test completes successfully! <===\n\n'
+
+%test_cob: test_cob.f90 \
+	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
+	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
+	cob.o
+	@printf '\n$@ starts!\n\n'
+	$(FC) $(FFLAGS) -o $@ test_cob.f90 *.o 2>&1
+	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
+	./$@
+	$(MAKE) clean
 	@printf '\n===> $@: Test completes successfully! <===\n\n'
 
 %test: test.f90 \
@@ -148,7 +170,7 @@ atest_array31: ./testsuite/test_array3.f90
 	$(FC) $(FFLAGS) -o $@ test.f90 *.o 2>&1
 	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
 	./$@
-	make clean
+	$(MAKE) clean
 	@printf '\n===> $@: Test completes successfully! <===\n\n'
 
 # Compile the Fortran code providing generic modules
