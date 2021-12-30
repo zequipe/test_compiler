@@ -5,7 +5,7 @@
 !
 ! Started: July 2020
 !
-! Last Modified: Friday, December 31, 2021 AM01:58:49
+! Last Modified: Friday, December 31, 2021 AM02:24:06
 !--------------------------------------------------------------------------------------------------!
 
 !!!!!! THE MODULE THAT IMPLEMENTS CALCFC !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -44,6 +44,7 @@ do i = 1, n + 1
     end if
     f = f + tmp * tmp
 end do
+constr = 0.0D0
 end subroutine calcfc
 
 end module calcfc_mod

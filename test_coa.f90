@@ -44,6 +44,7 @@ do i = 1, n + 1
     end if
     f = f + tmp * tmp
 end do
+constr = 0.0D0
 end subroutine calcfc
 
 end module calcfc_mod
