@@ -33,6 +33,8 @@ test:
 	$(MAKE) atest_array30 # Fail
 	$(MAKE) atest_array31 # Succeed, but strange
 	$(MAKE) atest_bound # Fail
+	$(MAKE) atest_coa # Fail
+	$(MAKE) atest_cob # Fail
 	$(MAKE) atest  # Fail: Alloc, Count
 	$(MAKE) gtest
 	$(MAKE) itest
