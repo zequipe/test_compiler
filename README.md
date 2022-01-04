@@ -10,6 +10,7 @@ that develops optimization solvers.
 
 ## Compilers tested
 
+* :negative_squared_cross_mark: [毕昇编译器](https://support.huaweicloud.com/ug-bisheng-kunpengdevps/kunpengbisheng_06_0006.html) ([Bisheng Compiler, based on LLVM flang](https://support.huaweicloud.com/intl/en-us/ug-bisheng-kunpengdevps/kunpengbisheng_06_0001.html)) 1.3.3.b023 (fail: `Alloc`, `Implied do`)
 * :negative_squared_cross_mark: [Absoft Pro Fortran `af95`](https://www.absoft.com) 2022 with patch 4 (fail: `Alloc`, `Count`, `Bound`, `Array`, `COA`, `COB`)
 * :negative_squared_cross_mark: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 13.0.0 (fail: `Alloc`, `Implied do`)
 * :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 7.1.0 (fail: `Alloc`, `Implied do`)
@@ -24,7 +25,6 @@ that develops optimization solvers.
 
 ## Compilers to be tested
 
-* [毕昇编译器](https://support.huaweicloud.com/ug-bisheng-kunpengdevps/kunpengbisheng_06_0006.html) ([Bisheng Compiler](https://support.huaweicloud.com/intl/en-us/ug-bisheng-kunpengdevps/kunpengbisheng_06_0001.html))
 * [Cray Fortran compiler](https://support.hpe.com/hpesc/public/docDisplay?docId=a00115296en_us&page=OpenMP_Overview.html)
 * [IBM Fortran compiler](https://www.ibm.com/products/fortran-compiler-family)
 * [LFortran](https://lfortran.org)
