@@ -5,7 +5,7 @@ that develops optimization solvers.
 
 ## Platforms tested
 
-* 华为鲲鹏计算平台 ([Huawei Kunpeng platform with Ubuntu 18.04](https://www.hikunpeng.com/))
+* [鲲鹏计算平台](https://e.huawei.com/cn/products/servers/computing-kunpeng) ([Kunpeng platform with Ubuntu 18.04](https://www.hikunpeng.com/))
 * Ubuntu 20.04, Intel(R) Core(TM) i7-10610U
 * Ubuntu 20.04, Intel(R) Core(TM) i7-4790 CPU
 
