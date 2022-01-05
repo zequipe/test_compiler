@@ -163,6 +163,16 @@ atest_array31: ./testsuite/test_array3.f90
 	$(MAKE) clean
 	@printf '\n===> $@: Test completes successfully! <===\n\n'
 
+%test_circle: test_circle.f90 \
+	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
+	ratio.o resolution.o history.o selectx.o circle.o checkexit.o output.o preproc.o pintrf.o evaluate.o
+	@printf '\n$@ starts!\n\n'
+	$(FC) $(FFLAGS) -o $@ test_circle.f90 *.o 2>&1
+	@printf '\n===> $@: Compilation completes successfully! <===\n\n'
+	./$@
+	$(MAKE) clean
+	@printf '\n===> $@: Test completes successfully! <===\n\n'
+
 %test: test.f90 \
 	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
 	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
