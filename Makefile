@@ -173,6 +173,10 @@ atest_array31: ./testsuite/test_array3.f90
 	$(MAKE) clean
 	@printf '\n===> $@: Test completes successfully! <===\n\n'
 
+test_intel: test_intel.f90
+	ifort --version && ifort -warn all test_intel.f90 && ./a.out
+	ifx --version && ifx -warn all test_intel.f90 && ./a.out
+
 %test: test.f90 \
 	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
 	ratio.o resolution.o history.o selectx.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
@@ -201,4 +205,4 @@ atest_array31: ./testsuite/test_array3.f90
 # Cleaning up.
 clean:
 	rm -f *.o *.mod *.dbg
-	rm -f atest* dtest* ftest* gtest* itest* ltest* ntest* stest* vtest* xtest*
+	rm -f atest* dtest* ftest* gtest* itest* ltest* ntest* stest* vtest* xtest* a.out
