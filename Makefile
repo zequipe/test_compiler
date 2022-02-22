@@ -29,13 +29,14 @@ TESTSUITE = ./testsuite
 ####################################################################################################
 # All the tests
 test:
-	$(MAKE) test_intel
 	$(MAKE) atest
 	$(MAKE) gtest
 	$(MAKE) itest
 	$(MAKE) ntest
 	$(MAKE) stest
 	$(MAKE) xtest
+	$(MAKE) test_intel  # False positive of unused variable
+	$(MAKE) test_flang  # Fail
 	$(MAKE) dtest  # Fail: Array, Implied do, Alloc
 	$(MAKE) ftest  # Fail: Array, Implied do, Alloc
 	$(MAKE) vtest  # Fail: Array, Implied do, Alloc
@@ -102,6 +103,11 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a compiler-specific test
 
+test_flang: test_flang.f90
+	flang --version && flang test_flang.f90
+	$(AFLANG) --version && $(AFLANG) test_flang.f90
+	nvfortran --version && nvfortran test_flang.f90
+
 test_intel: test_intel.f90
 	ifort --version && ifort -warn all test_intel.f90 && ./a.out
 	ifx --version && ifx -warn all test_intel.f90 && ./a.out
@@ -140,4 +146,5 @@ test_intel: test_intel.f90
 # Cleaning up.
 clean:
 	rm -f *.o *.mod *.dbg
+	rm -f testsuite/*.o testsuite/*.mod testsuite/*.dbg
 	rm -f atest* dtest* ftest* gtest* itest* ltest* ntest* stest* vtest* xtest* a.out
