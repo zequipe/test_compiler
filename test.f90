@@ -15,7 +15,36 @@ use, non_intrinsic :: test_solver_mod, only : test_solver_unc, test_solver_con
 use, non_intrinsic :: test_implied_do_mod, only : test_implied_do
 use, non_intrinsic :: test_count_mod, only : test_count
 use, non_intrinsic :: test_alloc_mod, only : test_alloc1, test_alloc2, func1
+use, non_intrinsic :: test_array12_mod, only : array1, array2
+use, non_intrinsic :: test_array3_mod, only : array3
+use, non_intrinsic :: test_coa_mod, only : test_coa
+use, non_intrinsic :: test_cob_mod, only : test_cob
+use, non_intrinsic :: test_circle_mod, only : test_circle
 implicit none
+
+print *, 'Test: Array1.'
+call array1()
+print *, 'Succeed: Array1.'
+
+print *, 'Test: Array2.'
+call array2()
+print *, 'Succeed: Array2.'
+
+print *, 'Test: Array3.'
+call array3()
+print *, 'Succeed: Array3.'
+
+print *, 'Test: COA.'
+call test_coa()
+print *, 'Succeed: COA.'
+
+print *, 'Test: COB.'
+call test_cob()
+print *, 'Succeed: COB.'
+
+print *, 'Test: CIRCLE.'
+call test_circle()
+print *, 'Succeed: CIRCLE.'
 
 !--------------------------------------------------------------------------------------------------!
 !==========================================================================================!

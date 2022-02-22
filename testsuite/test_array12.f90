@@ -1,4 +1,4 @@
-module test_array_mod
+module test_array12_mod
 use, intrinsic :: iso_fortran_env, only : REAL32, REAL64, REAL128
 implicit none
 private
@@ -34,18 +34,4 @@ write (*, *) shape(x(:, 1:k))
 write (*, *) shape([x(:, k + 1:n), x(:, 1:k)])
 end subroutine array2
 
-end module test_array_mod
-
-
-program test_array
-use, non_intrinsic :: test_array_mod, only : array1, array2
-implicit none
-
-write (*, *) 'Test: Array1'
-call array1()
-write (*, *) 'Succeed: Array1'
-
-write (*, *) 'Test: Array2'
-call array2()
-write (*, *) 'Succeed: Array2'
-end program test_array
+end module test_array12_mod
