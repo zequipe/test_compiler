@@ -1,0 +1,17 @@
+README.pdf
+*test
+*.cmdx
+*.cmod
+*.dbg
+*.ilm
+*.log
+*.mod
+*__genmod.f90
+flang_unparsed_file*.*90
+*.o
+*.out
+*.output
+*.pyd
+*.so
+*.stb
+*NSConflict*
