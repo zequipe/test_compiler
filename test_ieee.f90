@@ -2,7 +2,7 @@ module test_ieee_mod
 ! N.B.:
 ! 1. This piece of code crashes ifort (IFORT) 2021.5.0 20211109 and ifx (IFORT) 2022.0.0 20211123
 ! 2. The following code is NOT standard-conforming, because IEEE_VALUE cannot be used in the
-! initialization. However, compilers should raise an error instead of crash.
+! initialization. However, compilers should raise an error instead of crashing.
 
 use, intrinsic :: ieee_arithmetic, only : ieee_value, &
     & ieee_quiet_nan, ieee_signaling_nan, ieee_positive_inf, ieee_negative_inf
