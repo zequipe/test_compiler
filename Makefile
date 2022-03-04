@@ -104,8 +104,8 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a compiler-specific test
 
 test_ieee: test_ieee.f90
-	ifort --version && ifort -warn all -c test_ieee.f90  # Crash: ifort (IFORT) 2021.5.0 20211109
 	ifx --version && ifx -warn all -c test_ieee.f90  # Crash: ifx (IFORT) 2022.0.0 20211123
+	ifort --version && ifort -warn all -c test_ieee.f90  # Crash: ifort (IFORT) 2021.5.0 20211109
 
 test_flang: test_flang.f90
 	flang --version && flang test_flang.f90
