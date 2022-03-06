@@ -64,7 +64,7 @@ make stest  # Test sunf95
 Developer Forums](https://forums.developer.nvidia.com/t/a-bug-of-nvfortran-21-11), and [AMD
 Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-3-2/m-p/501676#M151151))
 
-* Intel Community: [Bug: ifort and ifx crash when compiling a piece of (invalid) code involvin ieee_arithmetic](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-ifort-and-ifx-crash-when-compiling-a-piece-of-invalid-code/m-p/1365757#M160431)
+* Intel Community: [Bug: ifort and ifx crash when compiling a piece of (invalid) code involving ieee_arithmetic](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-ifort-and-ifx-crash-when-compiling-a-piece-of-invalid-code/m-p/1365757#M160431)
 
 * Intel Community: [Bug in `ifort` and `ifx` from oneAPI 2021.2.0 & 2022.0.1: false positive of unused variable](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-in-ifort-and-ifx-from-oneAPI-2021-2-0-amp-2022-0-1-false/m-p/1348942#M159177)
 
