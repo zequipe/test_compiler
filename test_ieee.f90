@@ -1,7 +1,10 @@
 module test_ieee_mod
 ! N.B.:
-! 1. This piece of code crashes ifort (IFORT) 2021.5.0 20211109 and ifx (IFORT) 2022.0.0 20211123
-! 2. The following code is NOT standard-conforming, because IEEE_VALUE cannot be used in the
+! 1. This piece of code crashes ifort (IFORT) 2021.5.0 20211109 and 
+! ifx (IFORT) 2022.0.0 20211123 by the following compilation:
+! $ ifort -c test_ieee.f90
+! $ ifx -c test_ieee.f90
+! 2. The code itself is NOT valid Fortran, because IEEE_VALUE cannot be used in
 ! initialization. However, compilers should raise an error instead of crashing.
 
 use, intrinsic :: ieee_arithmetic, only : ieee_value, &
