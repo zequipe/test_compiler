@@ -58,13 +58,15 @@ make stest  # Test sunf95
 * [Fortran Discourse](https://fortran-lang.discourse.group):
 [Availability and applicability of Fortran compilers for a project](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project)
 
+* NVIDIA Developer Forums: [Bug of nvfortran 22.2-0: array subscript triplet handled wrongly](https://forums.developer.nvidia.com/t/bug-of-nvfortran-22-2-0-array-subscript-triplet-handled-wrongly/)
+
+* Intel Community: [Bug: ifort and ifx crash when compiling a piece of (invalid) code involving ieee_arithmetic](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-ifort-and-ifx-crash-when-compiling-a-piece-of-invalid-code/m-p/1365757#M160431)
+
 * [Fortran Discourse](https://fortran-lang.discourse.group):
 [`Implied do` and array constructor: Strange behavior of `flang` and related compilers](https://fortran-lang.discourse.group/t/implied-do-and-array-constructor-strange-behavior-of-flang-and-related-compilers)
 (see also [Flang issue #1200](https://github.com/flang-compiler/flang/issues/1200), [NVIDIA
 Developer Forums](https://forums.developer.nvidia.com/t/a-bug-of-nvfortran-21-11), and [AMD
 Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-3-2/m-p/501676#M151151))
-
-* Intel Community: [Bug: ifort and ifx crash when compiling a piece of (invalid) code involving ieee_arithmetic](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-ifort-and-ifx-crash-when-compiling-a-piece-of-invalid-code/m-p/1365757#M160431)
 
 * Intel Community: [Bug in `ifort` and `ifx` from oneAPI 2021.2.0 & 2022.0.1: false positive of unused variable](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-in-ifort-and-ifx-from-oneAPI-2021-2-0-amp-2022-0-1-false/m-p/1348942#M159177)
 
