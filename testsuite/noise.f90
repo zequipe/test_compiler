@@ -6,10 +6,10 @@ module noise_mod
 !
 ! Started: September 2021
 !
-! Last Modified: Saturday, December 18, 2021 PM03:15:41
+! Last Modified: Thursday, January 06, 2022 PM12:27:02
 !--------------------------------------------------------------------------------------------------!
 
-use, non_intrinsic :: pintrf_mod, only : FUN, FUNCON
+use, non_intrinsic :: pintrf_mod, only : OBJ, OBJCON
 implicit none
 
 private
@@ -25,8 +25,8 @@ interface noisyfun
     module procedure noisyfun0, noisyfun1
 end interface noisyfun
 
-procedure(FUN), pointer :: orig_calfun
-procedure(FUNCON), pointer :: orig_calcfc
+procedure(OBJ), pointer :: orig_calfun
+procedure(OBJCON), pointer :: orig_calcfc
 integer, parameter :: NOISE_TYPE_LEN = 64
 
 
@@ -313,7 +313,10 @@ real(RP), intent(out) :: f
 real(RP), intent(out) :: constr(:)
 call orig_calcfc(x, f, constr)
 f = noisyfun(x, f, noise_level=NOISE_LEVEL_DFT, noise_type=NOISE_TYPE_DFT)
-constr = noisyfun(x, constr, noise_level=NOISE_LEVEL_DFT, noise_type=NOISE_TYPE_DFT)
+! N.B.: the constraints are CONSTR >= 0. In other words, we are "maximizing" CONSTR. Thus we impose
+! noise to -CONSTR and then take the negative. Otherwise, NOISYFUN tends to introduce +Inf into
+! CONSTR, which is not intended.
+constr = -noisyfun(x, -constr, noise_level=NOISE_LEVEL_DFT, noise_type=NOISE_TYPE_DFT)
 end subroutine noisy_calcfc
 
 

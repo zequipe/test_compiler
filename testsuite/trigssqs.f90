@@ -8,7 +8,7 @@ implicit none
 integer(IK), intent(in) :: n
 
 ! Outputs
-type(problem_t), intent(out) :: prob
+type(PROB_T), intent(out) :: prob
 
 ! Local variables
 integer, allocatable :: seedsav(:)
@@ -24,16 +24,16 @@ call safealloc(prob % lb, n)
 prob % lb = -HUGENUM
 call safealloc(prob % ub, n)
 prob % ub = HUGENUM
-call safealloc(prob % Aeq, 0_IK, n)
+call safealloc(prob % Aeq, n, 0_IK)
 call safealloc(prob % beq, 0_IK)
-call safealloc(prob % Aineq, 0_IK, n)
+call safealloc(prob % Aineq, n, 0_IK)
 call safealloc(prob % bineq, 0_IK)
 
 ! Problem-specific code
 prob % probname = 'trigssqs'
 
 call getseed(seedsav)  ! Backup the current random seed in SEEDSAV.
-call setseed(SEED_DFT)  ! Set the random seed by SETSEED(SEED_DFT).
+call setseed(RANDSEED_DFT)  ! Set the random seed by SETSEED(RANDSEED_DFT).
 xstar = PI * (TWO * rand(n) - ONE)  ! This is the \hat{x}^* in the NEWUOA paper.
 ystar = PI * (TWO * rand(n) - ONE)  ! This is the \hat{y}^* in the NEWUOA paper.
 theta = TEN**(-rand(n))
@@ -55,7 +55,7 @@ real(RP), intent(in) :: x(:)
 real(RP), intent(out) :: f
 real(RP), intent(out) :: constr(:)
 call calfun_trigssqs(x, f)
-constr = ZERO
+constr = ZERO  ! Without this line, compilers may complain that CONSTR is not set.
 end subroutine calcfc_trigssqs
 
 
@@ -78,7 +78,7 @@ real(RP) :: xstar(size(x))
 n = int(size(x), kind(n))
 
 call getseed(seedsav)  ! Backup the current random seed in SEEDSAV.
-call setseed(SEED_DFT)  ! Set the random seed by SETSEED(SEED_DFT).
+call setseed(RANDSEED_DFT)  ! Set the random seed by SETSEED(RANDSEED_DFT).
 C = 1.0E2_RP * (TWO * rand(2_IK * n, n) - ONE)
 S = 1.0E2_RP * (TWO * rand(2_IK * n, n) - ONE)
 xstar = PI * (TWO * rand(n) - ONE)  ! This is the \hat{x}^* in the NEWUOA paper.

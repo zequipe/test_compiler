@@ -8,7 +8,7 @@ module consts_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Saturday, December 25, 2021 PM04:48:04
+! Last Modified: Sunday, March 06, 2022 AM11:47:54
 !--------------------------------------------------------------------------------------------------!
 
 !--------------------------------------------------------------------------------------------------!
@@ -80,12 +80,12 @@ public :: DEBUGGING
 public :: IK, IK_DFT
 public :: RP, DP, SP, QP, RP_DFT
 public :: ZERO, ONE, TWO, HALF, QUART, TEN, TENTH, PI
-public :: REALMIN, EPS, HUGENUM, ALMOST_INFINITY, HUGEFUN, HUGECON
+public :: REALMIN, EPS, HUGENUM, HUGEFUN, HUGECON, HUGEBOUND
 public :: MSGLEN, FNAMELEN
 public :: OUTUNIT, STDIN, STDOUT, STDERR
-public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, CTOL_DFT, IPRINT_DFT
+public :: RHOBEG_DFT, RHOEND_DFT, FTARGET_DFT, CTOL_DFT, CWEIGHT_DFT
 public :: ETA1_DFT, ETA2_DFT, GAMMA1_DFT, GAMMA2_DFT
-public :: MAXFUN_DIM_DFT, MAXMEMORY, MIN_MAXFILT, MAXFILT_DFT
+public :: MAXFUN_DIM_DFT, MAXMEMORY, MIN_MAXFILT, MAXFILT_DFT, IPRINT_DFT
 
 
 #if __DEBUGGING__ == 1
@@ -162,11 +162,12 @@ real(RP), parameter :: PI = 3.141592653589793238462643383279502884_RP
 real(RP), parameter :: REALMIN = tiny(ZERO)
 real(RP), parameter :: EPS = epsilon(ZERO)  ! Machine epsilon
 real(RP), parameter :: HUGENUM = huge(ZERO)
-real(RP), parameter :: ALMOST_INFINITY = HALF * HUGENUM
 
 integer, parameter :: MAXE = maxexponent(ZERO)
 real(RP), parameter :: HUGEFUN = TWO**min(100, MAXE / 2)
 real(RP), parameter :: HUGECON = HUGEFUN
+! Any bound with an absolute value at least HUGEBOUND is considered as no bound.
+real(RP), parameter :: HUGEBOUND = QUART * HUGENUM
 
 ! The maximal length of messages; used in output.f90 and fmexapi.F90
 integer, parameter :: MSGLEN = 1000
@@ -187,6 +188,7 @@ real(RP), parameter :: RHOBEG_DFT = ONE
 real(RP), parameter :: RHOEND_DFT = 1.0E-6_RP
 real(RP), parameter :: FTARGET_DFT = -HUGENUM
 real(RP), parameter :: CTOL_DFT = EPS
+real(RP), parameter :: CWEIGHT_DFT = 1.0E8_RP
 real(RP), parameter :: ETA1_DFT = TENTH
 real(RP), parameter :: ETA2_DFT = 0.7_RP
 real(RP), parameter :: GAMMA1_DFT = HALF
@@ -200,7 +202,7 @@ integer, parameter :: MXMMY = 21 * (10**8)   ! 21*10**8 = 2G.
 integer, parameter :: MAXMEMORY = min(MXMMY, huge(0))
 
 ! Maximal length of the filter used in constrained solvers.
-integer(IK), parameter :: MIN_MAXFILT = 200_IK  ! Should be positive; < 100 is not recommended.
+integer(IK), parameter :: MIN_MAXFILT = 200_IK  ! Should be positive; < 200 is not recommended.
 integer(IK), parameter :: MAXFILT_DFT = 10_IK * MIN_MAXFILT
 
 end module consts_mod

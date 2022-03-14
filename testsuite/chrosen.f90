@@ -7,7 +7,7 @@ implicit none
 integer(IK), intent(in) :: n
 
 ! Outputs
-type(problem_t), intent(out) :: prob
+type(PROB_T), intent(out) :: prob
 
 ! Code shared by all unconstrained problems.
 prob % probtype = 'u'
@@ -17,9 +17,9 @@ call safealloc(prob % lb, n)
 prob % lb = -HUGENUM
 call safealloc(prob % ub, n)
 prob % ub = HUGENUM
-call safealloc(prob % Aeq, 0_IK, n)
+call safealloc(prob % Aeq, n, 0_IK)
 call safealloc(prob % beq, 0_IK)
-call safealloc(prob % Aineq, 0_IK, n)
+call safealloc(prob % Aineq, n, 0_IK)
 call safealloc(prob % bineq, 0_IK)
 
 ! Problem-specific code
@@ -39,7 +39,7 @@ real(RP), intent(in) :: x(:)
 real(RP), intent(out) :: f
 real(RP), intent(out) :: constr(:)
 call calfun_chrosen(x, f)
-constr = ZERO
+constr = ZERO  ! Without this line, compilers may complain that CONSTR is not set.
 end subroutine calcfc_chrosen
 
 

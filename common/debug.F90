@@ -8,11 +8,11 @@ module debug_mod
 !
 ! Started: July 2020.
 !
-! Last Modified: Saturday, December 25, 2021 AM11:45:46
+! Last Modified: Saturday, January 22, 2022 PM07:48:54
 !--------------------------------------------------------------------------------------------------!
 implicit none
 private
-public :: assert, backtr, warning, errstop, verisize
+public :: assert, validate, backtr, warning, errstop, verisize
 
 interface verisize
     module procedure verisize_real_1, verisize_real_2
@@ -24,49 +24,65 @@ end interface verisize
 contains
 
 
-subroutine assert(assertion, description, srname)
+subroutine assert(condition, description, srname)
 !--------------------------------------------------------------------------------------------------!
 ! This subroutine checks whether ASSERTION is true.
 ! If no, print SRNAME // 'Assertion failed: ' // DESCRIPTION
-! and then stop the program by calling ERRSTOP.
-! MATLAB analogue: assert(assertion, sprintf('%s: Assertion failed: %s', srname, description))
-! Python analogue: assert assertion, srname + ': Assertion failed: ' + description
-! C analogue: assert(assertion)  /* An error message will be produced by the compiler */
+! to STDERR and then stop the program by calling ERRSTOP.
+! MATLAB analogue: assert(condition, sprintf('%s: Assertion failed: %s', srname, description))
+! Python analogue: assert condition, srname + ': Assertion failed: ' + description
+! C analogue: assert(condition)  /* An error message will be produced by the compiler */
 !--------------------------------------------------------------------------------------------------!
+!! N.B.: As in C, we design ASSERT to operate only in the debug mode, i.e., when __DEBUGGING__ == 1;
+!! when __DEBUGGING__ == 0, ASSERT does nothing. For the checking that should take effect in both
+!! the debug and release modes, use VALIDATE (see below) instead. In the optimized mode of Python
+!! (python -O), the Python `assert` will also be ignored. MATLAB does not behave in this way.
+!--------------------------------------------------------------------------------------------------!
+use, non_intrinsic :: consts_mod, only : DEBUGGING
 implicit none
-logical, intent(in) :: assertion  ! A condition that is expected to be true
-character(len=*), intent(in) :: description  ! Description of the assertion in human language
+logical, intent(in) :: condition  ! A condition that is expected to be true
+character(len=*), intent(in) :: description  ! Description of the condition in human language
 character(len=*), intent(in) :: srname  ! Name of the subroutine that calls this procedure
-
-if (.not. assertion) then
-    call errstop(trim(srname), 'Assertion failed: '//trim(description))
+if (DEBUGGING) then
+    if (.not. condition) then
+        call errstop(trim(srname), 'Assertion failed: '//trim(description))
+    end if
 end if
 end subroutine assert
 
 
-subroutine warning(srname, msg)
+subroutine validate(condition, description, srname)
 !--------------------------------------------------------------------------------------------------!
-! This subroutine prints 'Warning: '//TRIM(SRNAME)//': '//TRIM(MSG)//'.'
+! This subroutine checks whether CONDITION is true.
+! If no, print SRNAME // 'Validation failed: ' // DESCRIPTION
+! to STDERR and then stop the program by calling ERRSTOP.
+! MATLAB analogue: assert(condition, sprintf('%s: Validation failed: %s', srname, description))
+! In Python or C, VALIDATE can be implemented following the Fortran implementation below.
 !--------------------------------------------------------------------------------------------------!
-use, non_intrinsic :: consts_mod, only : STDERR
 implicit none
-character(len=*), intent(in) :: srname
-character(len=*), intent(in) :: msg
-
-write (STDERR, '(/1A/)') 'Warning: '//trim(srname)//': '//trim(msg)//'.'
-end subroutine warning
+logical, intent(in) :: condition  ! A condition that is expected to be true
+character(len=*), intent(in) :: description  ! Description of the condition in human language
+character(len=*), intent(in) :: srname  ! Name of the subroutine that calls this procedure
+if (.not. condition) then
+    call errstop(trim(srname), 'Validation failed: '//trim(description))
+end if
+end subroutine validate
 
 
 subroutine errstop(srname, msg)
 !--------------------------------------------------------------------------------------------------!
-! This subroutine prints a backtrace and 'ERROR: '//TRIM(SRNAME)//': '//TRIM(MSG)//'!', then stop.
+! This subroutine prints 'ERROR: '//TRIM(SRNAME)//': '//TRIM(MSG)//'!' to STDERR, then stop. In the
+! debug mode, it also calls BACKTR to print the backtrace.
 !--------------------------------------------------------------------------------------------------!
-use, non_intrinsic :: consts_mod, only : STDERR
+use, non_intrinsic :: consts_mod, only : STDERR, DEBUGGING
 implicit none
 character(len=*), intent(in) :: srname
 character(len=*), intent(in) :: msg
 
-call backtr()
+if (DEBUGGING) then
+    call backtr()
+end if
+
 write (STDERR, '(/1A/)') 'ERROR: '//trim(srname)//': '//trim(msg)//'!'
 stop  ! This means to stop the whole program.
 end subroutine errstop
@@ -101,6 +117,19 @@ call tracebackqq(user_exit_code=-1)
 
 #endif
 end subroutine backtr
+
+
+subroutine warning(srname, msg)
+!--------------------------------------------------------------------------------------------------!
+! This subroutine prints 'Warning: '//TRIM(SRNAME)//': '//TRIM(MSG)//'.' to STDERR.
+!--------------------------------------------------------------------------------------------------!
+use, non_intrinsic :: consts_mod, only : STDERR
+implicit none
+character(len=*), intent(in) :: srname
+character(len=*), intent(in) :: msg
+
+write (STDERR, '(/1A/)') 'Warning: '//trim(srname)//': '//trim(msg)//'.'
+end subroutine warning
 
 
 subroutine verisize_real_1(x, n)

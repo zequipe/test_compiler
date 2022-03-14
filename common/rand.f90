@@ -6,7 +6,7 @@ module rand_mod
 !
 ! Started: September 2021
 !
-! Last Modified: Saturday, October 09, 2021 PM11:04:00
+! Last Modified: Wednesday, February 02, 2022 PM08:06:21
 !--------------------------------------------------------------------------------------------------!
 
 implicit none
@@ -50,10 +50,14 @@ integer :: n  ! Should be a default INTEGER according to F2018.
 
 call random_seed(size=n)
 
-! Unnecessary to write the following line since F2003 as X is INTENT(OUT):
+! The following line is unnecessary since F2003 as X is INTENT(OUT):
 !!if (allocated(seed)) deallocate (seed)
-allocate (seed(n), stat=alloc_status)
-if (alloc_status /= 0) then
+
+! 1. The following allocation is NOT removable even in F2003.
+! 2. Why not using SAFEALLOC? Because the kind of SEED is the default integer, while SAFEALLOC is
+!    only implemented for INTEGER(IK), which may differ from the default integer.
+allocate (seed(1:n), stat=alloc_status)
+if (.not. (alloc_status == 0 .and. allocated(seed))) then
     call errstop(srname, 'Memory allocation fails.')
 end if
 
@@ -83,13 +87,13 @@ real(DP), allocatable :: cos_seed(:)
 call random_seed(size=n)
 
 if (allocated(seed_to_put)) deallocate (seed_to_put)
-allocate (seed_to_put(n), stat=alloc_status)
-if (alloc_status /= 0) then
+allocate (seed_to_put(1:n), stat=alloc_status)
+if (.not. (alloc_status == 0 .and. allocated(seed_to_put))) then
     call errstop(srname, 'Memory allocation fails.')
 end if
 if (allocated(cos_seed)) deallocate (cos_seed)
-allocate (cos_seed(n), stat=alloc_status)
-if (alloc_status /= 0) then
+allocate (cos_seed(1:n), stat=alloc_status)
+if (.not. (alloc_status == 0 .and. allocated(cos_seed))) then
     call errstop(srname, 'Memory allocation fails.')
 end if
 
@@ -99,7 +103,7 @@ cos_seed = min(max(cos(real([(i, i=seed - n + 1, seed)], DP)), -1.0_DP), 1.0_DP)
 seed_to_put = ceiling(0.9_DP * real(huge(0), DP) * cos_seed)
 ! P takes a `+1` at the end, so that it is guarantee to be positive.
 p = int(real(huge(0), DP) / 1.0E2_DP) + 1
-seed_to_put = abs(mod(seed_to_put, p)) + 1
+seed_to_put = modulo(seed_to_put, p) + 1
 
 call random_seed(put=seed_to_put)
 
@@ -129,8 +133,8 @@ if (present(seed)) then
     call random_seed(size=n)
 
     if (allocated(seed_to_put)) deallocate (seed_to_put)
-    allocate (seed_to_put(n), stat=alloc_status)
-    if (alloc_status /= 0) then
+    allocate (seed_to_put(1:n), stat=alloc_status)
+    if (.not. (alloc_status == 0 .and. allocated(seed_to_put))) then
         call errstop(srname, 'Memory allocation fails.')
     end if
 

@@ -3,29 +3,38 @@ module prob_mod
 ! This module implements the following testing problems.
 !
 ! Unconstrained:
-! chebyqad
+! chebyquad
 ! chrosen
 ! trigsabs
 ! trigssqs
 ! vardim
 !
+! Linearly constrained:
+! tetrahedron
+!
 ! Nonlinearly constrained:
+! circle
+! ellipsoid
+! fletcheq1
+! fletcheq2
+! hs100
+! rsnszk
 ! hexagon
 !--------------------------------------------------------------------------------------------------!
 use, non_intrinsic :: consts_mod, only : RP, IK
-use, non_intrinsic :: pintrf_mod, only : FUN, FUNCON
+use, non_intrinsic :: param_mod, only : RANDSEED_DFT
+use, non_intrinsic :: pintrf_mod, only : OBJ, OBJCON
 implicit none
 
 private
 public :: PNLEN
-public :: problem_t
+public :: PROB_T
 public :: construct
 public :: destruct
 
 integer, parameter :: PNLEN = 64
-integer, parameter :: SEED_DFT = 42  ! Default random seed used in trigsabs and trigssqs
 
-type problem_t
+type PROB_T
     character(len=PNLEN) :: probname  ! Should be allocatable, which is not supported by Absoft 22.0
     character :: probtype
     integer(IK) :: m
@@ -38,9 +47,9 @@ type problem_t
     real(RP), allocatable :: Aineq(:, :)
     real(RP), allocatable :: bineq(:)
     real(RP) :: Delta0
-    procedure(FUN), nopass, pointer :: calfun => null()
-    procedure(FUNCON), nopass, pointer :: calcfc => null()
-end type problem_t
+    procedure(OBJ), nopass, pointer :: calfun => null()
+    procedure(OBJCON), nopass, pointer :: calcfc => null()
+end type PROB_T
 
 
 contains
@@ -48,9 +57,10 @@ contains
 
 subroutine construct(prob, probname, n)
 !--------------------------------------------------------------------------------------------------!
-! This subroutine constructs a derived type PROB of type PROBLEM_T.
-! In F2003, this subroutine can be contained in the definition of PROBLEM_T, but the declaration of
-! PROB must be changed to CLASS(PROBLEM_T).
+! This subroutine constructs a derived type PROB of type PROB_T.
+! In F2003, this subroutine can be contained in the definition of PROB_T, but the declaration of
+! PROB must be changed to CLASS(PROB_T). See:
+! https://fortran-lang.discourse.group/t/a-derived-type-containing-a-callback-function-as-a-member/2364/13
 !--------------------------------------------------------------------------------------------------!
 use, non_intrinsic :: consts_mod, only : IK
 use, non_intrinsic :: debug_mod, only : errstop
@@ -62,7 +72,7 @@ character(len=*), intent(in) :: probname
 integer(IK), intent(in), optional :: n
 
 ! Outputs
-type(problem_t), intent(out) :: prob
+type(PROB_T), intent(out) :: prob
 
 ! Local variables
 character(len=*), parameter :: srname = 'CONSTRUCT'
@@ -75,12 +85,28 @@ else
 end if
 
 select case (lower(trimstr(probname)))
-case ('chebyqad')
-    call construct_chebyqad(prob, n_loc)
+case ('chebyquad')
+    call construct_chebyquad(prob, n_loc)
 case ('chrosen')
     call construct_chrosen(prob, n_loc)
+case ('circle')
+    call construct_circle(prob)
+case ('ellipsoid')
+    call construct_ellipsoid(prob)
+case ('fletcheq1')
+    call construct_fletcheq1(prob)
+case ('fletcheq2')
+    call construct_fletcheq2(prob)
 case ('hexagon')
     call construct_hexagon(prob)
+case ('hs100')
+    call construct_hs100(prob)
+case ('rsnszk')
+    call construct_rsnszk(prob)
+case ('ptinsq')
+    call construct_ptinsq(prob, n_loc)
+case ('tetrahedron')
+    call construct_tetrahedron(prob)
 case ('trigsabs')
     call construct_trigsabs(prob, n_loc)
 case ('trigssqs')
@@ -95,14 +121,14 @@ end subroutine construct
 
 subroutine destruct(prob)
 !--------------------------------------------------------------------------------------------------!
-! This subroutine destructs a derived type PROB of type PROBLEM_T.
+! This subroutine destructs a derived type PROB of type PROB_T.
 ! F2003 has the FINALIZATION mechanism for derived types, but not yet supported by all compilers.
 ! Here we code an explicit destructor. It must be called when PROB is not used anymore.
-! In F2003, this subroutine can be contained in the definition of PROBLEM_T as a FINAL subroutine.
+! In F2003, this subroutine can be contained in the definition of PROB_T as a FINAL subroutine.
 !--------------------------------------------------------------------------------------------------!
 implicit none
 ! Inputs
-type(problem_t), intent(inout) :: prob
+type(PROB_T), intent(inout) :: prob
 
 !if (allocated(prob % probname)) then
 !    deallocate (prob % probname)
@@ -133,11 +159,27 @@ nullify (prob % calcfc)
 end subroutine destruct
 
 
-include 'chebyqad.f90'
+include 'chebyquad.f90'
 
 include 'chrosen.f90'
 
+include 'circle.f90'
+
+include 'ellipsoid.f90'
+
+include 'fletcheq1.f90'
+
+include 'fletcheq2.f90'
+
 include 'hexagon.f90'
+
+include 'hs100.f90'
+
+include 'rsnszk.f90'
+
+include 'ptinsq.f90'
+
+include 'tetrahedron.f90'
 
 include 'trigsabs.f90'
 

@@ -7,7 +7,7 @@ module circle_mod
 !
 ! Started: January 2021
 !
-! Last Modified: Thursday, January 06, 2022 AM11:36:11
+! Last Modified: Thursday, January 06, 2022 PM07:22:38
 !
 ! N.B.: Both CIRCLE_MIN and CIRCLE_MAXABS require an input GRID_SIZE, the size of the grid used in
 ! the search. Powell chose GRID_SIZE = 50 in NEWUOA. MAGICALLY, this number works the best for
@@ -20,13 +20,13 @@ private
 public :: circle_min, circle_maxabs
 
 abstract interface
-    function FUN_WITH_ARGS(x, args) result(f)
+    function FUNC_WITH_ARGS(x, args) result(f)
     use, non_intrinsic :: consts_mod, only : RP
     implicit none
     real(RP), intent(in) :: x
     real(RP), intent(in) :: args(:)
     real(RP) :: f
-    end function FUN_WITH_ARGS
+    end function FUNC_WITH_ARGS
 end interface
 
 
@@ -47,7 +47,7 @@ use, non_intrinsic :: infnan_mod, only : is_nan
 implicit none
 
 ! Inputs
-procedure(FUN_WITH_ARGS) :: fun
+procedure(FUNC_WITH_ARGS) :: fun
 real(RP), intent(in) :: args(:)
 integer(IK), intent(in) :: grid_size
 
@@ -88,7 +88,7 @@ iopt = int(minloc(fval, mask=(.not. is_nan(fval)), dim=1) - 1, IK)
 fopt = fval(iopt + 1)
 fa = fval(modulo(iopt - 1_IK, grid_size) + 1)
 fb = fval(modulo(iopt + 1_IK, grid_size) + 1)
-if (abs(fa - fb) > ZERO) then
+if (abs(fa - fb) > 0) then
     fa = fa - fopt
     fb = fb - fopt
     step = HALF * (fa - fb) / (fa + fb)
@@ -124,7 +124,7 @@ use, non_intrinsic :: infnan_mod, only : is_nan
 implicit none
 
 ! Inputs
-procedure(FUN_WITH_ARGS) :: fun
+procedure(FUNC_WITH_ARGS) :: fun
 real(RP), intent(in) :: args(:)
 integer(IK), intent(in) :: grid_size
 
@@ -165,7 +165,7 @@ iopt = int(maxloc(abs(fval), mask=(.not. is_nan(fval)), dim=1) - 1, IK)
 fopt = fval(iopt + 1)
 fa = fval(modulo(iopt - 1_IK, grid_size) + 1)
 fb = fval(modulo(iopt + 1_IK, grid_size) + 1)
-if (abs(fa - fb) > ZERO) then
+if (abs(fa - fb) > 0) then
     fa = fa - fopt
     fb = fb - fopt
     step = HALF * (fa - fb) / (fa + fb)
