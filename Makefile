@@ -103,6 +103,10 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a compiler-specific test
 
+test_empty: test_empty.f90
+	nvfortran -C -O3 test_empty.f90
+	./a.out
+
 test_uoa: test_uoa.f90
 	af95 -no-pie -m1 -en -et -Rb -Rc -Rs -Rp -g -O0 -TENV:simd_zmask=off -TENV:simd_omask=off -TENV:simd_imask=off \
     ./common/consts.F90 ./common/info.f90 ./common/infnan.F90 ./common/debug.F90 ./common/memory.F90 ./common/linalg.F90 ./common/circle.f90 ./common/string.f90 ./common/rand.f90 ./common/ratio.f90 ./common/redrho.f90 ./common/history.f90 ./common/selectx.f90 ./common/checkexit.f90 ./common/output.f90 ./common/preproc.f90 ./common/pintrf.f90 ./common/evaluate.f90 ./common/ieee_4dev.f90 ./solvers/uob.f90 ./solvers/solver_uoa.f90 ./testsuite/param.f90 ./testsuite/noise.f90 ./testsuite/prob.f90 test_uoa.f90
