@@ -231,26 +231,26 @@ if (present(fhist)) then
 end if
 deallocate (fhist_loc)
 
-! If MAXFHIST_IN >= NF_LOC > MAXFHIST_LOC, warn that not all history is recorded.
-if ((present(xhist) .or. present(fhist)) .and. maxhist_loc < nf_loc) then
-    write (wmsg, ifmt) maxhist_loc
-    call warning(solver, 'Only the history of the last '//trim(wmsg)//' iteration(s) is recorded')
-end if
+!! If MAXFHIST_IN >= NF_LOC > MAXFHIST_LOC, warn that not all history is recorded.
+!if ((present(xhist) .or. present(fhist)) .and. maxhist_loc < nf_loc) then
+!    write (wmsg, ifmt) maxhist_loc
+!    call warning(solver, 'Only the history of the last '//trim(wmsg)//' iteration(s) is recorded')
+!end if
 
-! Postconditions
-if (DEBUGGING) then
-    call assert(nf_loc <= maxfun_loc, 'NF <= MAXFUN', srname)
-    call assert(size(x) == n .and. .not. any(is_nan(x)), 'SIZE(X) == N, X does not contain NaN', srname)
-    nhist = min(nf_loc, maxhist_loc)
-    if (present(xhist)) then
-        call assert(size(xhist, 1) == n .and. size(xhist, 2) == nhist, 'SIZE(XHIST) == [N, NHIST]', srname)
-        call assert(.not. any(is_nan(xhist)), 'XHIST does not contain NaN', srname)
-    end if
-    if (present(fhist)) then
-        call assert(size(fhist) == nhist, 'SIZE(FHIST) == NHIST', srname)
-        call assert(.not. any(fhist < f), 'F is the smallest in FHIST', srname)
-    end if
-end if
+!! Postconditions
+!if (DEBUGGING) then
+!    call assert(nf_loc <= maxfun_loc, 'NF <= MAXFUN', srname)
+!    call assert(size(x) == n .and. .not. any(is_nan(x)), 'SIZE(X) == N, X does not contain NaN', srname)
+!    nhist = min(nf_loc, maxhist_loc)
+!    if (present(xhist)) then
+!        call assert(size(xhist, 1) == n .and. size(xhist, 2) == nhist, 'SIZE(XHIST) == [N, NHIST]', srname)
+!        call assert(.not. any(is_nan(xhist)), 'XHIST does not contain NaN', srname)
+!    end if
+!    if (present(fhist)) then
+!        call assert(size(fhist) == nhist, 'SIZE(FHIST) == NHIST', srname)
+!        call assert(.not. any(fhist < f), 'F is the smallest in FHIST', srname)
+!    end if
+!end if
 
 end subroutine uoa
 

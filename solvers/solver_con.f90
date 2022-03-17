@@ -8,18 +8,18 @@ contains
 
 
 subroutine solver_con(calcfc, x, f, constr, m, Aineq, bineq, Delta0)
-use, non_intrinsic :: consts_mod, only : RP, IK, CTOL_DFT, MAXFILT_DFT
-use, non_intrinsic :: evaluate_mod, only : evalfc
+use, non_intrinsic :: consts_mod, only : RP, IK, CTOL_DFT, CWEIGHT_DFT, MAXFILT_DFT
+use, non_intrinsic :: evaluate_mod, only : evaluate
 use, non_intrinsic :: linalg_mod, only : matprod
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: rand_mod, only : randn
 use, non_intrinsic :: selectx_mod, only : savefilt
-use, non_intrinsic :: pintrf_mod, only : FUNCON
+use, non_intrinsic :: pintrf_mod, only : OBJCON
 
 implicit none
 
 ! Inputs
-procedure(FUNCON) :: calcfc
+procedure(OBJCON) :: calcfc
 integer(IK), intent(in) :: m
 real(RP), intent(in) :: Aineq(:, :)
 real(RP), intent(in) :: bineq(:)
@@ -50,13 +50,14 @@ real(RP) :: fopt
 real(RP) :: xfilt(size(x), size(cfilt))
 real(RP) :: xopt(size(x))
 real(RP), parameter :: ctol = CTOL_DFT
+real(RP), parameter :: cweight = CWEIGHT_DFT
 
 n = int(size(x), kind(n))
 
 call safealloc(constr, m)
 
-call evalfc(calcfc, x, f, constr, cstrv)
-cstrv = maxval([cstrv, bineq - matprod(Aineq, x)])
+call evaluate(calcfc, x, f, constr, cstrv)
+cstrv = maxval([cstrv, bineq - matprod(transpose(Aineq), x)])
 xopt = x
 fopt = f
 copt = cstrv
@@ -67,8 +68,8 @@ do iout = 1, 3
     do iin = 1, 3
         nf = nf + 1_IK
         x = x + randn(n) * Delta0 / real(nf, RP)
-        call evalfc(calcfc, x, f, constr, cstrv)
-        cstrv = maxval([0.0_RP, -constr, bineq - matprod(Aineq, x)])
+        call evaluate(calcfc, x, f, constr, cstrv)
+        cstrv = maxval([0.0_RP, -constr, bineq - matprod(transpose(Aineq), x)])
         print *, 'Function evaluation No.', nf
         print *, 'Function value', f
         print *, 'constraint violation', cstrv
@@ -78,17 +79,17 @@ do iout = 1, 3
             copt = cstrv
         end if
 
-        call savefilt(constr, cstrv, ctol, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
+        call savefilt(constr, cstrv, ctol, cweight, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
 
         imat = mod(nf, n + 1_IK) + 1_IK
         conmat(:, imat) = constr
-        call savefilt(conmat(:, imat), cstrv, ctol, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
+        call savefilt(conmat(:, imat), cstrv, ctol, cweight, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
     end do
 end do
 
 x = xopt
 f = fopt
-call evalfc(calcfc, x, f, constr, cstrv)
+call evaluate(calcfc, x, f, constr, cstrv)
 
 
 end subroutine solver_con

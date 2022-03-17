@@ -35,8 +35,10 @@ test:
 	$(MAKE) ntest
 	$(MAKE) stest
 	$(MAKE) xtest
-	$(MAKE) test_intel  # False positive of unused variable
-	$(MAKE) test_flang  # Fail
+	$(MAKE) test_empty  # nvfortran: false positive of out-of-bound index
+	$(MAKE) test_flang  # flang, aflang, nvfortran: fail
+	$(MAKE) test_intel  # ifort, ifx: false positive of unused variable
+	$(MAKE) test_ieee  # ifort, ifx: crash
 	$(MAKE) dtest  # Fail: Array, Implied do, Alloc
 	$(MAKE) ftest  # Fail: Array, Implied do, Alloc
 	$(MAKE) vtest  # Fail: Array, Implied do, Alloc
@@ -107,11 +109,6 @@ test_empty: test_empty.f90
 	nvfortran -C -O3 test_empty.f90
 	./a.out
 
-test_uoa: test_uoa.f90
-	af95 -no-pie -m1 -en -et -Rb -Rc -Rs -Rp -g -O0 -TENV:simd_zmask=off -TENV:simd_omask=off -TENV:simd_imask=off \
-    ./common/consts.F90 ./common/info.f90 ./common/infnan.F90 ./common/debug.F90 ./common/memory.F90 ./common/linalg.F90 ./common/circle.f90 ./common/string.f90 ./common/rand.f90 ./common/ratio.f90 ./common/redrho.f90 ./common/history.f90 ./common/selectx.f90 ./common/checkexit.f90 ./common/output.f90 ./common/preproc.f90 ./common/pintrf.f90 ./common/evaluate.f90 ./common/ieee_4dev.f90 ./solvers/uob.f90 ./solvers/solver_uoa.f90 ./testsuite/param.f90 ./testsuite/noise.f90 ./testsuite/prob.f90 test_uoa.f90
-	./a.out
-
 test_ieee: test_ieee.f90
 	ifx --version && ifx -warn all -c test_ieee.f90  # Crash: ifx (IFORT) 2022.0.0 20211123
 	ifort --version && ifort -warn all -c test_ieee.f90  # Crash: ifort (IFORT) 2021.5.0 20211109
@@ -129,6 +126,7 @@ test_intel: test_intel.f90
 	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
 	ratio.o resolution.o history.o selectx.o circle.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
 	solver_unc.o solver_con.o \
+	uob.o solver_uoa.o \
 	param.o noise.o prob.o test_solver.o \
 	test_implied_do.o test_count.o test_alloc.o test_filt.o \
 	test_array12.o test_array3.o \

@@ -19,11 +19,11 @@ use, non_intrinsic :: consts_mod, only : MAXFUN_DIM_DFT, MAXFILT_DFT
 use, non_intrinsic :: consts_mod, only : RHOBEG_DFT, RHOEND_DFT, CTOL_DFT, FTARGET_DFT, IPRINT_DFT
 use, non_intrinsic :: consts_mod, only : RP, IK, ZERO, TEN, TENTH, EPS, MSGLEN
 use, non_intrinsic :: debug_mod, only : assert, errstop, warning
-use, non_intrinsic :: evaluate_mod, only : eval_count, f_x0, constr_x0
+!use, non_intrinsic :: evaluate_mod, only : eval_count, f_x0, constr_x0
 use, non_intrinsic :: history_mod, only : prehist
 use, non_intrinsic :: infnan_mod, only : is_nan, is_inf, is_finite, is_neginf, is_posinf
 use, non_intrinsic :: memory_mod, only : safealloc
-use, non_intrinsic :: pintrf_mod, only : FUNCON
+use, non_intrinsic :: pintrf_mod, only : OBJCON
 use, non_intrinsic :: selectx_mod, only : isbetter
 use, non_intrinsic :: preproc_mod, only : preproc
 
@@ -32,7 +32,7 @@ use, non_intrinsic :: preproc_mod, only : preproc
 implicit none
 
 ! Compulsory arguments
-procedure(FUNCON) :: calcfc
+procedure(OBJCON) :: calcfc
 real(RP), intent(inout) :: x(:)
 real(RP), intent(out) :: f
 

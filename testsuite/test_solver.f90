@@ -3,6 +3,7 @@ implicit none
 private
 public :: test_solver_unc
 public :: test_solver_con
+public :: test_solver_uoa
 
 
 contains
@@ -13,7 +14,7 @@ subroutine test_solver_unc()
 use, non_intrinsic :: consts_mod, only : RP, IK
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calfun, orig_calfun
-use, non_intrinsic :: prob_mod, only : PNLEN, problem_t, construct, destruct
+use, non_intrinsic :: prob_mod, only : PNLEN, PROB_T, construct, destruct
 use, non_intrinsic :: solver_unc_mod, only : solver_unc
 
 implicit none
@@ -30,12 +31,12 @@ integer(IK) :: nr
 real(RP) :: Delta0
 real(RP) :: f
 real(RP), allocatable :: x(:)
-type(problem_t) :: prob
+type(PROB_T) :: prob
 
 
 nsols = 3_IK
 nprobs = 3_IK
-probs(1:nprobs) = ['chebyqad', 'chrosen ', 'trigsabs']
+probs(1:nprobs) = ['chebyquad', 'chrosen  ', 'trigsabs ']
 nr = 3_IK
 
 do isol = 1, nsols
@@ -87,7 +88,7 @@ subroutine test_solver_con()
 use, non_intrinsic :: consts_mod, only : RP, IK
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calcfc, orig_calcfc
-use, non_intrinsic :: prob_mod, only : PNLEN, problem_t, construct, destruct
+use, non_intrinsic :: prob_mod, only : PNLEN, PROB_T, construct, destruct
 use, non_intrinsic :: solver_con_mod, only : solver_con
 
 implicit none
@@ -107,7 +108,7 @@ real(RP), allocatable :: Aineq(:, :)
 real(RP), allocatable :: bineq(:)
 real(RP), allocatable :: constr(:)
 real(RP), allocatable :: x(:)
-type(problem_t) :: prob
+type(PROB_T) :: prob
 
 
 nsols = 3_IK
@@ -165,6 +166,58 @@ do isol = 1, nsols
 end do
 
 end subroutine test_solver_con
+
+subroutine test_solver_uoa()
+
+use, non_intrinsic :: consts_mod, only : RP, IK, TWO, TEN, ZERO, HUGENUM
+use, non_intrinsic :: memory_mod, only : safealloc
+use, non_intrinsic :: uoa_mod, only : uoa
+use, non_intrinsic :: noise_mod, only : noisy, noisy_calfun, orig_calfun
+use, non_intrinsic :: param_mod, only : MINDIM_DFT, MAXDIM_DFT, DIMSTRIDE_DFT, NRAND_DFT, RANDSEED_DFT
+use, non_intrinsic :: prob_mod, only : PNLEN, PROB_T, construct, destruct
+use, non_intrinsic :: string_mod, only : trimstr, istr
+
+implicit none
+
+character(len=PNLEN) :: probname
+character(len=PNLEN) :: probs_loc(100)
+integer(IK) :: dimstride_loc
+integer(IK), parameter :: iprint = 1
+integer(IK) :: iprob
+integer(IK) :: maxdim_loc
+integer(IK), parameter :: maxfun = 2887
+integer(IK), parameter :: maxhist = 2420
+integer(IK) :: mindim_loc
+integer(IK), parameter :: n = 19
+integer(IK) :: nprobs
+integer(IK), parameter :: npt = 259
+integer(IK) :: npt_list(10)
+real(RP) :: f
+real(RP), parameter :: ftarget = -1.0E10_RP
+real(RP), parameter :: rhobeg = 1.0_RP
+real(RP), parameter :: rhoend = 1.0E-1_RP
+real(RP), allocatable :: fhist(:)
+real(RP), allocatable :: x(:)
+real(RP), allocatable :: xhist(:, :)
+type(PROB_T) :: prob
+
+probname = 'vardim'
+
+call construct(prob, probname, n)  ! Construct the testing problem.
+
+call safealloc(x, n) ! Not all compilers support automatic allocation yet, e.g., Absoft.
+x = noisy(prob % x0)
+orig_calfun => prob % calfun
+
+call uoa(noisy_calfun, x, f, rhobeg=rhobeg, rhoend=rhoend, npt=npt, maxfun=maxfun, &
+    & maxhist=maxhist, fhist=fhist, xhist=xhist, ftarget=ftarget, iprint=iprint)
+
+call destruct(prob)  ! Destruct the testing problem.
+! DESTRUCT deallocates allocated arrays/pointers and nullify the pointers. Must be called.
+deallocate (x)
+nullify (orig_calfun)
+
+end subroutine test_solver_uoa
 
 
 end module test_solver_mod

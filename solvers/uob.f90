@@ -94,6 +94,8 @@ maxhist = max(maxxhist, maxfhist)
 ! Arrange FHIST and XHIST so that they are in the chronological order.
 nf = 2859_IK
 write (*, *) 'Returning'
+xhist = huge(xhist)
+fhist = huge(fhist)
 call rangehist(nf, xhist, fhist)
 
 end subroutine uob
