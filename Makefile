@@ -41,7 +41,7 @@ test:
 	$(MAKE) test_ieee  # ifort, ifx: crash
 	$(MAKE) dtest  # Fail: Array, Implied do, Alloc
 	$(MAKE) ftest  # Fail: Array, Implied do, Alloc
-	$(MAKE) vtest  # Fail: Array, Implied do, Alloc
+	$(MAKE) vtest  # Fail: Array, Implied do, Alloc, Empty
 	$(MAKE) ltest  # Fail
 	$(MAKE) 9test  # Fail
 
