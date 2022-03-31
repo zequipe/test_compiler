@@ -39,9 +39,9 @@ test:
 	$(MAKE) test_flang  # flang, aflang, nvfortran: fail
 	$(MAKE) test_intel  # ifort, ifx: false positive of unused variable
 	$(MAKE) test_ieee  # ifort, ifx: crash
-	$(MAKE) dtest  # Fail: Array, Implied do, Alloc
-	$(MAKE) ftest  # Fail: Array, Implied do, Alloc
-	$(MAKE) vtest  # Fail: Array, Implied do, Alloc, Empty
+	$(MAKE) dtest  # Fail: Array, Implied do, Alloc, Solve
+	$(MAKE) ftest  # Fail: Array, Implied do, Alloc, Solve
+	$(MAKE) vtest  # Fail: Array, Implied do, Alloc, Empty, Solve
 	$(MAKE) ltest  # Fail
 	$(MAKE) 9test  # Fail
 
@@ -104,6 +104,11 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 
 ####################################################################################################
 # Making a compiler-specific test
+
+test_solve: test_solve.f90
+	flang -Mbounds test_solve.f90 && ./a.out
+	nvfortran -Mbounds test_solve.f90 && ./a.out
+	$(AFLANG) -Mbounds test_solve.f90 && ./a.out
 
 test_empty: test_empty.f90
 	nvfortran -C -O3 test_empty.f90
