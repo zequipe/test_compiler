@@ -58,6 +58,10 @@ make stest  # Test sunf95
 * [Fortran Discourse](https://fortran-lang.discourse.group):
 [Availability and applicability of Fortran compilers for a project](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project)
 
+* Flang GitHub Issue: [False positive: out-bound subscripts](https://github.com/flang-compiler/flang/issues/1238)
+
+* NVIDIA Developer Forums: [Bug in nvfortran 22.3: false positive of out-bound subscripts](https://forums.developer.nvidia.com/t/bug-in-nvfortran-22-3-false-positive-of-out-bound-subscripts)
+
 * NVIDIA Developer Forums: [Bug of nvfortran 22.2-0: array subscript triplet handled wrongly](https://forums.developer.nvidia.com/t/bug-of-nvfortran-22-2-0-array-subscript-triplet-handled-wrongly/)
 
 * Intel Community: [Bug: ifort and ifx crash when compiling a piece of (invalid) code involving ieee_arithmetic](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-ifort-and-ifx-crash-when-compiling-a-piece-of-invalid-code/m-p/1365757#M160431)
