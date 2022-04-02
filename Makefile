@@ -104,18 +104,18 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a compiler-specific test
 
 test_solve: test_solve.f90
-	flang -C -O3 test_solve.f90 && ./a.out  # OK
-	$(AFLANG) -C -O3 test_solve.f90 && ./a.out  # OK
+	flang -C -O3 test_solve.f90 && ./a.out  # OK, -C unused
+	$(AFLANG) -C -O3 test_solve.f90 && ./a.out  # OK, -C unused
 	flang -Mbounds test_solve.f90 && ./a.out
 	$(AFLANG) -Mbounds test_solve.f90 && ./a.out
-	nvfortran -C test_solve.f90 && ./a.out
 	nvfortran -Mbounds test_solve.f90 && ./a.out
+	nvfortran -C test_solve.f90 && ./a.out
 
 test_empty: test_empty.f90
-	flang -C -O3 test_empty.f90 && ./a.out  # OK
 	flang -Mbounds test_empty.f90 && ./a.out  # OK
+	flang -C -O3 test_empty.f90 && ./a.out  # OK, -C unused
 	$(AFLANG) -Mbounds test_empty.f90 && ./a.out  # OK
-	$(AFLANG) -C -O3 test_empty.f90 && ./a.out  # OK
+	$(AFLANG) -C -O3 test_empty.f90 && ./a.out  # OK, -C unused
 	nvfortran -Mbounds test_empty.f90 && ./a.out  # OK
 	nvfortran -C test_empty.f90 && ./a.out  # OK
 	nvfortran -C -O3 test_empty.f90 && ./a.out
