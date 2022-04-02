@@ -6,8 +6,6 @@
 #
 # Last Modified: Dec 16, 2021
 
-.SILENT:
-
 .PHONY: test clean
 
 ####################################################################################################
@@ -106,13 +104,20 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a compiler-specific test
 
 test_solve: test_solve.f90
+	flang -C -O3 test_solve.f90 && ./a.out  # OK
+	$(AFLANG) -C -O3 test_solve.f90 && ./a.out  # OK
 	flang -Mbounds test_solve.f90 && ./a.out
-	nvfortran -Mbounds test_solve.f90 && ./a.out
 	$(AFLANG) -Mbounds test_solve.f90 && ./a.out
+	nvfortran -C -O3 test_solve.f90 && ./a.out
+	nvfortran -Mbounds test_solve.f90 && ./a.out
 
 test_empty: test_empty.f90
-	nvfortran -C -O3 test_empty.f90
-	./a.out
+	flang -C -O3 test_empty.f90 && ./a.out  # OK
+	flang -Mbounds test_empty.f90 && ./a.out  # OK
+	$(AFLANG) -Mbounds test_empty.f90 && ./a.out  # OK
+	$(AFLANG) -C -O3 test_empty.f90 && ./a.out  # OK
+	nvfortran -Mbounds test_empty.f90 && ./a.out  # OK
+	nvfortran -C -O3 test_empty.f90 && ./a.out
 
 test_ieee: test_ieee.f90
 	ifx --version && ifx -warn all -c test_ieee.f90  # Crash: ifx (IFORT) 2022.0.0 20211123
