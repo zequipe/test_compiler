@@ -103,6 +103,9 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a compiler-specific test
 
+test_sym: test_sym.f90
+	$(AFORT) test_sym.f90 && ./a.out
+
 test_solve: test_solve.f90
 	flang -O3 test_solve.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
 	$(AFLANG) -O3 test_solve.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
