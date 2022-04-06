@@ -104,6 +104,7 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a compiler-specific test
 
 test_sym: test_sym.f90
+	nagfor test_sym.f90 && ./a.out
 	$(AFORT) test_sym.f90 && ./a.out
 
 test_solve: test_solve.f90
