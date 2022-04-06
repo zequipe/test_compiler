@@ -1,7 +1,7 @@
 !        This is file : test_sym
 ! Author= zaikunzhang
 ! Started at: 05.04.2022
-! Last Modified: Wednesday, April 06, 2022 PM11:02:12
+! Last Modified: Wednesday, April 06, 2022 PM11:17:10
 
 program testsym
 use, intrinsic :: iso_fortran_env, only : RP => REAL128
@@ -21,7 +21,7 @@ x = [5.67635718134880359791797203535324E+036_RP, -9.6822255344699458051102122703
 y = reshape(x, [4, 4])
 z = y + transpose(y)
 
-!write (*, *) (y + transpose(y)) == transpose(y + transpose(y))  ! This line cannot be compiled by Absoft Fortran
+write (*, *) (y + transpose(y)) == transpose(y + transpose(y))  ! This line cannot be compiled by Absoft Fortran
 
 yeq = (y(1, 3) + y(3, 1) == y(3, 1) + y(1, 3))
 if (yeq) then
