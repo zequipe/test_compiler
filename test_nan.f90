@@ -1,7 +1,7 @@
 !        This is file : test_nan
 ! Author= zaikunzhang
 ! Started at: 16.04.2022
-! Last Modified: Saturday, April 16, 2022 AM11:49:14
+! Last Modified: Saturday, April 16, 2022 PM12:03:59
 
 program test_nan
 !use, intrinsic :: iso_fortran_env, only : RP => REAL32
@@ -23,5 +23,10 @@ write (*, *) 'YLEH = ', yleh, ', Expected', .true.
 write (*, *) 'YGEH = ', ygeh, ', Expected', .true.
 write (*, *) 'AYGH = ', aygh, ', Expected', .false.
 write (*, *) 'YISNAN = ', yisnan, ', Expected', .false.
+
+if (yisnan) then
+    write (*, *) 'Error: Y is recognized as NaN while it is', y
+    stop 1
+end if
 
 end program test_nan
