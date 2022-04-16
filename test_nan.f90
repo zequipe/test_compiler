@@ -1,11 +1,11 @@
 !        This is file : test_nan
 ! Author= zaikunzhang
 ! Started at: 16.04.2022
-! Last Modified: Saturday, April 16, 2022 PM12:03:59
+! Last Modified: Saturday, April 16, 2022 PM12:17:58
 
 program test_nan
-!use, intrinsic :: iso_fortran_env, only : RP => REAL32
-!use, intrinsic :: iso_fortran_env, only : RP => REAL64
+!use, intrinsic :: iso_fortran_env, only : RP => REAL32  ! Should be tested also
+!use, intrinsic :: iso_fortran_env, only : RP => REAL64  ! Should be tested also
 use, intrinsic :: iso_fortran_env, only : RP => REAL128
 implicit none
 
