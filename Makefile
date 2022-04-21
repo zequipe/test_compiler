@@ -52,12 +52,7 @@ test:
 	-fimplicit-none -fbounds-check -ftrace=full
 
 # Absoft af95
-ifneq ("$(wildcard /etc/debian_version)","")
-	AFORT = af95 -no-pie
-else
-	AFORT = af95
-endif
-ates%: FC = $(AFORT) -m1 -en -et -Rb -Rc -Rs -Rp
+ates%: FC = af95 -m1 -en -et -Rb -Rc -Rs -Rp
 
 # AMD AOCC Flang
 AFLANG := $(shell find /opt/AMD \( -type l -o -type f \) -executable -name flang -print -quit 2> /dev/null || echo AFLANG_NOT_FOUND)
@@ -108,11 +103,11 @@ test_vec: test_vec.f90
 	sunf95 test_vec.f90 && ./a.out
 
 test_nan: test_nan.f90
-	$(AFORT) test_nan.f90 && ./a.out
+	af95 test_nan.f90 && ./a.out
 
 test_sym: test_sym.f90
 	nagfor test_sym.f90 && ./a.out
-	$(AFORT) test_sym.f90 && ./a.out
+	af95 test_sym.f90 && ./a.out
 
 test_solve: test_solve.f90
 	flang -O3 test_solve.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
