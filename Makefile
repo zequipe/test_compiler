@@ -105,6 +105,9 @@ test_vec: test_vec.f90
 	nagfor test_vec.f90 && ./a.out
 	sunf95 test_vec.f90 && ./a.out
 
+test_infnan: test_infnan.f90
+	af95 test_infnan.f90 && ./a.out
+
 test_nan: test_nan.f90
 	af95 test_nan.f90 && ./a.out
 
