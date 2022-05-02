@@ -98,6 +98,9 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a compiler-specific test
 
+test_rank: test_rank.f90
+	nagfor -C test_rank.f90 && ./a.out
+
 test_loc: test_loc.f90
 	nagfor test_loc.f90 && ./a.out
 
