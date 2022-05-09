@@ -98,6 +98,14 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a compiler-specific test
 
+test_shape: test_shape.f90
+	ifx test_shape.f90 && ./a.out
+	ifx -warn shape test_shape.f90 && ./a.out
+	ifx -check shape test_shape.f90 && ./a.out
+	ifort test_shape.f90 && ./a.out
+	ifort -warn shape test_shape.f90 &&./a.out
+	ifort -check shape test_shape.f90 &&./a.out
+
 test_rank: test_rank.f90
 	nagfor -C test_rank.f90 && ./a.out
 
