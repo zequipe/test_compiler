@@ -99,7 +99,7 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a compiler-specific test
 
 test_trace: test_trace.f90
-	af95 -et -TENV:simd_zmask=off  test_trace.f90  && ./a.out
+	af95 -g -et -TENV:simd_zmask=off  test_trace.f90  && ./a.out
 
 test_shape: test_shape.f90
 	ifx test_shape.f90 && ./a.out
