@@ -100,6 +100,7 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 
 test_index: test_index.f90
 	af95 -g -m1 -en -et -Rb -Rc -Rs -Rp test_index.f90 && ./a.out
+	af95 test_index.f90 && ./a.out
 
 test_def: test_def.f90
 	nagfor -C=undefined test_def.f90 && ./a.out
