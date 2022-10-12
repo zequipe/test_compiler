@@ -33,7 +33,7 @@ test:
 	$(MAKE) ntest
 	$(MAKE) stest
 	$(MAKE) xtest
-	$(MAKE) test_empty  # nvfortran: false positive of out-of-bound index
+	$(MAKE) test_empty
 	$(MAKE) test_flang  # flang, aflang, nvfortran: fail
 	$(MAKE) test_intel  # ifort, ifx: false positive of unused variable
 	$(MAKE) test_ieee  # ifort, ifx: crash
