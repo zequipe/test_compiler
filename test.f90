@@ -46,6 +46,18 @@ print *, 'Test: CIRCLE.'
 call test_circle()
 print *, 'Succeed: CIRCLE.'
 
+print *, 'Test: Unconstrained solver'
+call test_solver_unc()
+print *, 'Succeed: Unconstrained solver'
+
+print *, 'Test: UOA'
+call test_solver_uoa()
+print *, 'Succeed: UOA'
+
+print *, 'Test: Count.'
+call test_count()
+print *, 'Succeed: Count.'
+
 !--------------------------------------------------------------------------------------------------!
 !==========================================================================================!
 ! Sometimes, but not always, nagfor 7.0 raises the following error when handling Alloc1/2/3:
@@ -70,24 +82,12 @@ call test_alloc2()  ! NAG nagfor: `Fatal error: glibc detected an invalid stdio 
 print *, 'Succeed: Alloc3.'
 !--------------------------------------------------------------------------------------------------!
 
-print *, 'Test: Count.'
-call test_count()
-print *, 'Succeed: Count.'
-
 print *, 'Test: Implied do.'
 call test_implied_do()
 print *, 'Succeed: Implied do.'
 
-print *, 'Test: Unconstrained solver'
-call test_solver_unc()
-print *, 'Succeed: Unconstrained solver'
-
 print *, 'Test: Constrained solver'
 call test_solver_con()
 print *, 'Succeed: Constrained solver'
-
-print *, 'Test: UOA'
-call test_solver_uoa()
-print *, 'Succeed: UOA'
 
 end program test

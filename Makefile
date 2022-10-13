@@ -158,9 +158,9 @@ test_ieee: test_ieee.f90
 	ifort --version && ifort -warn all -c test_ieee.f90  # Crash: ifort (IFORT) 2021.5.0 20211109
 
 test_flang: test_flang.f90
-	flang --version && flang test_flang.f90
 	nvfortran --version && nvfortran test_flang.f90
 	$(AFLANG) --version && $(AFLANG) test_flang.f90
+	flang --version && flang test_flang.f90
 
 test_intel: test_intel.f90
 	ifort --version && ifort -warn all test_intel.f90 && ./a.out

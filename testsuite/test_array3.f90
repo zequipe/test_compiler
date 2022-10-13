@@ -7,7 +7,8 @@ public :: array3
 contains
 
 subroutine array3()
-integer, parameter :: RP = REAL128
+!integer, parameter :: RP = REAL128
+integer, parameter :: RP = REAL64
 integer, parameter :: m = 2
 integer, parameter :: n = 200
 integer, parameter :: k = 198
