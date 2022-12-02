@@ -17,7 +17,7 @@ that develops optimization solvers.
 * :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 7.1.0 (fail: `Array`, `Alloc`, `Implied do`, `Solve`)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94 (insufficient support for F03 constructs)
 * :ballot_box_with_check: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 9.3.0
-* :negative_squared_cross_mark: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.7.0 (fail: `test_intel`)
+* :negative_squared_cross_mark: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.7.1 (fail: `test_intel`, `test_intel_sym`)
 * :negative_squared_cross_mark: [Intel `ifx`](https://www.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top/language-reference/new-features-for-ifx.html) 2022.2.0 (fail: `test_intel`)
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b (insufficient support for F03 constructs)
 * :negative_squared_cross_mark: [NAG `nagfor`](https://www.nag.com/content/nag-fortran-compiler) [Release 7.0](http://monet.nag.co.uk/compiler/r70download/) (Yurakucho) Build 7074 (fail: `test_sym`)
@@ -79,6 +79,10 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 * Intel Community: [Bug in `ifort` and `ifx` from oneAPI 2021.2.0 & 2022.0.1: false positive of unused variable](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-in-ifort-and-ifx-from-oneAPI-2021-2-0-amp-2022-0-1-false/m-p/1348942#M159177)
 
 * Intel Community: [Bug? Strange error raised by `ifort -check shape`](https://community.intel.com/t5/Intel-Fortran-Compiler/Bug-Strange-error-raised-by-ifort-check-shape/m-p/1316901#M157651)
+
+* [Fortran Discourse](https://fortran-lang.discourse.group): [Strange behavior of `ifort`](https://fortran-lang.discourse.group/t/strange-behavior-of-ifort)
+
+* Intel Communities: [A bug of ifort (IFORT) 2021.7.1 20221019](https://community.intel.com/t5/Intel-oneAPI-Base-Toolkit/A-bug-of-ifort-IFORT-2021-7-1-20221019/m-p/1435194#M2603)
 
 ## Contact
 

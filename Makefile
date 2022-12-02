@@ -98,6 +98,17 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a compiler-specific test
 
+test_intel_sym: test_intel_sym.f90
+	ifort -O0 test_intel_sym.f90 && ./a.out
+	ifort -O1 test_intel_sym.f90 && ./a.out
+	ifort -Ofast test_intel_sym.f90 && ./a.out
+	ifort test_intel_sym.f90 && ./a.out
+	ifort -O test_intel_sym.f90 && ./a.out
+	ifort -O2 test_intel_sym.f90 && ./a.out
+	ifort -O3 test_intel_sym.f90 && ./a.out
+	ifort -O4 test_intel_sym.f90 && ./a.out
+	ifort -O5 test_intel_sym.f90 && ./a.out
+
 test_index: test_index.f90
 	af95 -g -m1 -en -et -Rb -Rc -Rs -Rp test_index.f90 && ./a.out
 	af95 test_index.f90 && ./a.out
