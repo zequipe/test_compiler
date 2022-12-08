@@ -84,6 +84,8 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 
 * Intel Communities: [A bug of ifort (IFORT) 2021.7.1 20221019](https://community.intel.com/t5/Intel-oneAPI-Base-Toolkit/A-bug-of-ifort-IFORT-2021-7-1-20221019/m-p/1435194#M2603)
 
+* [Fortran Discourse](https://fortran-lang.discourse.group): [`1/inf =?` `ifort` says `NaN`](https://fortran-lang.discourse.group/t/1-inf-ifort-says-nan)
+
 ## Contact
 
 Feel free to contact me if you would like to suggest a compiler or have questions about the test.
