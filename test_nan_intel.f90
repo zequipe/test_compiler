@@ -4,19 +4,24 @@
 ! ifort (IFORT) 2021.7.1 20221019
 ! Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
 !
-! A =   6.9849113E+26  2.1425830E+27 -1.4108133E+27 -1.4853050E+26 -2.1667708E+27
+! IEEE_SUPPORT_INF =  T
+! A =    1.000000       1.000000       1.000000       1.000000       1.000000
 ! B =        Infinity
 ! A / B =             NaN            NaN            NaN            NaN   0.0000000E+00
 !--------------------------------------------------------------------------------------------------!
 
 program test
+use, intrinsic :: ieee_arithmetic, only : ieee_value, ieee_positive_inf, ieee_support_inf
+
 implicit none
 
-real, parameter :: a(5) = [6.9849113E+26, 2.1425830E+27, -1.4108133E+27, -1.4853050E+26, -2.1667708E+27]
+real :: a(5)
 real :: b
 
-b = 1.0 / tiny(1.0)**2
+a = 1.0
+b = ieee_value(b, ieee_positive_inf)
 
+write (*, *) 'IEEE_SUPPORT_INF = ', ieee_support_inf(a)
 write (*, *) 'A = ', a
 write (*, *) 'B = ', b
 write (*, *) 'A / B = ', a / b
