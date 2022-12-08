@@ -1,4 +1,6 @@
-! test_intel_sym.f90
+! This is not a bug, but the result is surprising.
+! See https://fortran-lang.discourse.group/t/strange-behavior-of-ifort
+! See also test_div.f90
 !--------------------------------------------------------------------------------------------------!
 ! $ ifort --version && ifort test_intel_sym.f90 && ./a.out
 !ifort (IFORT) 2021.7.1 20221019
