@@ -29,18 +29,22 @@ implicit none
 
 integer :: i
 real :: x(5)
-x = 0.3333334  ! All elements of x are set to the same value.
-x = x / 9.0  ! OR: x = x / x(1)
-print *, 'x = ', x
+x = 1.0  ! All elements of x are set to the same value.
+print *, 'Before division, x = ', x
+print *, 'All entries of x are identical?', all(x == x(1))
+x = x / 3.0  ! OR: x = x / x(1)
+print *, 'After division, x = ', x
 do i = 1, size(x)
     print *, 'i = ', i, 'x(1) == x(i)?', x(1) == x(i)
 
     print "(*(b0,1x))", x(1), x(i)
 
     if (x(1) /= x(i)) then
-        print *, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
-        print *, '!!!!!! x(1) is different from x(i) !!!!!!'
-        print *, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        print *, ''
+        print *, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        print *, '!!!!!!!!!!! Surprise! x(1) is different from x(i) !!!!!!!!!'
+        print *, '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+        print *, ''
     end if
 end do
 
