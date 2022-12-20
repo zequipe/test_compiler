@@ -96,7 +96,11 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 	-fp-trap=divzero,invalid,overflow,underflow,denorma -no-ftz -fp-model strict
 
 ####################################################################################################
-# Making a compiler-specific test
+# Making a specific test
+
+test_nan_fpe: test_nan_fpe.f90
+	ifort -standard-semantics -fp-stack-check -fpe-all=0 -traceback test_nan_fpe.f90 && ./a.out
+	gfortran -g -ffpe-trap=invalid test_nan_fpe.f90 && ./a.out
 
 test_nan_flang: test_nan_flang.f90
 	flang test_nan_flang.f90 && ./a.out

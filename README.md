@@ -88,6 +88,10 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 
 * Flang GitHub Issue: [Flang Binary Release 2019-03-29: `NaN > 0`](https://github.com/flang-compiler/flang/issues/1337)
 
+* Intel Community: [ifort raises a SIGSEGV when evaluating "NaN >= 0"](https://community.intel.com/t5/Intel-Fortran-Compiler/ifort-raises-a-SIGSEGV-when-evaluating-quot-NaN-gt-0-quot/td-p/1440104)
+
+* Fortran Discourse: [Is comparison with `NaN` considered an erroneous arithmetic operation?](https://fortran-lang.discourse.group/t/is-comparison-with-nan-considered-an-erroneous-arithmetic-operation-mwe-with-ifort-and-gfortran)
+
 ## Contact
 
 Feel free to contact me if you would like to suggest a compiler or have questions about the test.
