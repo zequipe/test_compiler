@@ -113,6 +113,10 @@ test_div: test_div.f90
 	ifort test_div.f90 && ./a.out
 	ifort -O2 test_div.f90 && ./a.out
 
+test_intel_sym_strong: test_intel_sym_strong.f90
+	ifx test_intel_sym_strong.f90  && ./a.out
+	ifort test_intel_sym_strong.f90  && ./a.out
+
 test_intel_sym: test_intel_sym.f90
 	ifort -O0 test_intel_sym.f90 && ./a.out
 	ifort -O1 test_intel_sym.f90 && ./a.out
@@ -229,6 +233,6 @@ test_intel: test_intel.f90
 ####################################################################################################
 # Cleaning up.
 clean:
-	rm -f *.o *.mod *.dbg
+	rm -f *.o *.mod *.dbg core.*
 	rm -f testsuite/*.o testsuite/*.mod testsuite/*.dbg
 	rm -f atest* dtest* ftest* gtest* itest* ltest* ntest* stest* vtest* xtest* a.out

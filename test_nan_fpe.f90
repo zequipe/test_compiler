@@ -8,6 +8,6 @@ real :: a
 a = ieee_value(a, ieee_quiet_nan)
 
 print *, a, ieee_is_nan(a)
-print *, a <= 0
+print *, a <= 0.0
 
 end program test_fpe
