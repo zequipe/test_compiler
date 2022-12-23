@@ -109,6 +109,10 @@ test_nan_flang: test_nan_flang.f90
 	flang -O2 test_nan_flang.f90 && ./a.out
 	flang -O3 test_nan_flang.f90 && ./a.out
 
+test_div_strong: test_div_strong.f90
+	ifort test_div_strong.f90 && ./a.out
+	ifort -O2 test_div_strong.f90 && ./a.out
+
 test_div: test_div.f90
 	ifort test_div.f90 && ./a.out
 	ifort -O2 test_div.f90 && ./a.out
