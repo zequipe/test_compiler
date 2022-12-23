@@ -92,7 +92,7 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 
 * Fortran Discourse: [Is comparison with `NaN` considered an erroneous arithmetic operation?](https://fortran-lang.discourse.group/t/is-comparison-with-nan-considered-an-erroneous-arithmetic-operation-mwe-with-ifort-and-gfortran)
 
-* Intel Community: [Ifort (IFORT) 2021.8 evaluates `1.0+37 / 1.0E+38` to 0](https://community.intel.com/t5/Intel-Fortran-Compiler/Ifort-IFORT-2021-8-evaluates-1-0E-37-1-0E-38-to-0)
+* Intel Community: [Ifort (IFORT) 2021.8 evaluates `1.0+37 / 1.0E+38` to 0](https://community.intel.com/t5/Intel-Fortran-Compiler/Ifort-IFORT-2021-8-evaluates-1-0E-37-1-0E-38-to-0/m-p/1441059)
 
 * Fortran Discourse: [Ifort (IFORT) 2021.8.0: `1.0E+37 / 1.0E+38 = 0`](https://fortran-lang.discourse.group/t/ifort-ifort-2021-8-0-1-0e-37-1-0e-38-0/4936?u=zaikunzhang)
 
