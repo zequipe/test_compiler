@@ -30,7 +30,7 @@ real :: x(5)
 x = 1.0E37  ! All elements of x are set to the same value.
 print *, 'Before division, x = ', x
 print *, 'All entries of x are identical?', all(x == x(1))
-x = x / 1.0E38  ! OR: x = x / x(1)
+x = x / 1.0E38
 print *, 'After division, x = ', x
 do i = 1, size(x)
     print *, 'i = ', i, 'x(1) == x(i)?', x(1) == x(i)
