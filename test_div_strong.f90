@@ -1,3 +1,8 @@
+! See: https://fortran-lang.discourse.group/t/ifort-ifort-2021-8-0-1-0e-37-1-0e-38-0/4936/6
+! The reason is that x(5) / 1.0E+38 is calculated as x(5) * (1 / 1.0E+38), and 1 / 1.0E+38 is
+! calculated as 0 since it is smaller than TINY(1.0) and hence denormal.
+!
+! Experiment:
 ! $ uname -a && ifort --version && ifort test_div_strong.f90 && ./a.out
 ! Linux zP 5.15.0-52-generic #58-Ubuntu SMP Thu Oct 13 08:03:55 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 !
