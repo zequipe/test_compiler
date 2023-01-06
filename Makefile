@@ -55,7 +55,7 @@ test:
 ates%: FC = af95 -m1 -en -et -Rb -Rc -Rs -Rp
 
 # AMD AOCC Flang
-AFLANG := $(shell find /opt/AMD \( -type l -o -type f \) -executable -name flang -print -quit 2> /dev/null || echo AFLANG_NOT_FOUND)
+AFLANG := $(shell find /opt/AMD \( -type l -o -type f \) -executable -name flang -print | sort | tail -n 1 2> /dev/null || echo AFLANG_NOT_FOUND)
 dtes%: FC = $(AFLANG) -std=f$(FSTD) -Wall -Wextra -Minform=warn -Mstandard -Mbounds -Mchkptr -Kieee -ffp-exception-behavior=strict
 
 # LLVM Flang
