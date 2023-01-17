@@ -96,6 +96,9 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 
 * Fortran Discourse: [Ifort (IFORT) 2021.8.0: `1.0E+37 / 1.0E+38 = 0`](https://fortran-lang.discourse.group/t/ifort-ifort-2021-8-0-1-0e-37-1-0e-38-0/4936?u=zaikunzhang)
 
+* Intel Community: [Fail to install oneAPI 2021 on Windows Server 2022](https://community.intel.com/t5/oneAPI-Registration-Download/Fail-to-install-oneAPI-2021-on-Windows-Server-2022/m-p/1445998#M164426)
+
+
 ## Contact
 
 Feel free to contact me if you would like to suggest a compiler or have questions about the test.
