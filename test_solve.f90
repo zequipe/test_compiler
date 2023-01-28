@@ -1,3 +1,8 @@
+！ Flang 15.0.3, nvfortran 23.1, and AOCC 4.0.0 are buggy concerning 0-dimensional arrays, and
+！ they report false positive out-bound indices. See 
+! https://github.com/flang-compiler/flang/issues/1238
+! https://forums.developer.nvidia.com/t/bug-in-nvfortran-22-3-false-positive-of-out-bound-subscripts/209936
+
 module solve_mod
 implicit none
 private
