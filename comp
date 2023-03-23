@@ -1,1 +1,0 @@
-nagfor -C -kind=unique -c ./common/consts.F90 ./common/debug.F90 ./common/memory.F90
