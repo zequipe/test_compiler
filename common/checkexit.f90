@@ -1,3 +1,4 @@
+!TODO: merge CHECKEXIT_UNC and CHECKEXIT_CON, using optional CSTRV and CTOL.
 module checkexit_mod
 !--------------------------------------------------------------------------------------------------!
 ! This module checks whether to exit the solver.
@@ -6,7 +7,7 @@ module checkexit_mod
 !
 ! Started: September 2021
 !
-! Last Modified: Wednesday, February 02, 2022 PM08:07:54
+! Last Modified: Monday, November 14, 2022 PM07:06:00
 !--------------------------------------------------------------------------------------------------!
 
 implicit none
@@ -30,7 +31,7 @@ function checkexit_unc(maxfun, nf, f, ftarget, x) result(info)
 use, non_intrinsic :: consts_mod, only : RP, IK, DEBUGGING
 use, non_intrinsic :: debug_mod, only : assert
 use, non_intrinsic :: infnan_mod, only : is_nan, is_posinf, is_inf
-use, non_intrinsic :: info_mod, only : INFO_DFT, NAN_INF_X, NAN_INF_F, FTARGET_ACHIEVED, MAXFUN_REACHED
+use, non_intrinsic :: infos_mod, only : INFO_DFT, NAN_INF_X, NAN_INF_F, FTARGET_ACHIEVED, MAXFUN_REACHED
 
 implicit none
 
@@ -105,7 +106,7 @@ function checkexit_con(maxfun, nf, cstrv, ctol, f, ftarget, x) result(info)
 use, non_intrinsic :: consts_mod, only : RP, IK, DEBUGGING
 use, non_intrinsic :: debug_mod, only : assert
 use, non_intrinsic :: infnan_mod, only : is_nan, is_posinf, is_inf
-use, non_intrinsic :: info_mod, only : INFO_DFT, NAN_INF_X, NAN_INF_F, FTARGET_ACHIEVED, MAXFUN_REACHED
+use, non_intrinsic :: infos_mod, only : INFO_DFT, NAN_INF_X, NAN_INF_F, FTARGET_ACHIEVED, MAXFUN_REACHED
 
 implicit none
 
@@ -153,7 +154,7 @@ if (is_nan(f) .or. is_posinf(f) .or. is_nan(cstrv) .or. is_posinf(cstrv)) then
     info = NAN_INF_F
 end if
 
-if (f <= ftarget .and. cstrv <= ctol) then
+if (cstrv <= ctol .and. f <= ftarget) then
     info = FTARGET_ACHIEVED
 end if
 

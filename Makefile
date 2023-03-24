@@ -99,7 +99,7 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a specific test
 
 test_nagfor_ice: common  # NAG Fortran Compiler Release 7.1(Hanzomon) Build 7114 encountered an ICE
-	nagfor -C -kind=unique -c ./common/consts.F90 ./common/debug.F90
+	nagfor -C -kind=unique -c ./common/consts.F90 ./common/debug.F90 ./common/memory.F90
 
 test_nan_fpe: test_nan_fpe.f90
 	ifort -standard-semantics -fp-stack-check -fpe-all=0 -traceback test_nan_fpe.f90 && ./a.out

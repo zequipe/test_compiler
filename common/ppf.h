@@ -10,11 +10,11 @@
  *
  * __RELEASED__                released or not: 1, 0
  * __DEBUGGING__               debug or not: 0, 1
- * __FORTRAN_STANDARD__        which Fortran standard to follow: 2003, 2008, 2018
- * __USE_POWELL_ALGEBRA__      use Powell's linear algebra procedures or not: 1, 0
- * __USE_INTRINSIC_ALGEBRA__   use intrinsic procedures like matmul or not: 0, 1
+ * __FORTRAN_STANDARD__        which Fortran standard to follow: 2008, 2018, 2023
  * __INTEGER_KIND__            the integer kind to be used: 0, 32, 64, 16
  * __REAL_PRECISION__          the real precision to be used: 64, 32, 128, 0
+ * __MAXHISTMEM__         maximal MB memory for computation history: 100
+ * __AGRESSIVE_OPTIONS__       compile the code with aggressive options: 0, 1
  * __USE_STORAGE_SIZE__        use the STORAGE_SIZE intrinsic or not: 0, 1
  * __USE_ISO_FORTRAN_ENV_INTREAL__ use INT32 etc in ISO_FORTRAN_ENV or not: 0, 1
  *
@@ -22,11 +22,7 @@
  *
  * 0. USE THE DEFAULT IF UNSURE.
  *
- * 1. When __USE_POWELL_ALGEBRA__ == 1, the released version will produce EXACTLY
- * the same results as Powell's Fortran 77 code (necessarily, this means that the
- * code performs EXACTLY the same calculations as Powell's code, or else rounding
- * errors will lead to different computed results, the difference being sometimes
- * significant for nonconvex problems).
+ * 1. Setting __MAXHISTMEM__ to a big value may lead failures due to large arrays.
  *
  * 2. If you change these flags, make sure that your compiler is supportive
  * when changing __INTEGER_KIND__, __REAL_PRECISION__, __FORTRAN_STANDARD__,
@@ -51,10 +47,10 @@
 
 /******************************************************************************/
 /* Is this a released version? Should be 1 except for the developers. */
-#if defined RELEASED__
-#undef RELEASED__
+#if defined __RELEASED__
+#undef __RELEASED__
 #endif
-#define RELEASED__ 0
+#define __RELEASED__ 1
 /******************************************************************************/
 
 
@@ -64,7 +60,7 @@
 #if defined __DEBUGGING__
 #undef __DEBUGGING__
 #endif
-#define __DEBUGGING__ 1
+#define __DEBUGGING__ 0
 /******************************************************************************/
 
 
@@ -73,50 +69,7 @@
 #if defined __FORTRAN_STANDARD__
 #undef __FORTRAN_STANDARD__
 #endif
-#define __FORTRAN_STANDARD__ 2003 /* Will be default to 2008 later (in 2025?).*/
-/******************************************************************************/
-
-
-/******************************************************************************/
-/* Do we use Powell's linear algebra procedures? */
-/* If not, some basic algebraic procedures will be implemented with matrix/vector
- * operations instead of loops. This does not change Powell's algorithms, but
- * it may not produce exactly the same results as Powell's code due to properties
- * of floating-point arithmetic, e.g., the non-associativity of floating-point
- * addition and multiplication. */
-#if defined __USE_POWELL_ALGEBRA__
-#undef __USE_POWELL_ALGEBRA__
-#endif
-#define __USE_POWELL_ALGEBRA__ 1
-/******************************************************************************/
-
-
-/******************************************************************************/
-/* Do we use the intrinsic algebra procedures (e.g., matmul, dot_product)? */
-/* If no, we use the procedures implemented in linalg.F. */
-/* When __USE_INTRINSIC_ALGEBRA__ == 1, the code may not produce exactly the
- * same results as Powell's code, because the intrinsic matmul behaves
- * differently from a naive triple loop due to finite-precision arithmetic.
- * The difference has been observed on matprod22 and matprod12. The second case
- * occurred on Oct. 11, 2021 in the trust-region subproblem solver of COBYLA, and
- * it took enormous time to find out that Powell's code and the modernized code
- * behaved differently due to matmul and matprod12 when calculating RESMAX (in
- * Powell's code) and CSTRV (in the modernized code) when stage 2 starts. */
-#if defined __USE_INTRINSIC_ALGEBRA__
-#undef __USE_INTRINSIC_ALGEBRA__
-#endif
-#define __USE_INTRINSIC_ALGEBRA__ 0
-/******************************************************************************/
-
-
-/******************************************************************************/
-/* __USE_POWELL_ALGEBRA__ == 1 and __USE_INTRINSIC_ALGEBRA__ == 1 do NOT conflict.
- * However, to make sure that the code produces exactly the same results as
- * Powell's code when __USE_POWELL_ALGEBRA__ == 1, we impose the following.*/
-#if __USE_POWELL_ALGEBRA__ == 1 && __RELEASED__ == 1
-#undef __USE_INTRINSIC_ALGEBRA__
-#define __USE_INTRINSIC_ALGEBRA__ 0
-#endif
+#define __FORTRAN_STANDARD__ 2008 /* Will be default to 2018 later (in 2028?).*/
 /******************************************************************************/
 
 
@@ -164,6 +117,30 @@
 #undef __REAL_PRECISION__
 #define __REAL_PRECISION__ 64
 #endif
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* The maximal memory for recording the computation history (MB).
+ * The maximal supported value is 2000, as 2000 M = 2*10^9 = maximum of INT32.
+ * N.B.: A big value (even < 2000) may lead to SEGFAULTs due to large arrays. */
+#if defined __MAXHISTMEM__
+#undef __MAXHISTMEM__
+#endif
+#define __MAXHISTMEM__ 300  /* 1MB > 10^5*REAL64. 100 is sometimes too small. */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Will we compile the code with aggressive options (e.g., -Ofast for gfortran)?
+ * Some debugging will be disabled if yes (1). Note:
+ * 1. It is VALID to set __AGRESSIVE_OPTIONS__ to 0 and __DEBUGGING__ to 1 at
+ * the same time.
+ * 2. When compiled with aggressive options, the code may behave unexpectedly */
+#if defined __AGRESSIVE_OPTIONS__
+#undef __AGRESSIVE_OPTIONS__
+#endif
+#define __AGRESSIVE_OPTIONS__ 0
 /******************************************************************************/
 
 

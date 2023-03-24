@@ -6,7 +6,7 @@ module rand_mod
 !
 ! Started: September 2021
 !
-! Last Modified: Wednesday, February 02, 2022 PM08:06:21
+! Last Modified: Thursday, March 16, 2023 PM02:49:05
 !--------------------------------------------------------------------------------------------------!
 
 implicit none
@@ -21,14 +21,14 @@ end interface setseed
 
 interface rand
 ! RAND generates a random number/vector/matrix whose entries are iid sampled from U([0,1)).
-! N.B.: Here, RAND(N) is an N-dimensional vector; in MATLAB, RAND(N) is an NxN matrix. DIFFERENT!!
+! N.B.: Here, RAND(N) is an N-dimensional vector; in MATLAB, RAND(N) is an NxN matrix. DIFFERENT!
     module procedure rand0, rand1, rand2
 end interface rand
 
 interface randn
 ! RANDN generates a random number/vector/matrix whose entries are iid sampled from N(0,1). They are
 ! generated from U([0,1)) by the Box-Muller transform.
-! N.B.: Here, RANDN(N) is an N-dimensional vector; in MATLAB, RANDN(N) is an NxN matrix. DIFFERENT!!
+! N.B.: Here, RANDN(N) is an N-dimensional vector; in MATLAB, RANDN(N) is an NxN matrix. DIFFERENT!
     module procedure randn0, randn1, randn2
 end interface randn
 
@@ -51,7 +51,7 @@ integer :: n  ! Should be a default INTEGER according to F2018.
 call random_seed(size=n)
 
 ! The following line is unnecessary since F2003 as X is INTENT(OUT):
-!!if (allocated(seed)) deallocate (seed)
+! !if (allocated(seed)) deallocate (seed)
 
 ! 1. The following allocation is NOT removable even in F2003.
 ! 2. Why not using SAFEALLOC? Because the kind of SEED is the default integer, while SAFEALLOC is
@@ -91,13 +91,14 @@ allocate (seed_to_put(1:n), stat=alloc_status)
 if (.not. (alloc_status == 0 .and. allocated(seed_to_put))) then
     call errstop(srname, 'Memory allocation fails.')
 end if
+
 if (allocated(cos_seed)) deallocate (cos_seed)
 allocate (cos_seed(1:n), stat=alloc_status)
 if (.not. (alloc_status == 0 .and. allocated(cos_seed))) then
     call errstop(srname, 'Memory allocation fails.')
 end if
 
-! Some compilers cannot guarantee ABS(COS) <= 1 when the variable if huge. This may cause overflow.
+! Some compilers cannot guarantee ABS(COS) <= 1 when the variable is huge. This may cause overflow.
 ! Note that 1.0_DP cannot be written as ONE, because KIND(ONE) = RP, which may not be DP.
 cos_seed = min(max(cos(real([(i, i=seed - n + 1, seed)], DP)), -1.0_DP), 1.0_DP)
 seed_to_put = ceiling(0.9_DP * real(huge(0), DP) * cos_seed)

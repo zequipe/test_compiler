@@ -4,11 +4,16 @@ module memory_mod
 !--------------------------------------------------------------------------------------------------!
 ! This module provides subroutines concerning memory management.
 !
+! In particular, the intrinsic ALLOCATE is wrapped into the procedure SAFEALLOC, which may be a
+! controversial practice. We choose to do this because it has helped us a couple of times to locate
+! bugs or problems in our code or even in compilers (e.g., Absoft). See the below for discussions:
+! https://fortran-lang.discourse.group/t/best-practice-of-allocating-memory-in-fortran
+!
 ! Coded by Zaikun ZHANG (www.zhangzk.net).
 !
 ! Started: July 2020
 !
-! Last Modified: Wednesday, February 02, 2022 PM08:07:20
+! Last Modified: Sunday, November 13, 2022 PM02:05:50
 !--------------------------------------------------------------------------------------------------!
 
 implicit none
@@ -24,6 +29,7 @@ interface cstyle_sizeof
 end interface cstyle_sizeof
 
 interface safealloc
+    module procedure alloc_lvector
     module procedure alloc_ivector, alloc_imatrix
     module procedure alloc_rvector_sp, alloc_rmatrix_sp
     module procedure alloc_rvector_dp, alloc_rmatrix_dp
@@ -126,16 +132,17 @@ call validate(n >= 0, 'N >= 0', srname)
 ! According to the Fortran 2003 standard, when a procedure is invoked, any allocated ALLOCATABLE
 ! object that is an actual argument associated with an INTENT(OUT) ALLOCATABLE dummy argument is
 ! deallocated. So the following line is unnecessary since F2003 as X is INTENT(OUT):
-!!if (allocated(x)) deallocate (x)
-! Allocate memory for X
+! !if (allocated(x)) deallocate (x)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
 allocate (x(1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+x = -huge(x)  ! Costly if X is of a large size.
+! N.B.: Do not write ALLOCATE (X(1:N), STAT=ALLOC_STATUS, SOURCE=-HUGE(X)), because
+! 1. It is invalid to put X in the SOURCE specifier when it is being allocated;
+! 2. Absoft does not support the SOURCE keyword as of 2022.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x) == n, 'SIZE(X) == N', srname)
 end subroutine alloc_rvector_sp
 
@@ -161,16 +168,14 @@ character(len=*), parameter :: srname = 'ALLOC_RMATRIX_SP'
 ! Preconditions (checked even not debugging)
 call validate(m >= 0 .and. n >= 0, 'M >= 0, N >= 0', srname)
 
-!!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
-! Allocate memory for X
-allocate (x(1:m, 1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:m, 1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x, 1) == m .and. size(x, 2) == n, 'SIZE(X) == [M, N]', srname)
 end subroutine alloc_rmatrix_sp
 
@@ -199,16 +204,14 @@ call validate(n >= 0, 'N >= 0', srname)
 ! According to the Fortran 2003 standard, when a procedure is invoked, any allocated ALLOCATABLE
 ! object that is an actual argument associated with an INTENT(OUT) ALLOCATABLE dummy argument is
 ! deallocated. So the following line is unnecessary since F2003 as X is INTENT(OUT):
-!!if (allocated(x)) deallocate (x)
-! Allocate memory for X
-allocate (x(1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+! !if (allocated(x)) deallocate (x)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x) == n, 'SIZE(X) == N', srname)
 end subroutine alloc_rvector_dp
 
@@ -234,16 +237,14 @@ character(len=*), parameter :: srname = 'ALLOC_RMATRIX_DP'
 ! Preconditions (checked even not debugging)
 call validate(m >= 0 .and. n >= 0, 'M >= 0, N >= 0', srname)
 
-!!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
-! Allocate memory for X
-allocate (x(1:m, 1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:m, 1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x, 1) == m .and. size(x, 2) == n, 'SIZE(X) == [M, N]', srname)
 end subroutine alloc_rmatrix_dp
 
@@ -274,16 +275,14 @@ call validate(n >= 0, 'N >= 0', srname)
 ! According to the Fortran 2003 standard, when a procedure is invoked, any allocated ALLOCATABLE
 ! object that is an actual argument associated with an INTENT(OUT) ALLOCATABLE dummy argument is
 ! deallocated. So the following line is unnecessary since F2003 as X is INTENT(OUT):
-!!if (allocated(x)) deallocate (x)
-! Allocate memory for X
-allocate (x(1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+! !if (allocated(x)) deallocate (x)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x) == n, 'SIZE(X) == N', srname)
 end subroutine alloc_rvector_qp
 
@@ -309,20 +308,51 @@ character(len=*), parameter :: srname = 'ALLOC_RMATRIX_QP'
 ! Preconditions (checked even not debugging)
 call validate(m >= 0 .and. n >= 0, 'M >= 0, N >= 0', srname)
 
-!!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
-! Allocate memory for X
-allocate (x(1:m, 1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+! !if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:m, 1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x, 1) == m .and. size(x, 2) == n, 'SIZE(X) == [M, N]', srname)
 end subroutine alloc_rmatrix_qp
 
 #endif
+
+
+subroutine alloc_lvector(x, n)
+!--------------------------------------------------------------------------------------------------!
+! Allocate space for an allocatable LOGICAL vector X, whose size is N after allocation.
+!--------------------------------------------------------------------------------------------------!
+use, non_intrinsic :: consts_mod, only : IK
+use, non_intrinsic :: debug_mod, only : validate
+implicit none
+
+! Inputs
+integer(IK), intent(in) :: n
+
+! Outputs
+logical, allocatable, intent(out) :: x(:)
+
+! Local variables
+integer :: alloc_status
+character(len=*), parameter :: srname = 'ALLOC_LVECTOR'
+
+! Preconditions (checked even not debugging)
+call validate(n >= 0, 'N >= 0', srname)
+
+! !if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
+! Allocate memory for X. Initialize X to a compiler-independent value.
+allocate (x(1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = .false.  ! Costly if X is of a large size.
+
+! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
+call validate(size(x) == n, 'SIZE(X) == N', srname)
+end subroutine alloc_lvector
 
 
 subroutine alloc_ivector(x, n)
@@ -346,16 +376,14 @@ character(len=*), parameter :: srname = 'ALLOC_IVECTOR'
 ! Preconditions (checked even not debugging)
 call validate(n >= 0, 'N >= 0', srname)
 
-!!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
-! Allocate memory for X
-allocate (x(1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+! !if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x) == n, 'SIZE(X) == N', srname)
 end subroutine alloc_ivector
 
@@ -381,16 +409,14 @@ character(len=*), parameter :: srname = 'ALLOC_IMATRIX'
 ! Preconditions (checked even not debugging)
 call validate(m >= 0 .and. n >= 0, 'M >= 0, N >= 0', srname)
 
-!!if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
-! Allocate memory for X
-allocate (x(1:m, 1:n), stat=alloc_status)
-call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
-call validate(allocated(x), 'X is allocated', srname)
-
-! Initialize X to a strange value independent of the compiler; it can be costly for a large size.
-x = -huge(x)
+! !if (allocated(x)) deallocate (x)  ! Unnecessary in F03 since X is INTENT(OUT)
+! Allocate memory for X. Initialize X to a compiler-independent strange value.
+allocate (x(1:m, 1:n), stat=alloc_status)  ! Absoft does not support the SOURCE keyword as of 2022.
+x = -huge(x)  ! Costly if X is of a large size.
 
 ! Postconditions (checked even not debugging)
+call validate(alloc_status == 0, 'Memory allocation succeeds (ALLOC_STATUS == 0)', srname)
+call validate(allocated(x), 'X is allocated', srname)
 call validate(size(x, 1) == m .and. size(x, 2) == n, 'SIZE(X) == [M, N]', srname)
 end subroutine alloc_imatrix
 
