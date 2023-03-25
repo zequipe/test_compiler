@@ -79,11 +79,11 @@ do iout = 1, 3
             copt = cstrv
         end if
 
-        call savefilt(constr, cstrv, ctol, cweight, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
+        call savefilt(cstrv, ctol, cweight, f, x, nfilt, cfilt, ffilt, xfilt, constr, confilt)
 
         imat = mod(nf, n + 1_IK) + 1_IK
         conmat(:, imat) = constr
-        call savefilt(conmat(:, imat), cstrv, ctol, cweight, f, x, nfilt, cfilt, confilt, ffilt, xfilt)
+        call savefilt(cstrv, ctol, cweight, f, x, nfilt, cfilt, ffilt, xfilt, conmat(:, imat), confilt)
     end do
 end do
 

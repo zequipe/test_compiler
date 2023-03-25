@@ -10,7 +10,7 @@ contains
 
 subroutine uob(calfun, iprint, maxfun, npt, eta1, eta2, ftarget, gamma1, gamma2, rhobeg, &
     & rhoend, x, nf, f, fhist, xhist, info)
-use, non_intrinsic :: consts_mod, only : RP, IK, ONE, TWO, HALF, TENTH, HUGENUM, DEBUGGING
+use, non_intrinsic :: consts_mod, only : RP, IK, ONE, TWO, HALF, TENTH, REALMAX, DEBUGGING
 use, non_intrinsic :: history_mod, only : savehist, rangehist
 use, non_intrinsic :: pintrf_mod, only : OBJ
 

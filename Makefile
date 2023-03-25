@@ -207,7 +207,7 @@ test_intel: test_intel.f90
 	ifx --version && ifx -warn all test_intel.f90 && ./a.out
 
 %test: test.f90 \
-	consts.o info.o debug.o memory.o infnan.o linalg.o rand.o string.o \
+	consts.o infos.o debug.o memory.o inf.o infnan.o string.o linalg.o rand.o \
 	ratio.o resolution.o history.o selectx.o circle.o checkexit.o output.o preproc.o pintrf.o evaluate.o \
 	solver_unc.o solver_con.o \
 	uob.o solver_uoa.o \

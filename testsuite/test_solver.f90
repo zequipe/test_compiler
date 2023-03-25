@@ -169,7 +169,7 @@ end subroutine test_solver_con
 
 subroutine test_solver_uoa()
 
-use, non_intrinsic :: consts_mod, only : RP, IK, TWO, TEN, ZERO, HUGENUM
+use, non_intrinsic :: consts_mod, only : RP, IK, TWO, TEN, ZERO, REALMAX
 use, non_intrinsic :: memory_mod, only : safealloc
 use, non_intrinsic :: uoa_mod, only : uoa
 use, non_intrinsic :: noise_mod, only : noisy, noisy_calfun, orig_calfun
