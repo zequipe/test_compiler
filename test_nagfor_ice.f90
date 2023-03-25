@@ -1,3 +1,10 @@
+!--------------------------------------------------------------------------------------------------!
+!$ nagfor - C - kind = unique - c test_nagfor_ice.f90
+!  NAG Fortran Compiler Release 7.1(Hanzomon) Build 7120
+!  Segmentation violation
+!  Internal error - please report this bug
+!--------------------------------------------------------------------------------------------------!
+
 module test_nagfor_ice_mod
 !--------------------------------------------------------------------------------------------------!
 ! This module provides subroutines concerning memory management.
@@ -11,7 +18,7 @@ module test_nagfor_ice_mod
 !
 ! Started: July 2020
 !
-! Last Modified: Saturday, March 25, 2023 PM12:47:09
+! Last Modified: Saturday, March 25, 2023 PM12:52:29
 !--------------------------------------------------------------------------------------------------!
 
 implicit none
