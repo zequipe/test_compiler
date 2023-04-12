@@ -98,7 +98,7 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 
 * Intel Community: [Fail to install oneAPI 2021 on Windows Server 2022](https://community.intel.com/t5/oneAPI-Registration-Download/Fail-to-install-oneAPI-2021-on-Windows-Server-2022/m-p/1445998#M164426)
 
-* Fortran Discourse [Warning: ‘.str’ may be used uninitialized](https://fortran-lang.discourse.group/t/warning-str-may-be-used-uninitialized)
+* Fortran Discourse: [Warning: ‘.str’ may be used uninitialized](https://fortran-lang.discourse.group/t/warning-str-may-be-used-uninitialized)
 
 
 ## Contact
