@@ -98,6 +98,16 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
+test_char: test_char.f90
+	gfortran -g -Wmaybe-uninitialized -Werror -std=f2018 test_char.f90
+	ifort -g -warn all -check all -debug extended test_char.f90
+	ifx -g -O0 -warn all -check all -debug extended test_char.f90
+	nagfor -g -C test_char.f90
+	flang -g -Wall -Wextra test_char.f90
+	nvfortran -g -Wall -Wextra test_char.f90
+	aflang -g -Wall -Wextra test_char.f90
+	sunf95 -g -w3 -ansi -xcheck=%all -C test_char.f90
+
 test_nagfor_ice: test_nagfor_ice.f90  # NAG Fortran Compiler Release 7.1(Hanzomon) Build 7114 encountered an ICE
 	nagfor -C -kind=unique -c test_nagfor_ice.f90
 

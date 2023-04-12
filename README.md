@@ -16,7 +16,7 @@ that develops optimization solvers.
 * :negative_squared_cross_mark: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 4.0.0 (fail: `solve`, `Array`, `Alloc`, `Implied do`)
 * :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 15.0.3 (fail: `solve`, `Count`, `Alloc`)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94 (insufficient support for F03 constructs)
-* :ballot_box_with_check: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 9.3.0
+* :negative_squared_cross_mark: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 11.3.0 (fail: `test_char`)
 * :negative_squared_cross_mark: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.7.1 (fail: `test_intel`)
 * :negative_squared_cross_mark: [Intel `ifx`](https://www.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top/language-reference/new-features-for-ifx.html) 2022.2.0 (fail: `test_intel`)
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b (insufficient support for F03 constructs)
@@ -97,6 +97,8 @@ Community](https://community.amd.com/t5/drivers-software/a-bug-in-flang-of-aocc-
 * Fortran Discourse: [Ifort (IFORT) 2021.8.0: `1.0E+37 / 1.0E+38 = 0`](https://fortran-lang.discourse.group/t/ifort-ifort-2021-8-0-1-0e-37-1-0e-38-0/4936?u=zaikunzhang)
 
 * Intel Community: [Fail to install oneAPI 2021 on Windows Server 2022](https://community.intel.com/t5/oneAPI-Registration-Download/Fail-to-install-oneAPI-2021-on-Windows-Server-2022/m-p/1445998#M164426)
+
+* Fortran Discourse [Warning: ‘.str’ may be used uninitialized](https://fortran-lang.discourse.group/t/warning-str-may-be-used-uninitialized)
 
 
 ## Contact
