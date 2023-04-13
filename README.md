@@ -17,8 +17,8 @@ that develops optimization solvers.
 * :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 15.0.3 (fail: `solve`, `Count`, `Alloc`)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94 (insufficient support for F03 constructs)
 * :negative_squared_cross_mark: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 11.3.0 (fail: `test_char`)
-* :negative_squared_cross_mark: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.7.1 (fail: `test_intel`)
-* :negative_squared_cross_mark: [Intel `ifx`](https://www.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top/language-reference/new-features-for-ifx.html) 2022.2.0 (fail: `test_intel`)
+* :ballot_box_with_check: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.9.0
+* :ballot_box_with_check: [Intel `ifx`](https://www.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top/language-reference/new-features-for-ifx.html) 2023.1.0
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b (insufficient support for F03 constructs)
 * :negative_squared_cross_mark: [NAG `nagfor`](https://www.nag.com/content/nag-fortran-compiler) [Release 7.1](https://monet.nag.co.uk/compiler/r71download/) (Hanzomon) Build 7122 (fail: `test_sym`)
 * :negative_squared_cross_mark: [NVIDIA `nvfortran`](https://docs.nvidia.com/hpc-sdk/index.html) 22.11 (fail: `solve`, `Alloc`, `Count`, `Implied do`)

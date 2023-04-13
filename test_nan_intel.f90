@@ -1,5 +1,5 @@
 !--------------------------------------------------------------------------------------------------!
-! $ uname -a && ifort --version && ifort test_nan.f90 && ./a.out
+! $ uname -a && ifort --version && ifort test_nan_intel.f90 && ./a.out
 ! Linux zP 5.15.0-52-generic #58-Ubuntu SMP Thu Oct 13 08:03:55 UTC 2022 x86_64 x86_64 x86_64 GNU/Linux
 ! ifort (IFORT) 2021.7.1 20221019
 ! Copyright (C) 1985-2022 Intel Corporation.  All rights reserved.
