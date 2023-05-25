@@ -185,15 +185,12 @@ test_sym: test_sym.f90
 	af95 test_sym.f90 && ./a.out
 
 test_solve: test_solve.f90
+	# AOCC 3.2.0 fails the following
+	$(AFLANG) -Mbounds test_solve.f90 && ./a.out
 	#flang -O3 test_solve.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
 	#$(AFLANG) -O3 test_solve.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
 	# Flang 15.0.3 fails the following
 	flang -Mbounds test_solve.f90 && ./a.out
-	# AOCC 3.2.0 fails the following
-	$(AFLANG) -Mbounds test_solve.f90 && ./a.out
-	# nvfortran 22.11 fails the following two
-	nvfortran -Mbounds test_solve.f90 && ./a.out
-	nvfortran -C test_solve.f90 && ./a.out  # -C means "Generate code to check array bounds"
 
 test_empty: test_empty.f90
 	flang -Mbounds test_empty.f90 && ./a.out  # OK
