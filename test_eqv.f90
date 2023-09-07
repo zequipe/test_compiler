@@ -1,7 +1,7 @@
 !        This is file : test
 ! Author= zaikunzhang
 ! Started at: 07.09.2023
-! Last Modified: Thursday, September 07, 2023 PM10:37:58
+! Last Modified: Friday, September 08, 2023 AM01:35:05
 
 program test_eqv
 implicit none
@@ -12,7 +12,7 @@ x = x**2 / x**3
 write (str, *) x
 read (str, *) y
 write (*, *) x, y, str
-write (*, *) 'x <= 0.0, y <= 0.0', 'x <= 0.0 .eqv. y <= 0.0', 'x <= 0.0 .neqv. y <= 0.0'
+write (*, *) 'x <= 0.0, y <= 0.0', ' x <= 0.0 .eqv. y <= 0.0', ' x <= 0.0 .neqv. y <= 0.0'
 write (*, *) x <= 0.0, y <= 0.0, (x <= 0.0 .eqv. y <= 0.0), (x <= 0.0 .neqv. y <= 0.0)
 
 if ((x <= 0.0 .eqv. y <= 0.0) .or. (x <= 0.0 .neqv. y <= 0.0)) then
