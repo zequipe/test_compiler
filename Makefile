@@ -98,12 +98,15 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
+test_eqv: test_eqv.f90
+	gfortran -Ofast test_eqv.f90 && ./a.out
+
 test_indices: test_indices.f90
 	nagfor test_indices.f90 && ./a.out
 
 test_char: test_char.f90
-	gfortran-12 -g -Wmaybe-uninitialized -Werror -std=f2018 test_char.f90
-	#gfortran -g -Wmaybe-uninitialized -Werror -std=f2018 test_char.f90  # gfortran-11 raises a false positive
+	#gfortran-12 -g -Wmaybe-uninitialized -Werror -std=f2018 test_char.f90
+	gfortran -g -Wmaybe-uninitialized -Werror -std=f2018 test_char.f90  # gfortran-11 raises a false positive
 	ifort -g -warn all -check all -debug extended test_char.f90
 	ifx -g -O0 -warn all -check all -debug extended test_char.f90
 	nagfor -g -C test_char.f90
