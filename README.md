@@ -16,7 +16,7 @@ that develops optimization solvers.
 * :negative_squared_cross_mark: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 4.0.0 (fail: `solve`, `Array`, `Alloc`, `Implied do`)
 * :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 15.0.3 (fail: `solve`, `Count`, `Alloc`)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94 (insufficient support for F03 constructs)
-* :negative_squared_cross_mark: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 12.1.0 (fail: `test_eqv`)
+* :negative_squared_cross_mark: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 13.1.0 (fail: `test_eqv`)
 * :ballot_box_with_check: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.9.0
 * :ballot_box_with_check: [Intel `ifx`](https://www.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top/language-reference/new-features-for-ifx.html) 2023.1.0
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b (insufficient support for F03 constructs)
