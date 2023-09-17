@@ -14,7 +14,7 @@ that develops optimization solvers.
 * :negative_squared_cross_mark: [毕昇编译器](https://support.huaweicloud.com/ug-bisheng-kunpengdevps/kunpengbisheng_06_0006.html) ([Bisheng Compiler, based on the Classic flang](https://support.huaweicloud.com/intl/en-us/ug-bisheng-kunpengdevps/kunpengbisheng_06_0001.html)) 1.3.3.b023 (fail: `Array`, `Alloc`, `Implied do`)
 * :ballot_box_with_check: [Absoft `af95`](https://www.absoft.com) in Absoft 64-bit Pro Fortran 22.0.2 with patch 3
 * :negative_squared_cross_mark: [AOCC `flang`](https://developer.amd.com/amd-aocc/) 4.0.0 (fail: `solve`, `Array`, `Alloc`, `Implied do`)
-* :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 15.0.3 (fail: `solve`, `Count`, `Alloc`)
+* :negative_squared_cross_mark: [Classic `flang`](https://github.com/flang-compiler/flang) 15.0.3 (fail: `test_value`, `solve`, `Count`, `Alloc`)
 * :negative_squared_cross_mark: [G95 `g95`](https://www.g95.org/downloads.shtml) 0.94 (insufficient support for F03 constructs)
 * :negative_squared_cross_mark: [GNU `gfortran`](https://gcc.gnu.org/fortran/) 13.1.0 (fail: `test_eqv`)
 * :ballot_box_with_check: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.9.0

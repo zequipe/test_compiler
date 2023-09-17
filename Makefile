@@ -98,6 +98,9 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
+test_value: test_value.f90
+	flang -c test_value.f90 && ./a.out
+
 test_eqv: test_eqv.f90
 	gfortran -Ofast test_eqv.f90 && ./a.out
 
