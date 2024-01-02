@@ -20,7 +20,7 @@ that develops optimization solvers.
 * :ballot_box_with_check: [Intel `ifort`](https://www.intel.com/content/www/us/en/developer/tools/oneapi/fortran-compiler.html) 2021.9.0
 * :ballot_box_with_check: [Intel `ifx`](https://www.intel.com/content/www/us/en/develop/documentation/fortran-compiler-oneapi-dev-guide-and-reference/top/language-reference/new-features-for-ifx.html) 2023.1.0
 * :negative_squared_cross_mark: [Lahey `lf95`](https://lahey.com) L8.10b (insufficient support for F03 constructs)
-* :negative_squared_cross_mark: [NAG `nagfor`](https://www.nag.com/content/nag-fortran-compiler) [Release 7.1](https://monet.nag.co.uk/compiler/r71download/) (Hanzomon) Build 7125 (fail: `test_sym`, `test_indices`, `test_trans.f90`)
+* :negative_squared_cross_mark: [NAG `nagfor`](https://www.nag.com/content/nag-fortran-compiler) [Release 7.1](https://monet.nag.co.uk/compiler/r71download/) (Hanzomon) Build 7143 (fail: `test_sym`)
 * :negative_squared_cross_mark: [NVIDIA `nvfortran`](https://docs.nvidia.com/hpc-sdk/index.html) 23.5 (fail: `Alloc`, `Count`, `Implied do`)
 * :negative_squared_cross_mark: [Oracle `sunf95`](https://www.oracle.com/tools/developerstudio/downloads/developer-studio-jsp.html) 12.6 (fail: `test_vec`)
 
