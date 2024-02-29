@@ -1,7 +1,7 @@
 !        This is file : test_isorth.f90
 ! Author= zaikunzhang
 ! Started at: 25.02.2024
-! Last Modified: Thursday, February 29, 2024 PM12:53:14
+! Last Modified: Thursday, February 29, 2024 PM01:02:25
 ! With NAG Fortran Compiler Release 7.1(Hanzomon) Build 7143, REAL16 will lead to an error as
 ! follows, although REAL32, REAL64, and REAL128 will not.
 !--------------------------------------------------------------------------------------------------!
@@ -9,18 +9,20 @@
 ! Linux zX11 6.5.0-21-generic #21~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb  9 13:32:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
 ! NAG Fortran Compiler Release 7.1(Hanzomon) Build 7143
 ! [NAG Fortran Compiler normal termination]
-!  A =  -0.7896  0.6143 -0.6143 -0.7896
-!  A^T*A =    1.001  0.0000  0.0000   1.001
-!  I =    1.000  0.0000  0.0000   1.000
-!  |A^T*A - I| =   0.0000  0.0000  0.0000  0.0000
-!  max(|A^T*A - I|) =   0.0000
-!  tol =   0.9902
-!  max(tol, tol * maxval(abs(A))) =   0.9902
-!  |A^T*A - I| <= max(tol, tol * maxval(abs(A))) =  T T T T
-!  all(|A^T*A - I| <= max(tol, tol * maxval(abs(A)))) =  T
-!  is_orth =  F
-!  WRONG! The columns of A are not orthonormal up to the tolerance   0.9902
-! ERROR STOP: 1
+! A =  -0.7896  0.6143 -0.6143 -0.7896
+! A^T*A =    1.001  0.0000  0.0000   1.001
+! I =    1.000  0.0000  0.0000   1.000
+! |A^T*A - I| =   0.0000  0.0000  0.0000  0.0000
+! max(|A^T*A - I|) =   0.0000
+! tol =   0.9902
+! max(tol, tol * maxval(abs(A))) =   0.9902
+! |A^T*A - I| <= max(tol, tol * maxval(abs(A))) =  T T T T
+! all(|A^T*A - I| <= max(tol, tol * maxval(abs(A)))) =  T
+! |A^T*A - I| <= tol =  T T T T
+! all(|A^T*A - I| <= tol) =  T
+! is_orth =  F
+! WRONG! The columns of A are not orthonormal up to the tolerance   0.9902
+!ERROR STOP: 1
 !--------------------------------------------------------------------------------------------------!
 
 module test_mod
