@@ -4,7 +4,7 @@
 ! NAG Fortran Compiler Release 7.1(Hanzomon) Build 7143
 ! [NAG Fortran Compiler normal termination]
 !   0.0000  0.0000
-!  WRONG! c is zero
+!  WRONG! Product is zero
 ! ERROR STOP: 1
 !--------------------------------------------------------------------------------------------------!
 
