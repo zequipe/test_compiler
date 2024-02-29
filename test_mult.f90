@@ -42,10 +42,10 @@ real(RP) :: c(2) = [1.0_RP, 1.0_RP]
 write (*, *) test(a, b, c)
 
 if (all(abs(test(a, b, c)) <= 0)) then
-    write (*, *) "WRONG! c is zero"
+    write (*, *) "WRONG! Product is zero"
     error stop 1
 else
-    write (*, *) "RIGHT! c is not zero"
+    write (*, *) "RIGHT! Product is not zero"
 end if
 
 end program test_mult
