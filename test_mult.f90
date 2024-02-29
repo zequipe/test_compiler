@@ -1,6 +1,6 @@
 !--------------------------------------------------------------------------------------------------!
 ! $ uname -a && nagfor -O1 test_mult.f90 && ./a.out
-! Linux zX11 6.5.0-21-generic #21~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb  9 13:32:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
+! Linux 6.5.0-21-generic #21~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb  9 13:32:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
 ! NAG Fortran Compiler Release 7.1(Hanzomon) Build 7143
 ! [NAG Fortran Compiler normal termination]
 !   0.0000  0.0000
