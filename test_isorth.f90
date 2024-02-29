@@ -1,7 +1,7 @@
 !        This is file : test_isorth.f90
 ! Author= zaikunzhang
 ! Started at: 25.02.2024
-! Last Modified: Thursday, February 29, 2024 PM12:40:14
+! Last Modified: Thursday, February 29, 2024 PM12:53:14
 ! With NAG Fortran Compiler Release 7.1(Hanzomon) Build 7143, REAL16 will lead to an error as
 ! follows, although REAL32, REAL64, and REAL128 will not.
 !--------------------------------------------------------------------------------------------------!
@@ -83,6 +83,8 @@ write (*, *) 'tol = ', tol
 write (*, *) 'max(tol, tol * maxval(abs(A))) = ', max(tol, tol * maxval(abs(A)))
 write (*, *) '|A^T*A - I| <= max(tol, tol * maxval(abs(A))) = ', err <= max(tol, tol * maxval(abs(A)))
 write (*, *) 'all(|A^T*A - I| <= max(tol, tol * maxval(abs(A)))) = ', all(err <= max(tol, tol * maxval(abs(A))))
+write (*, *) '|A^T*A - I| <= tol = ', abs(matmul(transpose(A), A) - eye(n)) <= tol
+write (*, *) 'all(|A^T*A - I| <= tol) = ', all(abs(matmul(transpose(A), A) - eye(n)) <= tol)
 write (*, *) 'is_orth = ', is_orth
 end function isorth
 
