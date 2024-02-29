@@ -25,6 +25,8 @@ real(RP), intent(in) :: c(2)
 real(RP) :: d(2)
 
 d = a * b * c
+!d = a * (b * c)  ! Fine
+!d = c * b * a  ! Fine
 
 end function test
 
