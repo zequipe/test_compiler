@@ -98,6 +98,9 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
+test_mult: test_mult.f90
+	nagfor -O1 test_mult.f90 && ./a.out
+
 test_isorth: test_isorth.f90
 	nagfor test_isorth.f90 && ./a.out
 
