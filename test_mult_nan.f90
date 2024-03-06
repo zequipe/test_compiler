@@ -1,7 +1,7 @@
 !--------------------------------------------------------------------------------------------------!
 ! ! On Ubuntu 22.04:
 !
-! $ uname -a && nagfor test_mult_nan.f90 && ./a.out
+! $ uname -a && nagfor -ieee=full test_mult_nan.f90 && ./a.out
 ! Linux 6.5.0-21-generic #21~22.04.1-Ubuntu SMP PREEMPT_DYNAMIC Fri Feb  9 13:32:52 UTC 2 x86_64 x86_64 x86_64 GNU/Linux
 ! NAG Fortran Compiler Release 7.1(Hanzomon) Build 7143
 ! [NAG Fortran Compiler normal termination]
