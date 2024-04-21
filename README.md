@@ -60,7 +60,7 @@ make stest  # Test sunf95
 
 * Flang GitHub Issue: [flang-new 19.0.0 bug: `nan > 0`, `nan > 1`](https://github.com/llvm/llvm-project/issues/89529)
 
-* Flang GitHub Issue: [fflang-new 19.0.0 bug: `sum([Inf, 0.0]) = NaN`, while `Inf + 0.0 = Inf`](https://github.com/llvm/llvm-project/issues/89528)
+* Flang GitHub Issue: [flang-new 19.0.0 bug: `sum([Inf, 0.0]) = NaN`, while `Inf + 0.0 = Inf`](https://github.com/llvm/llvm-project/issues/89528)
 
 * Flang GitHub Issue: [False positive: out-bound subscripts](https://github.com/flang-compiler/flang/issues/1238)
 
