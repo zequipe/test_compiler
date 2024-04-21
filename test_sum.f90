@@ -4,7 +4,6 @@
 !flang-new version 19.0.0git (git@github.com:llvm/llvm-project.git 37c175af955f0aeab67e8c553a0a47b2ed0fdba2)
 !Target: x86_64-unknown-linux-gnu
 !Thread model: posix
-!InstalledDir: /home/zaikunzhang/local/flang/bin
 ! NaN Inf
 ! sum(x) is  NaN
 !Fortran ERROR STOP: code 1
