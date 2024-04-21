@@ -58,6 +58,10 @@ make stest  # Test sunf95
 * [Fortran Discourse](https://fortran-lang.discourse.group):
 [Availability and applicability of Fortran compilers for a project](https://fortran-lang.discourse.group/t/availability-and-applicability-of-fortran-compilers-for-a-project)
 
+* Flang GitHub Issue: [flang-new 19.0.0 bug: `nan > 0`, `nan > 1`](https://github.com/llvm/llvm-project/issues/89529)
+
+* Flang GitHub Issue: [fflang-new 19.0.0 bug: `sum([Inf, 0.0]) = NaN`, while `Inf + 0.0 = Inf`](https://github.com/llvm/llvm-project/issues/89528)
+
 * Flang GitHub Issue: [False positive: out-bound subscripts](https://github.com/flang-compiler/flang/issues/1238)
 
 * NVIDIA Developer Forums: [Bug in nvfortran 22.3: false positive of out-bound subscripts](https://forums.developer.nvidia.com/t/bug-in-nvfortran-22-3-false-positive-of-out-bound-subscripts)
