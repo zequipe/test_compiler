@@ -12,6 +12,7 @@
 !--------------------------------------------------------------------------------------------------!
 program test_sum
 use ieee_arithmetic, only : ieee_value, ieee_positive_inf
+! The problem occurs with REAL128, REAL64, and REAL32. sum is not implemented for REAL16 as of flang 19.0.0.
 use iso_fortran_env, only : RP => REAL128 !REAL64 !REAL32 !REAL16
 
 implicit none
