@@ -99,6 +99,10 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 # Making a specific test
 
 test_uninit: test_uninit.f90
+	gfortran -Werror -Wuninitialized -fsanitize=undefined -O2 test_uninit.f90
+	gfortran -Werror -Wuninitialized -fsanitize=undefined -O3 test_uninit.f90
+	gfortran -Werror -Wuninitialized -fsanitize=undefined -O4 test_uninit.f90
+	gfortran -Werror -Wuninitialized -fsanitize=undefined -Ofast test_uninit.f90
 	gfortran -Werror -Wmaybe-uninitialized -fsanitize=undefined -O2 test_uninit.f90
 	gfortran -Werror -Wmaybe-uninitialized -fsanitize=undefined -O3 test_uninit.f90
 	gfortran -Werror -Wmaybe-uninitialized -fsanitize=undefined -O4 test_uninit.f90
