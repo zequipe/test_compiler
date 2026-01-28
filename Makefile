@@ -98,6 +98,9 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
+test_nint: test_nint.f90
+	$(AFLANG) test_nint.f90 && ./a.out
+
 test_bd: test_bd.f90
 	nvfortran -C -O2 test_bd.f90 && ./a.out
 	nvfortran -Mbounds -O2 test_bd.f90 && ./a.out
