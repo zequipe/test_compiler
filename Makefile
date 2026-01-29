@@ -98,6 +98,10 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
+test_implied_do: test_implied_do.f90
+	nvfortran -Mbounds test_implied_do.f90 && ./a.out
+	nvfortran -C test_implied_do.f90 && ./a.out
+
 test_empty_array: test_empty_array.f90
 	nvfortran -C test_empty_array.f90 && ./a.out
 	nvfortran -Mbounds test_empty_array.f90 && ./a.out
@@ -236,6 +240,7 @@ test_sym: test_sym.f90
 	af95 test_sym.f90 && ./a.out
 
 test_solve: test_solve.f90
+	nvfortran -Mbounds test_solve.f90 && ./a.out
 	# AOCC 3.2.0 fails the following
 	$(AFLANG) -Mbounds test_solve.f90 && ./a.out
 	#flang -O3 test_solve.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
@@ -244,13 +249,12 @@ test_solve: test_solve.f90
 	flang -Mbounds test_solve.f90 && ./a.out
 
 test_empty: test_empty.f90
-	flang -Mbounds test_empty.f90 && ./a.out  # OK
 	flang -O3 test_empty.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
-	$(AFLANG) -Mbounds test_empty.f90 && ./a.out  # OK
-	$(AFLANG) -O3 test_empty.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
 	nvfortran -Mbounds test_empty.f90 && ./a.out  # OK
 	nvfortran -C test_empty.f90 && ./a.out  # OK
 	nvfortran -C -O3 test_empty.f90 && ./a.out  # -C means "Generate code to check array bounds"
+	$(AFLANG) -O3 test_empty.f90 && ./a.out  # OK, -C means "Include comments in preprocessed output"
+	$(AFLANG) -Mbounds test_empty.f90 && ./a.out
 
 test_ieee: test_ieee.f90
 	ifx --version && ifx -warn all -c test_ieee.f90  # Crash: ifx (IFORT) 2022.0.0 20211123
