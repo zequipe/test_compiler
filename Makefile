@@ -98,7 +98,7 @@ xtes%: FC = ifx -ftrapuv -init=snan,array -fpe0 -fpe-all=0 -assume ieee_fpe_flag
 ####################################################################################################
 # Making a specific test
 
-test_div_flang: test_div_flang.f90
+test_div_flang: test_div_flang.f90  # See https://github.com/zequipe/flang_ranom_nan, https://github.com/llvm/llvm-project/issues/180957
 	flang -fstack-arrays -std=f2018 -O3 -ffast-math -g test_div_flang.f90 && ./a.out
 
 test_empty_array: test_empty_array.f90
